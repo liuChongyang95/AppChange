@@ -26,6 +26,5 @@ public class SearchResult extends AppCompatActivity {
         fruitNameText = findViewById(R.id.searchResult_name);
         fruitName = bundle.getString("fruit_name");
         fruitNameText.setText(fruitName);
-
     }
 }

@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP:
                         int pad = (int) motionEvent.getX();
-                        if (pad > view.getWidth() - 100 && pad < view.getWidth() - 30 && !TextUtils.isEmpty(searchText
+                        if (pad > view.getWidth() - 100 && pad < view.getWidth() - 25 && !TextUtils.isEmpty(searchText
                                 .getText())) {
                             searchText.setText("");
                             int cacheInputType = searchText.getInputType();
