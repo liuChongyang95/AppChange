@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dapp.R;
-import com.example.dapp.Fruit;
+import Model.Fruit;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/27.
  */
 
-public class FruitAdapter extends ArrayAdapter<Fruit>  {
+public class FruitAdapter extends ArrayAdapter<Fruit> implements Filterable {
     private int resourceId;
 
     public FruitAdapter(Context context, int textViewResourceId, List<Fruit> objects) {
@@ -41,8 +41,8 @@ public class FruitAdapter extends ArrayAdapter<Fruit>  {
         if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.fruitImage = (ImageView) view.findViewById(R.id.search_fruit_image);
-            viewHolder.fruitName = (TextView) view.findViewById(R.id.search_fruit_name);
+            viewHolder.fruitImage = view.findViewById(R.id.search_fruit_image);
+            viewHolder.fruitName = view.findViewById(R.id.search_fruit_name);
             view.setTag(viewHolder);
         } else {
             view = convertView;

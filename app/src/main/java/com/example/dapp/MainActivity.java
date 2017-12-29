@@ -1,21 +1,26 @@
 package com.example.dapp;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Adapter.FruitAdapter;
+import Model.Fruit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,15 +29,21 @@ public class MainActivity extends AppCompatActivity {
     private EditText searchText;
     private ImageButton searchFruit;
     private String searchFruitText;
+    private boolean isnull = true;
+    private Drawable mDefaultQuery;
+    private Drawable mQueryClear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initFruits();
-        FruitAdapter adapter = new FruitAdapter(MainActivity.this, R.layout.fruit_item, fruitList);
         listView = findViewById(R.id.search_result);
         searchText = findViewById(R.id.search_text);
+        final Resources res = getResources();
+//        mDefaultQuery = res.getDrawable(R.drawable.query);
+        mQueryClear = res.getDrawable(R.drawable.clear);
+        FruitAdapter adapter = new FruitAdapter(MainActivity.this, R.layout.fruit_item, fruitList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -46,7 +57,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        searchText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        int pad = (int) motionEvent.getX();
+                        if (pad > view.getWidth() - 100 && pad < view.getWidth() - 30 && !TextUtils.isEmpty(searchText
+                                .getText())) {
+                            searchText.setText("");
+                            int cacheInputType = searchText.getInputType();
+                            searchText.setInputType(InputType.TYPE_NULL);
+                            searchText.onTouchEvent(motionEvent);
+                            searchText.setInputType(cacheInputType);
+                            return true;
+                        }
+                        break;
+                }
+                return false;
+            }
+
+        });
+
         searchText.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -59,7 +93,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(editable)) {
+                    if (!isnull) {
+                        searchText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                        isnull = true;
+                    }
+                } else {
+                    if (isnull) {
+                        searchText.setCompoundDrawablesWithIntrinsicBounds(null, null, mQueryClear, null);
+                        isnull = false;
+                    }
 
+                }
             }
         });
 
