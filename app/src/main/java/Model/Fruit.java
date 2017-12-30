@@ -13,7 +13,7 @@ public class Fruit {
     private String nutrition;
     private Drawable picture;
 
-    public Fruit(String name, Drawable picture) {
+    public Fruit(String name, Drawable picture,String nutrition) {
         this.name = name;
         this.picture = picture;
         this.nutrition = nutrition;

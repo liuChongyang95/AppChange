@@ -33,6 +33,7 @@ import Model.Fruit;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Fruit fruit;
     private List<Fruit> fruitList = new ArrayList<>();
     private ListView listView;
     private EditText searchText;
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private Drawable mQueryClear;
     private DBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
-    private ImageView iv;
+    private String fruitName;
+    private String fruitNutrition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mQueryClear = res.getDrawable(R.drawable.clear);
         FruitAdapter adapter = new FruitAdapter(MainActivity.this, R.layout.fruit_item, fruitList);
         listView.setAdapter(adapter);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -127,8 +130,9 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
                 Drawable drawable = bitmapDrawable;
-                String name = cursor.getString(cursor.getColumnIndex("name"));
-                Fruit fruit = new Fruit(name, drawable);
+                fruitName = cursor.getString(cursor.getColumnIndex("name"));
+                fruitNutrition = cursor.getString(cursor.getColumnIndex("nutrition"));
+                fruit = new Fruit(fruitName, drawable, fruitNutrition);
                 fruitList.add(fruit);
             }
         }

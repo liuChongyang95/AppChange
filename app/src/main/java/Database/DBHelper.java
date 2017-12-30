@@ -24,7 +24,8 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String picture = "picture";
     }
 
-    public static final String CREATE_FRUIT = "create table Fruit (id integer primary key autoincrement, name text,"
+    public static final String CREATE_FRUIT = "create table Fruit (id integer primary key autoincrement, name text," +
+            "nutrition text,"
             + PicColumns.picture + " blob not null)";
     private Context mContext;
 
@@ -48,13 +49,16 @@ public class DBHelper extends SQLiteOpenHelper {
         for (int i = 0; i <= 5; i++) {
             values.put("name", "苹果");
             values.put(PicColumns.picture, getPicture(apple));
+            values.put("nutrition", "54千卡/100克");
             sqLiteDatabase.insert("Fruit", null, values);
             values.clear();
             values.put("name", "梨");
             values.put(PicColumns.picture, getPicture(pear));
+            values.put("nutrition", "50千卡/100克");
             sqLiteDatabase.insert("Fruit", null, values);
             values.clear();
             values.put("name", "橘子");
+            values.put("nutrition", "44千卡/100克");
             values.put(PicColumns.picture, getPicture(orange));
             sqLiteDatabase.insert("Fruit", null, values);
             values.clear();
