@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
 
 //                测试数据库
         dbHelper = new DBHelper(this, "Fruit.db", null, 1);
-//        EXPORT-1
         sqLiteDatabase = dbHelper.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.query("Fruit", null, null, null, null, null, null);
         if (cursor != null && cursor.getCount() != 0) {
