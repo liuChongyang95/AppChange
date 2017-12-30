@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,13 +21,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Adapter.FruitAdapter;
-//import Database.DBHelper;
+import Database.DBHelper;
 import Model.Fruit;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,26 +39,16 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton searchFruit;
     private String searchFruitText;
     private boolean isnull = true;
-    //    private Drawable mDefaultQuery;
     private Drawable mQueryClear;
-//    private DBHelper dbHelper;
-//    private SQLiteDatabase sqLiteDatabase;
+    private DBHelper dbHelper;
+    private SQLiteDatabase sqLiteDatabase;
+    private ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        //测试数据库
-//        dbHelper = new DBHelper(this, "Fruit.db", null, 1);
-//        //EXPORT-1
-//        sqLiteDatabase=dbHelper.getReadableDatabase();
-//        searchFruit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//            }
-//        });
 
-        initFruits();
         listView = findViewById(R.id.search_result);
         searchText = findViewById(R.id.search_text);
         final Resources res = getResources();
@@ -118,20 +112,38 @@ public class MainActivity extends AppCompatActivity {
                         searchText.setCompoundDrawablesWithIntrinsicBounds(null, null, mQueryClear, null);
                         isnull = false;
                     }
-
                 }
             }
         });
+
+//                测试数据库
+        dbHelper = new DBHelper(this, "Fruit.db", null, 1);
+//        EXPORT-1
+        sqLiteDatabase = dbHelper.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query("Fruit", null, null, null, null, null, null);
+        if (cursor != null && cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                byte[] b = cursor.getBlob(cursor.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
+                //将获取的数据转换成drawable
+                Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
+                Drawable drawable = bitmapDrawable;
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                Fruit fruit = new Fruit(name, drawable);
+                fruitList.add(fruit);
+            }
+        }
+//        initFruits();
     }
 
-    private void initFruits() {
-        for (int i = 0; i < 5; i++) {
-            Fruit apple = new Fruit("Apple", R.drawable.apple, "100/1克");
-            Fruit orange = new Fruit("Orange", R.drawable.orange, "100/1克");
-            Fruit pear = new Fruit("Pear", R.drawable.pear, "100/1克");
-            fruitList.add(apple);
-            fruitList.add(orange);
-            fruitList.add(pear);
-        }
-    }
+//    private void initFruits() {
+//        for (int i = 0; i < 5; i++) {
+//            Fruit apple = new Fruit("Apple", R.drawable.apple, "100/1克");
+//            Fruit orange = new Fruit("Orange", R.drawable.orange, "100/1克");
+//            Fruit pear = new Fruit("Pear", R.drawable.pear, "100/1克");
+//            fruitList.add(apple);
+//            fruitList.add(orange);
+//            fruitList.add(pear);
+//        }
+//    }
 }
