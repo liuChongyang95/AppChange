@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dapp.R;
+
 import Model.Fruit;
 
 import java.util.List;
@@ -43,6 +44,7 @@ public class FruitAdapter extends ArrayAdapter<Fruit> implements Filterable {
             viewHolder = new ViewHolder();
             viewHolder.fruitImage = view.findViewById(R.id.search_fruit_image);
             viewHolder.fruitName = view.findViewById(R.id.search_fruit_name);
+            viewHolder.fruitNutrition = view.findViewById(R.id.search_fruit_nutrition);
             view.setTag(viewHolder);
         } else {
             view = convertView;
@@ -50,11 +52,13 @@ public class FruitAdapter extends ArrayAdapter<Fruit> implements Filterable {
         }
         viewHolder.fruitName.setText(fruit.getName());
         viewHolder.fruitImage.setImageResource(fruit.getImageId());
+        viewHolder.fruitNutrition.setText(fruit.getNutrition());
         return view;
     }
 
     class ViewHolder {
         ImageView fruitImage;
         TextView fruitName;
+        TextView fruitNutrition;
     }
 }

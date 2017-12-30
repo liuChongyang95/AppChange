@@ -3,6 +3,7 @@ package com.example.dapp;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Adapter.FruitAdapter;
-import Database.DBHelper;
+//import Database.DBHelper;
 import Model.Fruit;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,35 +37,22 @@ public class MainActivity extends AppCompatActivity {
     private boolean isnull = true;
     //    private Drawable mDefaultQuery;
     private Drawable mQueryClear;
-    private DBHelper dbHelper;
+//    private DBHelper dbHelper;
+//    private SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        searchFruit = findViewById(R.id.search_button);
-        //测试数据库
-        dbHelper = new DBHelper(this, "Fruit.db", null, 1);
-        searchFruit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                创建数据库
-//                dbHelper.getWritableDatabase();
-//                for (int i =0 ; i<=5;i++) {
-//                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-//                    ContentValues values = new ContentValues();
-//                    values.put("name", "苹果");
-//                    db.insert("Fruit", null, values);
-//                    values.clear();
-//                    values.put("name", "橘子");
-//                    db.insert("Fruit", null, values);
-//                    values.clear();
-//                    values.put("name", "梨");
-//                    db.insert("Fruit", null, values);
-//                    values.clear();
-//                }
-            }
-        });
+//        //测试数据库
+//        dbHelper = new DBHelper(this, "Fruit.db", null, 1);
+//        //EXPORT-1
+//        sqLiteDatabase=dbHelper.getReadableDatabase();
+//        searchFruit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//            }
+//        });
 
         initFruits();
         listView = findViewById(R.id.search_result);
@@ -104,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return false;
             }
-
         });
 
         searchText.addTextChangedListener(new TextWatcher() {
@@ -135,23 +122,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        searchFruit = findViewById(R.id.search_button);
-//        searchFruit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-
-
     }
 
     private void initFruits() {
         for (int i = 0; i < 5; i++) {
-            Fruit apple = new Fruit("Apple", R.drawable.apple);
-            Fruit orange = new Fruit("Orange", R.drawable.orange);
-            Fruit pear = new Fruit("Pear", R.drawable.pear);
+            Fruit apple = new Fruit("Apple", R.drawable.apple, "100/1克");
+            Fruit orange = new Fruit("Orange", R.drawable.orange, "100/1克");
+            Fruit pear = new Fruit("Pear", R.drawable.pear, "100/1克");
             fruitList.add(apple);
             fruitList.add(orange);
             fruitList.add(pear);
