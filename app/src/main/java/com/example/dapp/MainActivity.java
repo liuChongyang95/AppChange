@@ -30,6 +30,7 @@ import java.util.List;
 import Adapter.FruitAdapter;
 import Database.DBHelper;
 import Model.Fruit;
+import SearchDao.FruitDao;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,8 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private Drawable mQueryClear;
     private DBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
+    private FruitDao fruitDao;
     private String fruitName;
     private String fruitNutrition;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +56,14 @@ public class MainActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.search_result);
         searchText = findViewById(R.id.search_text);
+        searchFruit = findViewById(R.id.search_button);
+
         final Resources res = getResources();
         mQueryClear = res.getDrawable(R.drawable.clear);
+
+        //加载页面
+        fruitDao = new FruitDao(this);
+        fruitList = fruitDao.getFruitList();
         FruitAdapter adapter = new FruitAdapter(MainActivity.this, R.layout.fruit_item, fruitList);
         listView.setAdapter(adapter);
 
@@ -63,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Fruit fruit = fruitList.get(i);
                 Intent intent = new Intent(MainActivity.this, SearchResult.class);
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putString("fruit_name", fruit.getName());
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -120,22 +129,36 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //                测试数据库
-        dbHelper = new DBHelper(this, "Fruit.db", null, 1);
-        sqLiteDatabase = dbHelper.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.query("Fruit", null, null, null, null, null, null);
-        if (cursor != null && cursor.getCount() != 0) {
-            while (cursor.moveToNext()) {
-                byte[] b = cursor.getBlob(cursor.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
-                //将获取的数据转换成drawable
-                Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
-                Drawable drawable = bitmapDrawable;
-                fruitName = cursor.getString(cursor.getColumnIndex("name"));
-                fruitNutrition = cursor.getString(cursor.getColumnIndex("nutrition"));
-                fruit = new Fruit(fruitName, drawable, fruitNutrition);
-                fruitList.add(fruit);
+//        dbHelper = new DBHelper(this, "Fruit.db", null, 1);
+//        sqLiteDatabase = dbHelper.getReadableDatabase();
+//        Cursor cursor = sqLiteDatabase.query("Fruit", null, null, null, null, null, null);
+//        if (cursor != null && cursor.getCount() != 0) {
+//            while (cursor.moveToNext()) {
+//                byte[] b = cursor.getBlob(cursor.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
+//                //将获取的数据转换成drawable
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
+//                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
+//                Drawable drawable = bitmapDrawable;
+//                fruitName = cursor.getString(cursor.getColumnIndex("name"));
+//                fruitNutrition = cursor.getString(cursor.getColumnIndex("nutrition"));
+//                fruit = new Fruit(fruitName, drawable, fruitNutrition);
+//                fruitList.add(fruit);
+//            }
+//        }
+
+        searchFruit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchFruitText = searchText.getText().toString().trim();
+                Intent intent = new Intent(MainActivity.this, FruitSearch.class);
+                bundle = new Bundle();
+                bundle.putString("searchText", searchFruitText);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
-        }
+        });
+
+
 //        initFruits();
     }
 

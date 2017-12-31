@@ -21,9 +21,9 @@ public class SearchResult extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fruit_message);
+        fruitNameText = findViewById(R.id.searchResult_name);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        fruitNameText = findViewById(R.id.searchResult_name);
         fruitName = bundle.getString("fruit_name");
         fruitNameText.setText(fruitName);
     }

@@ -20,6 +20,10 @@
         <activity android:name=".SearchResult">
 
         </activity>
+
+        <activity android:name=".FruitSearch">
+
+        </activity>>
     </application>
 
 </manifest>
