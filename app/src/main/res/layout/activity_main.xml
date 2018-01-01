@@ -22,6 +22,7 @@
             android:layout_weight="1"
             android:background="@drawable/roundedrectangle"
             android:hint="请输入食物"
+            android:inputType="text"
             android:imeOptions="actionSearch"
             android:singleLine="true"/>
 

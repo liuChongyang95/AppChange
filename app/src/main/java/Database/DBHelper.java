@@ -62,6 +62,16 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(PicColumns.picture, getPicture(orange));
             sqLiteDatabase.insert("Fruit", null, values);
             values.clear();
+            values.put("name", "Apple");
+            values.put("nutrition", "54千卡/100克");
+            values.put(PicColumns.picture, getPicture(apple));
+            sqLiteDatabase.insert("Fruit", null, values);
+            values.clear();
+            values.put("name", "pear");
+            values.put("nutrition", "44千卡/100克");
+            values.put(PicColumns.picture, getPicture(pear));
+            sqLiteDatabase.insert("Fruit", null, values);
+            values.clear();
         }
     }
 

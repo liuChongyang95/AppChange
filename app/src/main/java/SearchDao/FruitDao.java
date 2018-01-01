@@ -1,6 +1,7 @@
 package SearchDao;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.graphics.drawable.Drawable;
 
 import com.example.dapp.MainActivity;
 import com.example.dapp.R;
+import com.example.dapp.SearchNullResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,7 @@ public class FruitDao {
     //加载列表
     public List<Fruit> getFruitList() {
         List<Fruit> fruitList = new ArrayList<>();
-        fruitDBHelper = new DBHelper(context, "Fruit.db", null, 1);
+        fruitDBHelper = new DBHelper(context, "Fruit.db", null, 2);
         fruitsDb = fruitDBHelper.getReadableDatabase();
         String sql = "select * from Fruit";
         Cursor cursor = fruitsDb.rawQuery(sql, null);
@@ -61,20 +63,22 @@ public class FruitDao {
     //Search
     public List<Fruit> searchFruit(String searchFruitText) {
         String sql_searchFruit = "select * from Fruit where name Like '%" + searchFruitText + "%'";
+        fruitDBHelper = new DBHelper(context, "Fruit.db", null, 2);
         List<Fruit> searchList = new ArrayList<>();
-        fruitDBHelper = new DBHelper(context, "Fruit.db", null, 1);
         fruitsDb = fruitDBHelper.getReadableDatabase();
         Cursor cursor_search = fruitsDb.rawQuery(sql_searchFruit, null);
-        while (cursor_search.moveToNext()) {
-            byte[] b = cursor_search.getBlob(cursor_search.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
-            //将获取的数据转换成drawable
-            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
-            BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
-            Drawable drawable = bitmapDrawable;
-            fruitName = cursor_search.getString(cursor_search.getColumnIndex("name"));
-            fruitNutrition = cursor_search.getString(cursor_search.getColumnIndex("nutrition"));
-            fruit = new Fruit(fruitName, drawable, fruitNutrition);
-            searchList.add(fruit);
+        if (cursor_search != null && cursor_search.getCount() != 0) {
+            while (cursor_search.moveToNext()) {
+                byte[] b = cursor_search.getBlob(cursor_search.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
+                //将获取的数据转换成drawable
+                Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
+                Drawable drawable = bitmapDrawable;
+                fruitName = cursor_search.getString(cursor_search.getColumnIndex("name"));
+                fruitNutrition = cursor_search.getString(cursor_search.getColumnIndex("nutrition"));
+                fruit = new Fruit(fruitName, drawable, fruitNutrition);
+                searchList.add(fruit);
+            }
         }
         fruitsDb.close();
         return searchList;

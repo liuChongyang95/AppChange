@@ -1,13 +1,9 @@
 package com.example.dapp;
 
-import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,14 +11,16 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Fruit fruit;
     private List<Fruit> fruitList = new ArrayList<>();
     private ListView listView;
-    private EditText searchText;
+    private EditText searchEText;
     private ImageButton searchFruit;
     private String searchFruitText;
     private boolean isnull = true;
@@ -47,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private FruitDao fruitDao;
     private String fruitName;
     private String fruitNutrition;
-    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.search_result);
-        searchText = findViewById(R.id.search_text);
+        searchEText = findViewById(R.id.search_text);
         searchFruit = findViewById(R.id.search_button);
 
         final Resources res = getResources();
@@ -71,27 +68,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Fruit fruit = fruitList.get(i);
-                Intent intent = new Intent(MainActivity.this, SearchResult.class);
-                bundle = new Bundle();
+                Intent intent = new Intent(MainActivity.this, fruitSelect.class);
+                Bundle bundle = new Bundle();
                 bundle.putString("fruit_name", fruit.getName());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
 
-        searchText.setOnTouchListener(new View.OnTouchListener() {
+        searchEText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP:
                         int pad = (int) motionEvent.getX();
-                        if (pad > view.getWidth() - 100 && pad < view.getWidth() - 25 && !TextUtils.isEmpty(searchText
+                        if (pad > view.getWidth() - 100 && pad < view.getWidth() - 25 && !TextUtils.isEmpty(searchEText
                                 .getText())) {
-                            searchText.setText("");
-                            int cacheInputType = searchText.getInputType();
-                            searchText.setInputType(InputType.TYPE_NULL);
-                            searchText.onTouchEvent(motionEvent);
-                            searchText.setInputType(cacheInputType);
+                            searchEText.setText("");
+                            int cacheInputType = searchEText.getInputType();
+                            searchEText.setInputType(InputType.TYPE_NULL);
+                            searchEText.onTouchEvent(motionEvent);
+                            searchEText.setInputType(cacheInputType);
                             return true;
                         }
                         break;
@@ -100,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        searchText.addTextChangedListener(new TextWatcher() {
+        searchEText.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -116,12 +113,12 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 if (TextUtils.isEmpty(editable)) {
                     if (!isnull) {
-                        searchText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                        searchEText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                         isnull = true;
                     }
                 } else {
                     if (isnull) {
-                        searchText.setCompoundDrawablesWithIntrinsicBounds(null, null, mQueryClear, null);
+                        searchEText.setCompoundDrawablesWithIntrinsicBounds(null, null, mQueryClear, null);
                         isnull = false;
                     }
                 }
@@ -149,16 +146,40 @@ public class MainActivity extends AppCompatActivity {
         searchFruit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchFruitText = searchText.getText().toString().trim();
-                Intent intent = new Intent(MainActivity.this, FruitSearch.class);
-                bundle = new Bundle();
-                bundle.putString("searchText", searchFruitText);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                if (!searchEText.getText().toString().equals("")) {
+                    searchFruitText = searchEText.getText().toString().trim();
+                    Intent intent = new Intent(MainActivity.this, FruitSearch.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("searchText", searchFruitText);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
             }
         });
 
-
+        searchEText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId,
+                                          KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    ((InputMethodManager) searchEText.getContext().getSystemService
+                            (Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(MainActivity.this.getCurrentFocus
+                                            ().getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+                    if (!searchEText.getText().toString().equals("")) {
+                        searchFruitText = searchEText.getText().toString().trim();
+                        Intent intent = new Intent(MainActivity.this, FruitSearch.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("searchText", searchFruitText);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 //        initFruits();
     }
 
