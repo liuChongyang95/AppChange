@@ -1,7 +1,6 @@
 package SearchDao;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -9,14 +8,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import com.example.dapp.MainActivity;
-import com.example.dapp.R;
-import com.example.dapp.SearchNullResult;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import Adapter.FruitAdapter;
 import Database.DBHelper;
 import Model.Fruit;
 

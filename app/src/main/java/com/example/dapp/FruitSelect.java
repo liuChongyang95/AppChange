@@ -15,7 +15,7 @@ import java.io.IOException;
  * Created by Administrator on 2017/12/28.
  */
 
-public class fruitSelect extends AppCompatActivity {
+public class FruitSelect extends AppCompatActivity {
     private TextView fruitNameText;
     private String fruitName;
 

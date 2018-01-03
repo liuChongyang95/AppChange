@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import Database.DBHelper;
 import Model.Fruit;
 import SearchDao.FruitDao;
 
-public class MainActivity extends AppCompatActivity {
+public class FruitMainActivity extends AppCompatActivity {
 
     private Fruit fruit;
     private List<Fruit> fruitList = new ArrayList<>();
@@ -49,8 +50,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.fruit_main);
 
+        Toolbar toolbar=findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FruitMainActivity.this.finish();
+            }
+        });
         listView = findViewById(R.id.search_result);
         searchEText = findViewById(R.id.search_text);
         searchFruit = findViewById(R.id.search_button);
@@ -61,14 +70,14 @@ public class MainActivity extends AppCompatActivity {
         //加载页面
         fruitDao = new FruitDao(this);
         fruitList = fruitDao.getFruitList();
-        FruitAdapter adapter = new FruitAdapter(MainActivity.this, R.layout.fruit_item, fruitList);
+        FruitAdapter adapter = new FruitAdapter(FruitMainActivity.this, R.layout.fruit_item, fruitList);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Fruit fruit = fruitList.get(i);
-                Intent intent = new Intent(MainActivity.this, fruitSelect.class);
+                Intent intent = new Intent(FruitMainActivity.this, FruitSelect.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("fruit_name", fruit.getName());
                 intent.putExtras(bundle);
@@ -148,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!searchEText.getText().toString().equals("")) {
                     searchFruitText = searchEText.getText().toString().trim();
-                    Intent intent = new Intent(MainActivity.this, FruitSearch.class);
+                    Intent intent = new Intent(FruitMainActivity.this, FruitSearch.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("searchText", searchFruitText);
                     intent.putExtras(bundle);
@@ -164,12 +173,12 @@ public class MainActivity extends AppCompatActivity {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     ((InputMethodManager) searchEText.getContext().getSystemService
                             (Context.INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(MainActivity.this.getCurrentFocus
+                            .hideSoftInputFromWindow(FruitMainActivity.this.getCurrentFocus
                                             ().getWindowToken(),
                                     InputMethodManager.HIDE_NOT_ALWAYS);
                     if (!searchEText.getText().toString().equals("")) {
                         searchFruitText = searchEText.getText().toString().trim();
-                        Intent intent = new Intent(MainActivity.this, FruitSearch.class);
+                        Intent intent = new Intent(FruitMainActivity.this, FruitSearch.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("searchText", searchFruitText);
                         intent.putExtras(bundle);
@@ -182,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
         });
 //        initFruits();
     }
+
 
 //    private void initFruits() {
 //        for (int i = 0; i < 5; i++) {
