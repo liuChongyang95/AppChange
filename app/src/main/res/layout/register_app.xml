@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/register_relative"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_login_color"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/register_toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
+
+    <LinearLayout
+        android:id="@+id/register_LinearL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/register_toolBar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="用 户 名:"
+                android:textColor="#fff"/>
+
+            <EditText
+                android:id="@+id/register_name"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColor="#fff"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="密       码:"
+                android:textColor="#fff"/>
+
+            <EditText
+                android:id="@+id/register_password"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColor="#fff"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="确认密码:"
+                android:textColor="#fff"/>
+
+            <EditText
+                android:id="@+id/register_password2"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColor="#fff"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="性别:"
+                android:textColor="#fff"/>
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/rb_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="男性"
+                    android:textColor="#fff"/>
+
+                <RadioButton
+                    android:id="@+id/rb_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="女性"
+                    android:textColor="#fff"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:text="出生日期:"
+                android:textColor="#fff"/>
+
+            <Button
+                android:id="@+id/register_burn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/background_login_btn_div"
+                android:text="输入日期"
+                android:textColor="#fff"
+                />
+
+            <TextView
+                android:id="@+id/register_burn_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="OKok"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="身高:"
+                android:textColor="#fff"/>
+
+            <Button
+                android:id="@+id/register_tall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/background_login_btn_div"
+                android:text="输入身高"
+                android:textColor="#fff"
+                />
+
+            <TextView
+                android:id="@+id/register_tall_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:hint="163.3"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="实际体重:"
+                android:textColor="#fff"
+                />
+
+            <Button
+                android:id="@+id/register_height_real"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:background="@drawable/background_login_btn_div"
+                android:text="输入体重"
+                android:textColor="#fff"
+                />
+
+            <TextView
+                android:id="@+id/register_height_real_tv"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:hint="50公斤"
+                android:textColor="#fff"
+                android:textSize="12sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="理想体重:"
+                android:textColor="#fff"
+                />
+
+            <Button
+                android:id="@+id/register_height_expect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_login_btn_div"
+                android:text="输入体重"
+                android:textColor="#fff"
+                />
+
+            <TextView
+                android:id="@+id/register_height_expect_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="50公斤"
+                android:textColor="#fff"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="职业:"
+                android:textColor="#fff"
+                />
+
+            <Button
+                android:id="@+id/register_pro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_login_btn_div"
+                android:text="输入职业"
+                android:textColor="#fff"
+                />
+
+            <TextView
+                android:id="@+id/register_pro_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="高级工程师"
+                android:textColor="#fff"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -30,6 +30,9 @@
         <activity android:name=".FruitSelect"></activity>
         <activity android:name=".FruitSearch"></activity>
         <activity android:name=".SearchNullResult"></activity>
+        <activity android:name=".Register_main"
+            android:label="用户注册"></activity>
+
     </application>
 
 </manifest>
