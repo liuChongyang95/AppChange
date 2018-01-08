@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
+          xmlns:tools="http://schemas.android.com/tools"
+
           package="com.example.dapp">
 
     <application
@@ -7,8 +10,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="DApp"
         android:roundIcon="@mipmap/ic_launcher_round"
+
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon, android:label,android:theme">
         <activity
             android:name=".Login_App"
             android:windowSoftInputMode="adjustPan">
@@ -30,8 +36,12 @@
         <activity android:name=".FruitSelect"></activity>
         <activity android:name=".FruitSearch"></activity>
         <activity android:name=".SearchNullResult"></activity>
-        <activity android:name=".Register_main"
-            android:label="用户注册"></activity>
+        <activity
+            android:name=".Register_main"
+            android:label="用户注册"
+            android:launchMode="singleTask"></activity>
+
+        <!--<activity android:name=".ScaleRuler_tall_weight"></activity>-->
 
     </application>
 

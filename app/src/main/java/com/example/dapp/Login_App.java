@@ -33,6 +33,7 @@ public class Login_App extends AppCompatActivity {
         register.setTextColor(Color.RED);
         register.setClickable(true);
 
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

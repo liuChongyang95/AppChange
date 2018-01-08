@@ -24,11 +24,13 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String picture = "picture";
     }
 
-    public static final String CREATE_FRUIT = "create table Fruit (id integer primary key autoincrement, name text," +
-            "nutrition text,"
-            + PicColumns.picture + " blob not null)";
-
-    public static final String CREATE_USER="create table User(id integer primary key ,name text,password text,sex text,)";
+    //           水果模拟
+    private static final String CREATE_FRUIT = "create table Fruit (id integer primary key autoincrement, name text," +
+            "nutrition text," + PicColumns.picture + " blob not null)";
+    //           用户登录
+    private static final String CREATE_USER = "create table User(id integer primary key ,name varchar(35) ,password " +
+            "varchar(30),sex varchar(10),birth varchar(30),tall varchar(10),real_weight varchar(10)," +
+            "expect_weight varchar(10),career varchar(30)," + PicColumns.picture + "blob not null)";
     private Context mContext;
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -39,6 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_FRUIT);
+        sqLiteDatabase.execSQL(CREATE_USER);
         initDataBase(sqLiteDatabase, mContext);
         Toast.makeText(mContext, "Create successed", Toast.LENGTH_SHORT).show();
     }
@@ -90,8 +93,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        String sql = " DROP TABLE IF EXISTS Fruit";
-        sqLiteDatabase.execSQL(sql);
+        String sql_fruit = " DROP TABLE IF EXISTS Fruit";
+        String sql_User = " DROP TABLE IF EXISTS User";
+        sqLiteDatabase.execSQL(sql_fruit);
+        sqLiteDatabase.execSQL(sql_User);
         onCreate(sqLiteDatabase);
     }
 }
