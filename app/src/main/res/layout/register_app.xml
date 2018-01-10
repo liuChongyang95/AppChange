@@ -283,40 +283,6 @@
 
             </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="职业:"
-                    android:textColor="#fff"
-                    />
-
-                <Button
-                    android:id="@+id/register_pro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_login_btn_div"
-                    android:text="输入职业"
-                    android:textColor="#fff"
-                    />
-
-                <TextView
-                    android:id="@+id/register_pro_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="XXXXXXX"
-                    android:textColor="#fff"
-                    />
-            </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 

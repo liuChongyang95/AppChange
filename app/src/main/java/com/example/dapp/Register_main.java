@@ -2,8 +2,12 @@ package com.example.dapp;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,6 +33,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import Database.DBHelper;
 import Util.Fastblur;
 import Util.DrawUtil;
 import View.DecimalScaleRulerView;
@@ -40,6 +48,8 @@ import butterknife.ButterKnife;
  */
 
 public class Register_main extends AppCompatActivity {
+
+
     private static final int DATE_PICKER_ID = 0;
     private EditText register_name;
     private EditText register_password;
@@ -58,7 +68,7 @@ public class Register_main extends AppCompatActivity {
     private float register_tall_str;
     private float register_weight_str;
     private int sex_i;
-
+    private DBHelper dbHelper;
 
     ScaleRulerView mHeightWheelView;
     TextView mHeightValue;
@@ -67,6 +77,7 @@ public class Register_main extends AppCompatActivity {
     DecimalScaleRulerView mWeightRulerView;
     TextView mWeightValueTwo;
     Button btn_choosen_result;
+
 
     private float mHeight = 170;
     private float mMaxHeight = 220;
@@ -88,6 +99,8 @@ public class Register_main extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.register_app);
+        dbHelper = new DBHelper(this, "DApp.db", null, 3);
+
         mHeightValue = findViewById(R.id.tv_user_height_value);
 //        mWeightWheelView = findViewById(R.id.scaleWheelView_weight);
 //        mWeightValue = findViewById(R.id.tv_user_weight_value);
@@ -169,6 +182,7 @@ public class Register_main extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.register_sure:
+
                 register_name_str = register_name.getText().toString().trim();
                 register_password_str = register_password.getText().toString().trim();
                 register_password2_str = register_password2.getText().toString().trim();
@@ -176,9 +190,32 @@ public class Register_main extends AppCompatActivity {
                 register_birth_str = register_birth_tv.getText().toString().trim();
                 register_weight_str = mWeight;
                 register_tall_str = mHeight;
-
-                Log.d("Register_main", register_name_str + sex + register_password_str + register_password2_str +
-                        register_birth_str + register_tall_str + register_weight_str);
+                if (register_password2_str.equals(register_password_str) && register_password2_str != null) {
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    db.beginTransaction();
+                    ContentValues values = new ContentValues();
+                    values.put("name", register_name_str);
+                    values.put("password", register_password_str);
+                    values.put("sex", sex);
+                    values.put("birth", register_birth_str);
+                    values.put("tall", register_tall_str);
+                    values.put("real_weight", register_weight_str);
+                    values.put("id", "121");
+                    Drawable apple = this.getResources().getDrawable(R.drawable.apple);
+                    values.put("picture_user", dbHelper.getPicture(apple));
+                    try {
+                        db.insertOrThrow("User", null, values);
+                        db.setTransactionSuccessful();
+                        Toast.makeText(Register_main.this, "注册成功", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } catch (SQLiteConstraintException ex) {
+                        Toast.makeText(this, "用户名重复,注册失败", Toast.LENGTH_LONG).show();
+                    } finally {
+                        db.endTransaction();
+                    }
+                } else {
+                    Toast.makeText(this, "密码确认失败或密码不符合规范", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
         return true;
@@ -208,7 +245,7 @@ public class Register_main extends AppCompatActivity {
         mHeightWheelView.setValueChangeListener(new ScaleRulerView.OnValueChangeListener() {
             @Override
             public void onValueChange(float value) {
-                mHeightValue.setText((int) value + "");
+                mHeightValue.setText((int) value + "cm");
                 mHeight = value;
             }
         });
@@ -277,7 +314,7 @@ public class Register_main extends AppCompatActivity {
         return sex;
     }
 
-//    @Override
+    //    @Override
 //    protected void onSaveInstanceState(Bundle outState) {
 //        super.onSaveInstanceState(outState);
 //        String name = register_name.getText().toString().trim();
@@ -294,6 +331,16 @@ public class Register_main extends AppCompatActivity {
 //        outState.putInt("user_sex_i", sex_selected);
 //
 //    }
+    private byte[] getPicture(Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+        return os.toByteArray();
+    }
 
     @Override
     protected void onDestroy() {

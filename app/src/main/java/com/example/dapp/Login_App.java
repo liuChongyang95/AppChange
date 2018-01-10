@@ -1,6 +1,7 @@
 package com.example.dapp;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import Database.DBHelper;
+
 /**
  * Created by Administrator on 2018/1/2.
  */
@@ -20,11 +23,15 @@ public class Login_App extends AppCompatActivity {
     private EditText password;
     private TextView register;
     private Button login;
+    private DBHelper dbHelper;
+    private SQLiteDatabase userDB;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_app);
+
         username = findViewById(R.id.user_name);
         password = findViewById(R.id.user_password);
         register = findViewById(R.id.register_button);

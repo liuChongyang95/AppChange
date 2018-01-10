@@ -34,7 +34,7 @@ public class FruitDao {
     //加载列表
     public List<Fruit> getFruitList() {
         List<Fruit> fruitList = new ArrayList<>();
-        fruitDBHelper = new DBHelper(context, "Fruit.db", null, 2);
+        fruitDBHelper = new DBHelper(context, "DApp.db", null, 3);
         fruitsDb = fruitDBHelper.getReadableDatabase();
         String sql = "select * from Fruit";
         Cursor cursor = fruitsDb.rawQuery(sql, null);
@@ -57,8 +57,8 @@ public class FruitDao {
     //Search
     public List<Fruit> searchFruit(String searchFruitText) {
         String sql_searchFruit = "select * from Fruit where name Like '%" + searchFruitText + "%'";
-        fruitDBHelper = new DBHelper(context, "Fruit.db", null, 2);
         List<Fruit> searchList = new ArrayList<>();
+        fruitDBHelper = new DBHelper(context, "DApp.db", null, 3);
         fruitsDb = fruitDBHelper.getReadableDatabase();
         Cursor cursor_search = fruitsDb.rawQuery(sql_searchFruit, null);
         if (cursor_search != null && cursor_search.getCount() != 0) {

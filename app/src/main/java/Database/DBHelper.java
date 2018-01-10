@@ -2,6 +2,7 @@ package Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -24,13 +25,19 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String picture = "picture";
     }
 
+    public static class PicColumns_user implements BaseColumns {
+        public static final String picture = "picture_user";
+    }
+
     //           水果模拟
     private static final String CREATE_FRUIT = "create table Fruit (id integer primary key autoincrement, name text," +
             "nutrition text," + PicColumns.picture + " blob not null)";
     //           用户登录
-    private static final String CREATE_USER = "create table User(id integer primary key ,name varchar(35) ,password " +
-            "varchar(30),sex varchar(10),birth varchar(30),tall varchar(10),real_weight varchar(10)," +
-            "expect_weight varchar(10),career varchar(30)," + PicColumns.picture + "blob not null)";
+    private static final String CREATE_USER = "create table User (id integer ,name " +
+            "varchar(35) ," + " password varchar(30), birth varchar(20), sex varchar(10), tall varchar(10)," +
+            "real_weight varchar(10), expect_weight varchar(10),entry_date varchar(20),career varchar(20)," +
+            PicColumns_user.picture + " blob not null , constraint " +
+            "User_PK primary key (id,name) ) ";
     private Context mContext;
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -43,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_FRUIT);
         sqLiteDatabase.execSQL(CREATE_USER);
         initDataBase(sqLiteDatabase, mContext);
-        Toast.makeText(mContext, "Create successed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "创建成功", Toast.LENGTH_SHORT).show();
     }
 
     private void initDataBase(SQLiteDatabase sqLiteDatabase, Context mContext) {
@@ -53,34 +60,34 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         for (int i = 0; i <= 5; i++) {
             values.put("name", "苹果");
-            values.put(PicColumns.picture, getPicture(apple));
+            values.put("picture", getPicture(apple));
             values.put("nutrition", "54千卡/100克");
             sqLiteDatabase.insert("Fruit", null, values);
             values.clear();
             values.put("name", "梨");
-            values.put(PicColumns.picture, getPicture(pear));
+            values.put("picture", getPicture(pear));
             values.put("nutrition", "50千卡/100克");
             sqLiteDatabase.insert("Fruit", null, values);
             values.clear();
             values.put("name", "橘子");
             values.put("nutrition", "44千卡/100克");
-            values.put(PicColumns.picture, getPicture(orange));
+            values.put("picture", getPicture(orange));
             sqLiteDatabase.insert("Fruit", null, values);
             values.clear();
             values.put("name", "Apple");
             values.put("nutrition", "54千卡/100克");
-            values.put(PicColumns.picture, getPicture(apple));
+            values.put("picture", getPicture(apple));
             sqLiteDatabase.insert("Fruit", null, values);
             values.clear();
             values.put("name", "pear");
             values.put("nutrition", "44千卡/100克");
-            values.put(PicColumns.picture, getPicture(pear));
+            values.put("picture", getPicture(pear));
             sqLiteDatabase.insert("Fruit", null, values);
             values.clear();
         }
     }
 
-    private byte[] getPicture(Drawable drawable) {
+    public byte[] getPicture(Drawable drawable) {
         if (drawable == null) {
             return null;
         }
