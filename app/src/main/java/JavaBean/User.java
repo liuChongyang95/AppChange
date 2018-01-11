@@ -1,4 +1,4 @@
-package Model;
+package JavaBean;
 
 import android.graphics.drawable.Drawable;
 

@@ -1,18 +1,23 @@
 package com.example.dapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import Database.DBHelper;
+import SearchDao.UserDao;
 
 /**
  * Created by Administrator on 2018/1/2.
@@ -21,10 +26,16 @@ import Database.DBHelper;
 public class Login_App extends AppCompatActivity {
     private EditText username;
     private EditText password;
+    private String username_str;
+    private String password_str;
     private TextView register;
     private Button login;
     private DBHelper dbHelper;
     private SQLiteDatabase userDB;
+    private UserDao userDao;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private CheckBox rememberPass;
 
 
     @Override
@@ -32,6 +43,9 @@ public class Login_App extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_app);
 
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        rememberPass = findViewById(R.id.remember_pass);
+        boolean isRemember = pref.getBoolean("remember_password", false);
         username = findViewById(R.id.user_name);
         password = findViewById(R.id.user_password);
         register = findViewById(R.id.register_button);
@@ -39,13 +53,39 @@ public class Login_App extends AppCompatActivity {
         register.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         register.setTextColor(Color.RED);
         register.setClickable(true);
+        userDao = new UserDao(Login_App.this);
 
+        if (isRemember) {
+            username_str = pref.getString("username_pref", "");
+            password_str = pref.getString("password_pref", "");
+            username.setText(username_str);
+            password.setText(password_str);
+            rememberPass.setChecked(true);
+        }
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Login_App.this, MainAll.class);
-                startActivity(intent);
+                username_str = username.getText().toString().trim();
+                password_str = password.getText().toString().trim();
+                Boolean flag = userDao.login(username_str, password_str);
+                if (flag) {
+                    editor = pref.edit();
+                    if (rememberPass.isChecked()) {
+                        editor.putString("username_pref", username_str);
+                        editor.putString("password_pref", password_str);
+                        editor.putBoolean("remember_password", true);
+                    } else {
+                        editor.clear();
+                    }
+                    editor.apply();
+                    Toast.makeText(Login_App.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login_App.this, MainAll.class);
+                    startActivity(intent);
+                } else {
+                    String flag_cause = userDao.failedCause(username_str, password_str);
+                    Toast.makeText(Login_App.this, flag_cause, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

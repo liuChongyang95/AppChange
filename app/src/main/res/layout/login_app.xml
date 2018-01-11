@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    >
+    android:background="#FFFFE0"
+    android:gravity="center">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -17,16 +15,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/userName"
-                android:textSize="18dp"
-                />
+                android:textSize="18dp" />
 
             <EditText
                 android:id="@+id/user_name"
@@ -34,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/roundedrectangle_login"
                 android:inputType="text"
-                android:maxLines="1"/>
+                android:maxLines="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -47,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/userPassword"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
             <EditText
                 android:id="@+id/user_password"
@@ -55,17 +51,26 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/roundedrectangle_login"
                 android:inputType="textPassword"
-                android:maxLines="1"/>
+                android:maxLines="1" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:orientation="horizontal"
-            android:padding="5dp"
-            >
+            android:padding="5dp">
+
+            <CheckBox
+                android:id="@+id/remember_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="70dp"
+                android:text="记住密码"
+                android:textSize="17sp" />
+
 
             <TextView
                 android:id="@+id/register_button"
@@ -74,8 +79,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="25dp"
                 android:text="@string/registerButton"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/login_button"
@@ -83,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loginButton"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
 
         </LinearLayout>

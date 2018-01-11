@@ -1,8 +1,7 @@
-package Model;
+package JavaBean;
 
 
 import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
 
 /**
  * Created by Administrator on 2017/12/27.

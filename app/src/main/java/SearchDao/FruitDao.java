@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Database.DBHelper;
-import Model.Fruit;
+import JavaBean.Fruit;
 
 /**
  * Created by Administrator on 2017/12/31.
@@ -28,13 +28,12 @@ public class FruitDao {
 
 
     public FruitDao(Context context) {
-        this.context = context;
+        fruitDBHelper = new DBHelper(context, "DApp.db", null, 3);
     }
 
     //加载列表
     public List<Fruit> getFruitList() {
         List<Fruit> fruitList = new ArrayList<>();
-        fruitDBHelper = new DBHelper(context, "DApp.db", null, 3);
         fruitsDb = fruitDBHelper.getReadableDatabase();
         String sql = "select * from Fruit";
         Cursor cursor = fruitsDb.rawQuery(sql, null);
@@ -58,7 +57,6 @@ public class FruitDao {
     public List<Fruit> searchFruit(String searchFruitText) {
         String sql_searchFruit = "select * from Fruit where name Like '%" + searchFruitText + "%'";
         List<Fruit> searchList = new ArrayList<>();
-        fruitDBHelper = new DBHelper(context, "DApp.db", null, 3);
         fruitsDb = fruitDBHelper.getReadableDatabase();
         Cursor cursor_search = fruitsDb.rawQuery(sql_searchFruit, null);
         if (cursor_search != null && cursor_search.getCount() != 0) {

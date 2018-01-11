@@ -182,7 +182,6 @@ public class Register_main extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.register_sure:
-
                 register_name_str = register_name.getText().toString().trim();
                 register_password_str = register_password.getText().toString().trim();
                 register_password2_str = register_password2.getText().toString().trim();

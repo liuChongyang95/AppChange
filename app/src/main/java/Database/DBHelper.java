@@ -50,7 +50,6 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_FRUIT);
         sqLiteDatabase.execSQL(CREATE_USER);
         initDataBase(sqLiteDatabase, mContext);
-        Toast.makeText(mContext, "创建成功", Toast.LENGTH_SHORT).show();
     }
 
     private void initDataBase(SQLiteDatabase sqLiteDatabase, Context mContext) {
