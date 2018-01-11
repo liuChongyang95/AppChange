@@ -157,26 +157,25 @@ public class Register_main extends AppCompatActivity {
             }
         });
 
-        //模糊图片
+//        模糊图片
 //        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.warmbg);
 //        Bitmap bitmap = bitmapDrawable.getBitmap();
 //        RelativeLayout relativeLayout = findViewById(R.id.register_relative);
 //        Drawable register_bg = setBlurBackground(bitmap);
 //        relativeLayout.setBackground(register_bg);
-
+//
     }
-
+//
 //    private Drawable setBlurBackground(Bitmap bmp) {
 //        final Bitmap blurBmp = Fastblur.fastblur(Register_main.this, bmp, 20);//0-25，表示模糊值
 //        final Drawable drawable = Register_main.getDrawable(Register_main.this, blurBmp);//将bitmap类型图片 转为 Drawable类型
 //        return drawable;
 //    }
-
+//
 //    //bitmap 转 drawable
 //    public static Drawable getDrawable(Context context, Bitmap bm) {
 //        BitmapDrawable bd = new BitmapDrawable(context.getResources(), bm);
-//        return bd;
-//    }
+//        return bd;    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

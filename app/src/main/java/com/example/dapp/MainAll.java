@@ -1,8 +1,15 @@
 package com.example.dapp;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -20,7 +27,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
+
+import Util.Fastblur;
 
 public class MainAll extends AppCompatActivity {
     private GridView gridView;
@@ -32,11 +43,13 @@ public class MainAll extends AppCompatActivity {
             R.drawable.question};
     private String[] iconName = {"饮食管理", "运动管理", "血糖管理", "数据上传", "医疗方案", "科普答疑"};
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_all);
-        Toolbar toolbar=findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         gridView = findViewById(R.id.gridView);
         //新建List
@@ -77,8 +90,27 @@ public class MainAll extends AppCompatActivity {
                 }
             }
         });
+        //模糊图片
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.sky);
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        LinearLayout linearLayout = findViewById(R.id.main_all_LL);
+        Drawable register_bg = setBlurBackground(bitmap);
+        linearLayout.setBackground(register_bg);
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private Drawable setBlurBackground(Bitmap bmp) {
+        final Bitmap blurBmp = Fastblur.fastblur(MainAll.this, bmp, 13);//0-25，表示模糊值
+        final Drawable drawable = MainAll.getDrawable(MainAll.this, blurBmp);//将bitmap类型图片 转为 Drawable类型
+        return drawable;
+    }
+
+    //bitmap 转 drawable
+    public static Drawable getDrawable(Context context, Bitmap bm) {
+        BitmapDrawable bd = new BitmapDrawable(context.getResources(), bm);
+        return bd;
+    }
 
     public List<Map<String, Object>> getData() {
         //cion和iconName的长度是相同的，这里任选其一都可以
