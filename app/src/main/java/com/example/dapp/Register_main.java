@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import Database.DBHelper;
 import Util.Fastblur;
@@ -100,6 +101,7 @@ public class Register_main extends AppCompatActivity {
         }
         setContentView(R.layout.register_app);
         dbHelper = new DBHelper(this, "DApp.db", null, 3);
+
 
         mHeightValue = findViewById(R.id.tv_user_height_value);
 //        mWeightWheelView = findViewById(R.id.scaleWheelView_weight);
@@ -179,6 +181,11 @@ public class Register_main extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Random random = new Random();
+        int i = random.nextInt(100000);
+        int b = i + random.nextInt(54321);
+
         switch (item.getItemId()) {
             case R.id.register_sure:
                 register_name_str = register_name.getText().toString().trim();
@@ -191,18 +198,28 @@ public class Register_main extends AppCompatActivity {
                 if (register_password2_str.equals(register_password_str) && register_password2_str != null) {
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                     db.beginTransaction();
-                    ContentValues values = new ContentValues();
-                    values.put("name", register_name_str);
-                    values.put("password", register_password_str);
-                    values.put("sex", sex);
-                    values.put("birth", register_birth_str);
-                    values.put("tall", register_tall_str);
-                    values.put("real_weight", register_weight_str);
-                    values.put("id", "121");
+                    db.execSQL("PRAGMA foreign_keys=ON");
+
+                    ContentValues values_User = new ContentValues();
+                    ContentValues values_Login = new ContentValues();
+
+                    values_User.put("name", "用户" + b);//昵称
+                    values_User.put("sex", sex);
+                    values_User.put("birth", register_birth_str);
+                    values_User.put("tall", register_tall_str);
+                    values_User.put("real_weight", register_weight_str);
+                    values_User.put("_id", i);
                     Drawable apple = this.getResources().getDrawable(R.drawable.apple);
-                    values.put("picture_user", dbHelper.getPicture(apple));
+                    values_User.put("picture_user", dbHelper.getPicture(apple));
+
+                    values_Login.put("name", register_name_str);//用户名
+                    values_Login.put("password", register_password_str);
+                    values_Login.put("_id", i);
+
                     try {
-                        db.insertOrThrow("User", null, values);
+                        db.insertOrThrow("User", null, values_User);
+                        db.insertOrThrow("Login", null, values_Login);
+
                         db.setTransactionSuccessful();
                         Toast.makeText(Register_main.this, "注册成功", Toast.LENGTH_SHORT).show();
                         finish();

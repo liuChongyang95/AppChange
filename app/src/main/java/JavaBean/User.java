@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
  */
 
 public class User {
-    private int id;
+    private int _id;
     private String name;
     private Drawable user_pic;
     private String sex;
@@ -18,11 +18,11 @@ public class User {
     private String career;
 
     public int getId() {
-        return id;
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int _id) {
+        this._id = _id;
     }
 
     public String getName() {

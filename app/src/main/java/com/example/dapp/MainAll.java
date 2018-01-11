@@ -26,17 +26,24 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import Util.Fastblur;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainAll extends AppCompatActivity {
     private GridView gridView;
     private List<Map<String, Object>> data_list;
     private SimpleAdapter sim_adapter;
+    private TextView user_name;
+    private CircleImageView user_icon;
+    private Button user_change;
+
     // 图片封装为一个数组
     private int[] icon = {R.drawable.food, R.drawable.sport,
             R.drawable.blood, R.drawable.data, R.drawable.treatment,
@@ -49,6 +56,11 @@ public class MainAll extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_all);
+
+        user_icon = findViewById(R.id.user_info_pic);
+        user_name = findViewById(R.id.user_info);
+        user_change = findViewById(R.id.user_info_change);
+
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         gridView = findViewById(R.id.gridView);
@@ -91,7 +103,7 @@ public class MainAll extends AppCompatActivity {
             }
         });
         //模糊图片
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.sky);
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.black);
         Bitmap bitmap = bitmapDrawable.getBitmap();
         LinearLayout linearLayout = findViewById(R.id.main_all_LL);
         Drawable register_bg = setBlurBackground(bitmap);

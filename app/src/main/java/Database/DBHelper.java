@@ -32,12 +32,15 @@ public class DBHelper extends SQLiteOpenHelper {
     //           水果模拟
     private static final String CREATE_FRUIT = "create table Fruit (id integer primary key autoincrement, name text," +
             "nutrition text," + PicColumns.picture + " blob not null)";
-    //           用户登录
-    private static final String CREATE_USER = "create table User (id integer ,name " +
-            "varchar(35) ," + " password varchar(30), birth varchar(20), sex varchar(10), tall varchar(10)," +
+    //           患者信息
+    // name昵称
+    private static final String CREATE_USER = "create table User (_id integer ,name " +
+            "varchar(35) ," + "  birth varchar(20), sex varchar(10), tall varchar(10)," +
             "real_weight varchar(10), expect_weight varchar(10),entry_date varchar(20),career varchar(20)," +
-            PicColumns_user.picture + " blob not null , constraint " +
-            "User_PK primary key (id,name) ) ";
+            PicColumns_user.picture + " blob not null , constraint User_PK primary key (_id) ) ";
+    //           用户登录
+    // name用户名
+    private static final String CREATE_LOGIN = "create table Login(name varchar(35) primary key ,password varchar(30), _id integer ,foreign key (_id) references User(_id) on update cascade)";
     private Context mContext;
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -49,6 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_FRUIT);
         sqLiteDatabase.execSQL(CREATE_USER);
+        sqLiteDatabase.execSQL(CREATE_LOGIN);
         initDataBase(sqLiteDatabase, mContext);
     }
 
@@ -99,10 +103,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        String sql_fruit = " DROP TABLE IF EXISTS Fruit";
+        String sql_Fruit = " DROP TABLE IF EXISTS Fruit";
         String sql_User = " DROP TABLE IF EXISTS User";
-        sqLiteDatabase.execSQL(sql_fruit);
+        String sql_Login = "DROP TABLE IF EXISTS Login";
+        sqLiteDatabase.execSQL(sql_Fruit);
         sqLiteDatabase.execSQL(sql_User);
+        sqLiteDatabase.execSQL(sql_Login);
         onCreate(sqLiteDatabase);
     }
 }

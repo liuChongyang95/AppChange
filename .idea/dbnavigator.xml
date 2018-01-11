@@ -23,17 +23,28 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="false" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="25a70cfd-7605-4c50-b497-613a8df78858">
+        <schema name="main" object-types="column, constraint, index, table, dataset trigger, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="25a70cfd-7605-4c50-b497-613a8df78858">
-      <console name="Connection" type="STANDARD" />
+      <console name="Connection" type="STANDARD"><![CDATA[select * from User]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-list connection-id="25a70cfd-7605-4c50-b497-613a8df78858" dataset="main.Fruit" active-filter-id="" />
+    <filter-list connection-id="25a70cfd-7605-4c50-b497-613a8df78858" dataset="main.sqlite_sequence" active-filter-id="" />
     <filter-list connection-id="25a70cfd-7605-4c50-b497-613a8df78858" dataset="main.User" active-filter-id="5c23e910-5922-4bad-a715-b8352f009af8">
       <filter id="5c23e910-5922-4bad-a715-b8352f009af8" name="121" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="id" operator="=" value="121" active="true" />
+      </filter>
+    </filter-list>
+    <filter-list connection-id="25a70cfd-7605-4c50-b497-613a8df78858" dataset="main.Login" active-filter-id="0fef05e1-ebf0-4631-8baa-65f4c96e794c">
+      <filter id="0fef05e1-ebf0-4631-8baa-65f4c96e794c" name="Lcy" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="name" operator="=" value="Lcy" active="true" />
       </filter>
     </filter-list>
   </component>
@@ -56,7 +67,9 @@
     <filters />
   </component>
   <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
-    <recently-used-interfaces />
+    <recently-used-interfaces>
+      <mapping database-type="SQLITE" interface-id="DEFAULT" />
+    </recently-used-interfaces>
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
@@ -75,7 +88,7 @@
           <port value="" />
           <database value="" />
           <files>
-            <file path="D:\AndroidStudioProject\DApp.db" schema="main" />
+            <file path="D:\ASdatabase\DApp.db" schema="main" />
           </files>
           <os-authentication value="false" />
           <empty-password value="false" />
@@ -83,7 +96,7 @@
           <password value="" />
         </database>
         <properties>
-          <auto-commit value="false" />
+          <auto-commit value="true" />
         </properties>
         <ssh-settings>
           <active value="false" />

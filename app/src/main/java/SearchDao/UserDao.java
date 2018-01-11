@@ -11,7 +11,10 @@ import Database.DBHelper;
 
 /**
  * Created by Administrator on 2018/1/7.
+ *
+ * 登录的一下方法暂时在这里面吧
  */
+
 
 public class UserDao {
 
@@ -24,7 +27,7 @@ public class UserDao {
 
     public boolean login(String username, String password) {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
-        String sql = "select * from User where name=? and  password=?";
+        String sql = "select * from Login where name=? and  password=?";
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{username, password});
         if (cursor.moveToFirst() == true) {
             cursor.close();
@@ -35,12 +38,12 @@ public class UserDao {
 
     public String failedCause(String username, String password) {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
-        String sql_1 = "select * from User where name=?";
+        String sql_1 = "select * from Login where name=?";
         String failed_cause;
         Cursor cursor = UsersDb.rawQuery(sql_1, new String[]{username});
         if (cursor.moveToFirst() == true) {
             cursor.close();
-            String sql_2 = "select * from User where password=? and name =?";
+            String sql_2 = "select * from Login where password=? and name =?";
             Cursor cursor1 = UsersDb.rawQuery(sql_2, new String[]{username, password});
             if (cursor1.moveToFirst() == false) {
                 cursor1.close();
@@ -52,5 +55,7 @@ public class UserDao {
 
         return failed_cause;
     }
+
+//    public String getUsername()
 
 }
