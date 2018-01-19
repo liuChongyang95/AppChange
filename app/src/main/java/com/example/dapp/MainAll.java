@@ -90,7 +90,7 @@ public class MainAll extends AppCompatActivity {
                 switch (position) {
                     //饮食管理
                     case 0:
-                        Intent intent = new Intent(MainAll.this, FruitMainActivity.class);
+                        Intent intent = new Intent(MainAll.this, Food_Record_all.class);
                         startActivity(intent);
                         break;
                     case 1:

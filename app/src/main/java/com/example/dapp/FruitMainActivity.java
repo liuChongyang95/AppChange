@@ -134,23 +134,7 @@ public class FruitMainActivity extends AppCompatActivity {
             }
         });
 
-//                测试数据库
-//        dbHelper = new DBHelper(this, "Fruit.db", null, 1);
-//        sqLiteDatabase = dbHelper.getReadableDatabase();
-//        Cursor cursor = sqLiteDatabase.query("Fruit", null, null, null, null, null, null);
-//        if (cursor != null && cursor.getCount() != 0) {
-//            while (cursor.moveToNext()) {
-//                byte[] b = cursor.getBlob(cursor.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
-//                //将获取的数据转换成drawable
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
-//                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
-//                Drawable drawable = bitmapDrawable;
-//                fruitName = cursor.getString(cursor.getColumnIndex("name"));
-//                fruitNutrition = cursor.getString(cursor.getColumnIndex("nutrition"));
-//                fruit = new Fruit(fruitName, drawable, fruitNutrition);
-//                fruitList.add(fruit);
-//            }
-//        }
+
 
         searchFruit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,18 +173,9 @@ public class FruitMainActivity extends AppCompatActivity {
                 return false;
             }
         });
-//        initFruits();
+
     }
 
 
-//    private void initFruits() {
-//        for (int i = 0; i < 5; i++) {
-//            Fruit apple = new Fruit("Apple", R.drawable.apple, "100/1克");
-//            Fruit orange = new Fruit("Orange", R.drawable.orange, "100/1克");
-//            Fruit pear = new Fruit("Pear", R.drawable.pear, "100/1克");
-//            fruitList.add(apple);
-//            fruitList.add(orange);
-//            fruitList.add(pear);
-//        }
-//    }
+
 }

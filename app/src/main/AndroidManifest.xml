@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-          xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
 
-          package="com.example.dapp">
+    package="com.example.dapp">
 
     <application
         android:allowBackup="true"
@@ -19,19 +19,17 @@
             android:name=".Login_App"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".MainAll"
-            android:label="糖App"
-            >
-        </activity>
+            android:label="糖App"></activity>
         <activity
             android:name=".FruitMainActivity"
-            android:label="饮食管理"
+            android:label="食物搜索"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".FruitSelect"></activity>
         <activity android:name=".FruitSearch"></activity>
@@ -40,6 +38,12 @@
             android:name=".Register_main"
             android:label="用户注册"
             android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".Food_record_add"
+            android:label="添加记录" />
+        <activity
+            android:name=".Food_Record_all"
+            android:label="饮食管理" />
 
         <!--<activity android:name=".ScaleRuler_tall_weight"></activity>-->
 
