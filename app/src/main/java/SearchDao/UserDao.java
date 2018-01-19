@@ -3,6 +3,10 @@ package SearchDao;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import java.util.TooManyListenersException;
@@ -11,7 +15,7 @@ import Database.DBHelper;
 
 /**
  * Created by Administrator on 2018/1/7.
- *
+ * <p>
  * 登录的一下方法暂时在这里面吧
  */
 
@@ -27,7 +31,7 @@ public class UserDao {
 
     public boolean login(String username, String password) {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
-        String sql = "select * from Login where name=? and  password=?";
+        String sql = "select * from Login where Username=? and  password=?";
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{username, password});
         if (cursor.moveToFirst() == true) {
             cursor.close();
@@ -38,12 +42,12 @@ public class UserDao {
 
     public String failedCause(String username, String password) {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
-        String sql_1 = "select * from Login where name=?";
+        String sql_1 = "select * from Login where Username=?";
         String failed_cause;
         Cursor cursor = UsersDb.rawQuery(sql_1, new String[]{username});
         if (cursor.moveToFirst() == true) {
             cursor.close();
-            String sql_2 = "select * from Login where password=? and name =?";
+            String sql_2 = "select * from Login where password=? and Username =?";
             Cursor cursor1 = UsersDb.rawQuery(sql_2, new String[]{username, password});
             if (cursor1.moveToFirst() == false) {
                 cursor1.close();
@@ -54,6 +58,44 @@ public class UserDao {
             failed_cause = "没有该用户";
 
         return failed_cause;
+    }
+
+    public String getUserName(String userId) {
+        String from_getUserName = null;
+        SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
+        String sql_1 = "select User_Nickname from User where User_id =?";
+        Cursor cursor = UsersDb.rawQuery(sql_1, new String[]{userId});
+        if (cursor.moveToFirst() == true) {
+            from_getUserName = cursor.getString(cursor.getColumnIndex("User_Nickname"));
+        }
+        cursor.close();
+        return from_getUserName;
+    }
+
+    public String getUserId(String username) {
+        String from_getUserId = null;
+        SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
+        String sql = "select User_id from Login where Username= ?";
+        Cursor cursor = UsersDb.rawQuery(sql, new String[]{username});
+        if (cursor.moveToFirst() == true)
+            from_getUserId = cursor.getString(cursor.getColumnIndex("User_id"));
+        cursor.close();
+        return from_getUserId;
+    }
+
+    public Drawable getUser_Photo(String userId) {
+        Drawable photo = null;
+        SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
+        String sql = "select User_Photo from User where User_id=?";
+        Cursor cursor = UsersDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst() == true) {
+            byte[] bytes = cursor.getBlob(cursor.getColumnIndex("User_Photo"));
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
+            BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
+            photo = bitmapDrawable;
+        }
+        cursor.close();
+        return photo;
     }
 
 //    public String getUsername()

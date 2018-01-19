@@ -36,7 +36,7 @@ public class Login_App extends AppCompatActivity {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private CheckBox rememberPass;
-
+    private String intent_Userid;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +54,16 @@ public class Login_App extends AppCompatActivity {
         register.setTextColor(Color.RED);
         register.setClickable(true);
         userDao = new UserDao(Login_App.this);
-
+        //记住密码
+        editor = pref.edit();
+        if (rememberPass.isChecked()) {
+            editor.putString("username_pref", username_str);
+            editor.putString("password_pref", password_str);
+            editor.putBoolean("remember_password", true);
+        } else {
+            editor.clear();
+        }
+        editor.apply();
         if (isRemember) {
             username_str = pref.getString("username_pref", "");
             password_str = pref.getString("password_pref", "");
@@ -70,17 +79,16 @@ public class Login_App extends AppCompatActivity {
                 password_str = password.getText().toString().trim();
                 Boolean flag = userDao.login(username_str, password_str);
                 if (flag) {
-                    editor = pref.edit();
-                    if (rememberPass.isChecked()) {
-                        editor.putString("username_pref", username_str);
-                        editor.putString("password_pref", password_str);
-                        editor.putBoolean("remember_password", true);
-                    } else {
-                        editor.clear();
-                    }
-                    editor.apply();
+
                     Toast.makeText(Login_App.this, "登录成功", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login_App.this, MainAll.class);
+                    username_str = username.getText().toString().trim();
+                    password_str = password.getText().toString().trim();
+                    intent_Userid = userDao.getUserId(username_str);
+                    Intent intent = new Intent();
+                    intent.setClass(Login_App.this, MainAll.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("from_Login_User_id", intent_Userid);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                 } else {
                     String flag_cause = userDao.failedCause(username_str, password_str);

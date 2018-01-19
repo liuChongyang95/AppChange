@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import SearchDao.UserDao;
 import Util.Fastblur;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,13 +41,15 @@ public class MainAll extends AppCompatActivity {
     private GridView gridView;
     private List<Map<String, Object>> data_list;
     private SimpleAdapter sim_adapter;
+    private UserDao userDao;
+    private String from_login_user_id;
     private TextView user_name;
-    private CircleImageView user_icon;
+    private CircleImageView user_photo;
     private Button user_change;
 
     // 图片封装为一个数组
     private int[] icon = {R.drawable.food, R.drawable.sport,
-            R.drawable.blood, R.drawable.data, R.drawable.treatment,
+            R.drawable.blood, R.drawable.data, R.drawable.medical,
             R.drawable.question};
     private String[] iconName = {"饮食管理", "运动管理", "血糖管理", "数据上传", "医疗方案", "科普答疑"};
 
@@ -57,9 +60,16 @@ public class MainAll extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_all);
 
-        user_icon = findViewById(R.id.user_info_pic);
+        user_photo = findViewById(R.id.user_info_pic);
         user_name = findViewById(R.id.user_info);
         user_change = findViewById(R.id.user_info_change);
+
+        userDao = new UserDao(MainAll.this);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        from_login_user_id = bundle.getString("from_Login_User_id");
+        user_name.setText(userDao.getUserName(from_login_user_id));
+        user_photo.setImageDrawable(userDao.getUser_Photo(from_login_user_id));
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
@@ -114,8 +124,8 @@ public class MainAll extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Drawable setBlurBackground(Bitmap bmp) {
         final Bitmap blurBmp = Fastblur.fastblur(MainAll.this, bmp, 13);//0-25，表示模糊值
-        final Drawable drawable = MainAll.getDrawable(MainAll.this, blurBmp);//将bitmap类型图片 转为 Drawable类型
-        return drawable;
+        final Drawable drawable_bg = MainAll.getDrawable(MainAll.this, blurBmp);//将bitmap类型图片 转为 Drawable类型
+        return drawable_bg;
     }
 
     //bitmap 转 drawable
@@ -125,7 +135,7 @@ public class MainAll extends AppCompatActivity {
     }
 
     public List<Map<String, Object>> getData() {
-        //cion和iconName的长度是相同的，这里任选其一都可以
+        //icon和iconName的长度是相同的，这里任选其一都可以
         for (int i = 0; i < icon.length; i++) {
             Map<String, Object> map = new HashMap<>();
             map.put("image", icon[i]);

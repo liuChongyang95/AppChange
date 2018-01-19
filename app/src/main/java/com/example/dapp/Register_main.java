@@ -35,6 +35,9 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 import Database.DBHelper;
@@ -69,7 +72,11 @@ public class Register_main extends AppCompatActivity {
     private float register_tall_str;
     private float register_weight_str;
     private int sex_i;
+    private Date register_birth_str_date;
     private DBHelper dbHelper;
+    private String register_shape;
+    private int register_age;
+    private Date record_time;
 
     ScaleRulerView mHeightWheelView;
     TextView mHeightValue;
@@ -188,6 +195,7 @@ public class Register_main extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.register_sure:
+
                 register_name_str = register_name.getText().toString().trim();
                 register_password_str = register_password.getText().toString().trim();
                 register_password2_str = register_password2.getText().toString().trim();
@@ -195,6 +203,12 @@ public class Register_main extends AppCompatActivity {
                 register_birth_str = register_birth_tv.getText().toString().trim();
                 register_weight_str = mWeight;
                 register_tall_str = mHeight;
+                try {
+                    register_age = getAge(register_birth_str_date);//计算年龄
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                register_shape = getShape(register_tall_str, register_weight_str);
                 if (register_password2_str.equals(register_password_str) && register_password2_str != null) {
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                     db.beginTransaction();
@@ -202,24 +216,31 @@ public class Register_main extends AppCompatActivity {
 
                     ContentValues values_User = new ContentValues();
                     ContentValues values_Login = new ContentValues();
-
-                    values_User.put("name", "用户" + b);//昵称
-                    values_User.put("sex", sex);
-                    values_User.put("birth", register_birth_str);
-                    values_User.put("tall", register_tall_str);
-                    values_User.put("real_weight", register_weight_str);
-                    values_User.put("_id", i);
+                    values_User.put("User_id", i);
+                    values_User.put("User_Nickname", "用户" + b);//昵称
+                    values_User.put("User_Birth", register_birth_str);
+                    values_User.put("User_Sex", sex);
+                    values_User.put("User_Tall", register_tall_str);
+                    values_User.put("User_Real_weight", register_weight_str);
+                    values_User.put("User_Expect_weight", "未设置");
+                    values_User.put("Career", "未设置");
                     Drawable apple = this.getResources().getDrawable(R.drawable.apple);
-                    values_User.put("picture_user", dbHelper.getPicture(apple));
+                    values_User.put("User_Photo", dbHelper.getPicture(apple));
+                    values_User.put("User_Shape", register_shape);
+                    values_User.put("User_Age", register_age);
+                    values_User.put("User_Intensity", "未设置");
 
-                    values_Login.put("name", register_name_str);//用户名
+
+//                    values_User.put("Record_time", record_time.getTime());
+
+
+                    values_Login.put("Username", register_name_str);//用户名
                     values_Login.put("password", register_password_str);
-                    values_Login.put("_id", i);
+                    values_Login.put("User_id", i);
 
                     try {
                         db.insertOrThrow("User", null, values_User);
                         db.insertOrThrow("Login", null, values_Login);
-
                         db.setTransactionSuccessful();
                         Toast.makeText(Register_main.this, "注册成功", Toast.LENGTH_SHORT).show();
                         finish();
@@ -241,15 +262,6 @@ public class Register_main extends AppCompatActivity {
         return true;
     }
 
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DATE_PICKER_ID:
-                // onDateSetListener为用户点击设置时执行的回调函数，数字是默认显示的日期，
-                // 注意月份设置11而实际显示12，会自动加1
-                return new DatePickerDialog(this, onDateSetListener, 2011, 11, 12);
-        }
-        return null;
-    }
 
     private void init() {
         mHeightValue.setText((int) mHeight + "cm");
@@ -284,6 +296,16 @@ public class Register_main extends AppCompatActivity {
         });
     }
 
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_PICKER_ID:
+                // onDateSetListener为用户点击设置时执行的回调函数，数字是默认显示的日期，
+                // 注意月份设置11而实际显示12，会自动加1
+                return new DatePickerDialog(this, onDateSetListener, 2011, 11, 12);
+        }
+        return null;
+    }
+
     private DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
         // 第一个参数指整个DatePicker，第二个参数是当前设置的年份，
         // 第三个参数是当前设置的月份，注意的是，获取设置的月份时需要加1，因为java中规定月份在0~11之间
@@ -308,6 +330,8 @@ public class Register_main extends AppCompatActivity {
             }
             register_birth_str = zc_year + "-" + zc_month + "-" + zc_day;
             register_birth_tv.setText(register_birth_str);
+//            register_birth_str_date=Timestamp.valueOf( register_birth_str);
+            register_birth_str_date= java.sql.Date.valueOf( register_birth_str);
             Toast.makeText(view.getContext(), register_birth_str, Toast.LENGTH_SHORT).show();
         }
     };
@@ -346,16 +370,51 @@ public class Register_main extends AppCompatActivity {
 //        outState.putInt("user_sex_i", sex_selected);
 //
 //    }
-    private byte[] getPicture(Drawable drawable) {
-        if (drawable == null) {
-            return null;
+
+    public String getShape(double tall, double weight) {
+        tall = tall / 100;
+        double BMI = weight / (tall * tall);
+
+        if (BMI < 18.5) {
+            register_shape = "太轻";
+        } else if (BMI >= 18.5 && BMI <= 25) {
+            register_shape = "正常";
+        } else if (BMI > 25 && BMI < 28) {
+            register_shape = "过重";
+        } else if (BMI >= 28 && BMI <= 32) {
+            register_shape = "肥胖";
+        } else {
+            register_shape = "非常肥胖";
         }
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-        Bitmap bitmap = bitmapDrawable.getBitmap();
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-        return os.toByteArray();
+
+        return register_shape;
     }
+
+
+    public int getAge(Date birthDay) throws Exception {
+        Calendar cal = Calendar.getInstance();
+        if (cal.before(birthDay)) {
+            throw new IllegalArgumentException("The birthDay is before Now.It 's unbelievable!");
+        }
+        int yearNow = cal.get(Calendar.YEAR);
+        int monthNow = cal.get(Calendar.MONTH);
+        int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);
+        cal.setTime(birthDay);
+        int yearBirth = cal.get(Calendar.YEAR);
+        int monthBirth = cal.get(Calendar.MONTH);
+        int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
+        int age = yearNow - yearBirth;
+        if (monthNow <= monthBirth) {
+            if (monthNow == monthBirth) {
+                if (dayOfMonthNow < dayOfMonthBirth)
+                    age--;
+            } else {
+                age--;
+            }
+        }
+        return age;
+    }
+
 
     @Override
     protected void onDestroy() {
