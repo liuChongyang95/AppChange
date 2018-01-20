@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static class PicColumns implements BaseColumns {
-        public static final String picture = "picture";
+        public static final String picture = "Ri_Food_photo";
     }
 
     public static class PicColumns_user implements BaseColumns {
@@ -30,8 +30,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //           水果模拟
-    private static final String CREATE_FRUIT = "create table Fruit (id integer primary key autoincrement, name text," +
-            "nutrition text," + PicColumns.picture + " blob not null)";
+    private static final String CREATE_FRUIT = "create table Fruit (Ri_Food_name varchar(20) primary key ,Ri_Food_id char(20) not null," +
+            "Ri_Food_ep_id varchar(20)," + PicColumns.picture + " blob not null)";
     //           患者信息
     // name昵称
     private static final String CREATE_USER = "create table User (User_id integer ,User_Nickname " +
@@ -61,34 +61,49 @@ public class DBHelper extends SQLiteOpenHelper {
         Drawable apple = mContext.getResources().getDrawable(R.drawable.apple);
         Drawable pear = mContext.getResources().getDrawable(R.drawable.pear);
         Drawable orange = mContext.getResources().getDrawable(R.drawable.orange);
+        Drawable apple_1 = mContext.getResources().getDrawable(R.drawable.apple_1);
+        Drawable apple_2 = mContext.getResources().getDrawable(R.drawable.apple_2);
+        Drawable apple_3 = mContext.getResources().getDrawable(R.drawable.apple_3);
         ContentValues values = new ContentValues();
-        for (int i = 0; i <= 2; i++) {
-            values.put("name", "苹果");
-            values.put("picture", getPicture(apple));
-            values.put("nutrition", "54千卡/100克");
-            sqLiteDatabase.insert("Fruit", null, values);
-            values.clear();
-            values.put("name", "梨");
-            values.put("picture", getPicture(pear));
-            values.put("nutrition", "50千卡/100克");
-            sqLiteDatabase.insert("Fruit", null, values);
-            values.clear();
-            values.put("name", "橘子");
-            values.put("nutrition", "44千卡/100克");
-            values.put("picture", getPicture(orange));
-            sqLiteDatabase.insert("Fruit", null, values);
-            values.clear();
-            values.put("name", "Apple");
-            values.put("nutrition", "54千卡/100克");
-            values.put("picture", getPicture(apple));
-            sqLiteDatabase.insert("Fruit", null, values);
-            values.clear();
-            values.put("name", "pear");
-            values.put("nutrition", "44千卡/100克");
-            values.put("picture", getPicture(pear));
-            sqLiteDatabase.insert("Fruit", null, values);
-            values.clear();
-        }
+        values.put("Ri_Food_name", "苹果");
+        values.put("Ri_Food_photo", getPicture(apple));
+        values.put("Ri_Food_id", "00001");
+        values.put("Ri_Food_ep_id", "00005 00006");
+        sqLiteDatabase.insert("Fruit", null, values);
+        values.clear();
+        values.put("Ri_Food_name", "梨");
+        values.put("Ri_Food_photo", getPicture(pear));
+        values.put("Ri_Food_id", "00002");
+        values.put("Ri_Food_ep_id", "00006 00007");
+        sqLiteDatabase.insert("Fruit", null, values);
+        values.clear();
+        values.put("Ri_Food_name", "橘子");
+        values.put("Ri_Food_id", "00003");
+        values.put("Ri_Food_photo", getPicture(orange));
+        values.put("Ri_Food_ep_id", "");
+        sqLiteDatabase.insert("Fruit", null, values);
+        values.clear();
+        values.put("Ri_Food_name", "青苹果");
+        values.put("Ri_Food_id", "00001");
+        values.put("Ri_Food_photo", getPicture(apple_1));
+        values.put("Ri_Food_ep_id", "00005 00006");
+        sqLiteDatabase.insert("Fruit", null, values);
+        values.clear();
+        values.put("Ri_Food_name", "果酱(apple)");
+        values.put("Ri_Food_id", "00005");
+        values.put("Ri_Food_photo", getPicture(apple_2));
+        sqLiteDatabase.insert("Fruit", null, values);
+        values.clear();
+        values.put("Ri_Food_name", "沙拉");
+        values.put("Ri_Food_id", "00006");
+        values.put("Ri_Food_photo", getPicture(apple_3));
+        sqLiteDatabase.insert("Fruit", null, values);
+        values.clear();
+        values.put("Ri_Food_name", "果酱(pear)");
+        values.put("Ri_Food_id", "00007");
+        values.put("Ri_Food_photo", getPicture(apple_2));
+        sqLiteDatabase.insert("Fruit", null, values);
+        values.clear();
     }
 
     public byte[] getPicture(Drawable drawable) {

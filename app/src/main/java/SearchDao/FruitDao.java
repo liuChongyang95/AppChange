@@ -13,6 +13,7 @@ import java.util.List;
 
 import Database.DBHelper;
 import JavaBean.Fruit;
+import Util.Staticfinal_Value;
 
 /**
  * Created by Administrator on 2017/12/31.
@@ -22,13 +23,14 @@ public class FruitDao {
     private SQLiteDatabase fruitsDb;
     private Context context;
     private String fruitName;
-    private String fruitNutrition;
     private Fruit fruit;
     private DBHelper fruitDBHelper;
+    private Staticfinal_Value sfv;
 
 
     public FruitDao(Context context) {
-        fruitDBHelper = new DBHelper(context, "DApp.db", null, 3);
+        sfv = new Staticfinal_Value();
+        fruitDBHelper = new DBHelper(context, "DApp.db", null, sfv.staticVersion());
     }
 
     //加载列表
@@ -44,9 +46,9 @@ public class FruitDao {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
                 Drawable drawable = bitmapDrawable;
-                fruitName = cursor.getString(cursor.getColumnIndex("name"));
-                fruitNutrition = cursor.getString(cursor.getColumnIndex("nutrition"));
-                fruit = new Fruit(fruitName, drawable, fruitNutrition);
+                fruitName = cursor.getString(cursor.getColumnIndex("Ri_Food_name"));
+//                fruitNutrition = cursor.getString(cursor.getColumnIndex("nutrition"));
+                fruit = new Fruit(fruitName, drawable, null, null);
                 fruitList.add(fruit);
             }
         }
@@ -55,7 +57,7 @@ public class FruitDao {
 
     //Search
     public List<Fruit> searchFruit(String searchFruitText) {
-        String sql_searchFruit = "select * from Fruit where name Like '%" + searchFruitText + "%'";
+        String sql_searchFruit = "select * from Fruit where Ri_Food_name Like '%" + searchFruitText + "%'";
         List<Fruit> searchList = new ArrayList<>();
         fruitsDb = fruitDBHelper.getReadableDatabase();
         Cursor cursor_search = fruitsDb.rawQuery(sql_searchFruit, null);
@@ -66,10 +68,14 @@ public class FruitDao {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
                 Drawable drawable = bitmapDrawable;
-                fruitName = cursor_search.getString(cursor_search.getColumnIndex("name"));
-                fruitNutrition = cursor_search.getString(cursor_search.getColumnIndex("nutrition"));
-                fruit = new Fruit(fruitName, drawable, fruitNutrition);
+                //第一层 模糊搜索食物名称
+                fruitName = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_name"));
+//                fruitNutrition = cursor_search.getString(cursor_search.getColumnIndex("nutrition"));
+                fruit = new Fruit(fruitName, drawable, null, null);
                 searchList.add(fruit);
+                cursor_search.close();
+//                String sql_searchFood_2="select * from Fruit where Ri_Food_id=?";
+//                Cursor cursor=fruitsDb.rawQuery(sql_searchFood_2,new String[]{})
             }
         }
         fruitsDb.close();

@@ -9,8 +9,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
-import java.util.TooManyListenersException;
 
+import java.util.TooManyListenersException;
+import Util.Staticfinal_Value;
 import Database.DBHelper;
 
 /**
@@ -25,8 +26,10 @@ public class UserDao {
     private DBHelper UserdbHelper;
     private Context context;
 
+    private Staticfinal_Value sfv;
     public UserDao(Context context) {
-        UserdbHelper = new DBHelper(context, "DApp.db", null, 3);
+        sfv=new Staticfinal_Value();
+        UserdbHelper = new DBHelper(context, "DApp.db", null, sfv.staticVersion());
     }
 
     public boolean login(String username, String password) {

@@ -46,6 +46,7 @@ import Util.DrawUtil;
 import View.DecimalScaleRulerView;
 import View.ScaleRulerView;
 import butterknife.ButterKnife;
+import Util.Staticfinal_Value;
 
 /**
  * Created by Administrator on 2018/1/6.
@@ -53,6 +54,7 @@ import butterknife.ButterKnife;
 
 public class Register_main extends AppCompatActivity {
 
+    private Staticfinal_Value sfv;
 
     private static final int DATE_PICKER_ID = 0;
     private EditText register_name;
@@ -107,7 +109,8 @@ public class Register_main extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.register_app);
-        dbHelper = new DBHelper(this, "DApp.db", null, 3);
+        sfv = new Staticfinal_Value();
+        dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
 
 
         mHeightValue = findViewById(R.id.tv_user_height_value);
@@ -331,7 +334,7 @@ public class Register_main extends AppCompatActivity {
             register_birth_str = zc_year + "-" + zc_month + "-" + zc_day;
             register_birth_tv.setText(register_birth_str);
 //            register_birth_str_date=Timestamp.valueOf( register_birth_str);
-            register_birth_str_date= java.sql.Date.valueOf( register_birth_str);
+            register_birth_str_date = java.sql.Date.valueOf(register_birth_str);
             Toast.makeText(view.getContext(), register_birth_str, Toast.LENGTH_SHORT).show();
         }
     };

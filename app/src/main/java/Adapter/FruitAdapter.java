@@ -42,23 +42,23 @@ public class FruitAdapter extends ArrayAdapter<Fruit> implements Filterable {
         if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.fruitPicture = view.findViewById(R.id.search_fruit_image);
-            viewHolder.fruitName = view.findViewById(R.id.search_fruit_name);
-            viewHolder.fruitNutrition = view.findViewById(R.id.search_fruit_nutrition);
+            viewHolder.food_Ri_photo = view.findViewById(R.id.search_fruit_image);
+            viewHolder.food_Ri_Name = view.findViewById(R.id.search_fruit_name);
+//            viewHolder.fruitNutrition = view.findViewById(R.id.search_fruit_nutrition);
             view.setTag(viewHolder);
         } else {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.fruitName.setText(fruit.getName());
-        viewHolder.fruitPicture.setImageDrawable(fruit.getPicture());
-        viewHolder.fruitNutrition.setText(fruit.getNutrition());
+        viewHolder.food_Ri_Name.setText(fruit.getRi_Food_name());
+        viewHolder.food_Ri_photo.setImageDrawable(fruit.getRi_Food_photo());
+//        viewHolder.fruitNutrition.setText(fruit.getNutrition());
         return view;
     }
 
     class ViewHolder {
-        ImageView fruitPicture;
-        TextView fruitName;
-        TextView fruitNutrition;
+        ImageView food_Ri_photo;
+        TextView food_Ri_Name;
+//        TextView fruitNutrition;
     }
 }

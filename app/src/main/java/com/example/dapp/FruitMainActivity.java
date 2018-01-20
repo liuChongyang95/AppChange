@@ -79,7 +79,7 @@ public class FruitMainActivity extends AppCompatActivity {
                 Fruit fruit = fruitList.get(i);
                 Intent intent = new Intent(FruitMainActivity.this, FruitSelect.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("fruit_name", fruit.getName());
+                bundle.putString("fruit_name", fruit.getRi_Food_name());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
