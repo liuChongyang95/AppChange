@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -58,6 +59,11 @@ public class MainAll extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21) {
+            View view = getWindow().getDecorView();
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
         setContentView(R.layout.main_all);
 
         user_photo = findViewById(R.id.user_info_pic);
@@ -72,7 +78,14 @@ public class MainAll extends AppCompatActivity {
         user_photo.setImageDrawable(userDao.getUser_Photo(from_login_user_id));
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
+        toolbar.getBackground().setAlpha(0);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainAll.this.finish();
+            }
+        });
         gridView = findViewById(R.id.gridView);
         //新建List
         data_list = new ArrayList<>();

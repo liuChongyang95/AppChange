@@ -78,7 +78,7 @@ public class FruitDao {
         List<String> searchList = new ArrayList<>();
         List<Fruit> resultList = new ArrayList<>();
         fruitsDb = fruitDBHelper.getReadableDatabase();
-        //单词分解 
+        //单词分解
         for (int a = 0; a < searchFruitText_all.length(); a++) {
             aSearchFruitText = String.valueOf(searchFruitText_all.charAt(a));
             sql_searchFruit = "select * from Fruit where Ri_Food_name Like '%" + aSearchFruitText + "%'";

@@ -9,10 +9,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFA07A"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:background="#000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="必填项目"
+                    android:textSize="17dp"
+                    android:textStyle="italic" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:background="#000" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,7 +56,284 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="记录日期" />
+
+                <EditText
+                    android:id="@+id/food_record_date"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="餐食类别" />
+
+                <EditText
+                    android:id="@+id/food_record_class"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="烹饪方式" />
+
+                <EditText
+                    android:id="@+id/food_record_cookM"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="摄入量" />
+
+                <EditText
+                    android:id="@+id/food_record_intake_all"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成分一" />
+
+                <EditText
+                    android:id="@+id/food_record_consistOf_1"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成分一摄入量" />
+
+                <EditText
+                    android:id="@+id/food_record_intake_1"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#8000"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:background="#000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="选填项目"
+                    android:textSize="17dp"
+                    android:textColor="#fff"
+                    android:textStyle="italic" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:background="#000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成分二" />
+
+                <EditText
+                    android:id="@+id/food_record_consistOf_2"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成分二摄入量" />
+
+                <EditText
+                    android:id="@+id/food_record_intake_2"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成分三" />
+
+                <EditText
+                    android:id="@+id/food_record_consistOf_3"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成分三摄入量" />
+
+                <EditText
+                    android:id="@+id/food_record_intake_3"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成分四" />
+
+                <EditText
+                    android:id="@+id/food_record_consistOf_4"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成分四摄入量" />
+
+                <EditText
+                    android:id="@+id/food_record_intake_4"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成分五" />
+
+                <EditText
+                    android:id="@+id/food_record_consistOf_5"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成分五摄入量" />
+
+                <EditText
+                    android:id="@+id/food_record_intake_5"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="点击输入" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
