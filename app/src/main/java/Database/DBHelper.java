@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.provider.BaseColumns;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.example.dapp.R;
@@ -80,7 +81,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("Ri_Food_name", "橘子");
         values.put("Ri_Food_id", "00003");
         values.put("Ri_Food_photo", getPicture(orange));
-        values.put("Ri_Food_ep_id", "");
+//        values.put("Ri_Food_ep_id", "");
         sqLiteDatabase.insert("Fruit", null, values);
         values.clear();
         values.put("Ri_Food_name", "apple");
@@ -92,16 +93,19 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("Ri_Food_name", "果酱(apple)");
         values.put("Ri_Food_id", "00005");
         values.put("Ri_Food_photo", getPicture(apple_2));
+//        values.put("Ri_Food_ep_id", "");
         sqLiteDatabase.insert("Fruit", null, values);
         values.clear();
         values.put("Ri_Food_name", "沙拉");
         values.put("Ri_Food_id", "00006");
         values.put("Ri_Food_photo", getPicture(apple_3));
+//        values.put("Ri_Food_ep_id", "");
         sqLiteDatabase.insert("Fruit", null, values);
         values.clear();
         values.put("Ri_Food_name", "果酱(pear)");
         values.put("Ri_Food_id", "00007");
         values.put("Ri_Food_photo", getPicture(apple_2));
+        values.put("Ri_Food_ep_id", "");
         sqLiteDatabase.insert("Fruit", null, values);
         values.clear();
     }

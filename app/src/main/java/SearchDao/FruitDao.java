@@ -9,7 +9,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import Database.DBHelper;
 import JavaBean.Fruit;
@@ -27,8 +30,10 @@ public class FruitDao {
     private String fruitName;
     private String fruitId;
     private String fruitEp_id;
+    private String[] fruitEp_id_split = null;
     private Fruit fruit;
     private DBHelper fruitDBHelper;
+    private TreeSet treeSet;
     private Staticfinal_Value sfv;
 
 
@@ -63,6 +68,7 @@ public class FruitDao {
 
     //Search
     public List<Fruit> searchFruit(String searchFruitText) {
+        treeSet = new TreeSet();
         //第一层 模糊搜索食物名称
         List<String> searchList = new ArrayList<>();
         List<Fruit> resultList = new ArrayList<>();
@@ -77,16 +83,23 @@ public class FruitDao {
 //                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
 //                Drawable drawable = bitmapDrawable;
 //                fruitName = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_name"));
-                fruitEp_id=cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_ep_id"));
                 fruitId = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_id"));
                 searchList.add(fruitId);
+                fruitEp_id = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_ep_id"));
+                if (fruitEp_id != null) {
+                    fruitEp_id_split = fruitEp_id.split("\\s+");
+                    searchList.addAll(Arrays.asList(fruitEp_id_split));
+                }
+                treeSet.addAll(searchList);
+                searchList.clear();
+                searchList.addAll(treeSet);
                 //向第二层传递食物ID
             }
         }
         cursor_search.close();
         //第二层 查询同ID食物
         String sql_searchFood_2 = "select * from Fruit where Ri_Food_id=?";
-        for (int a = 0; a< searchList.size(); a++) {
+        for (int a = 0; a < searchList.size(); a++) {
             Cursor cursor = fruitsDb.rawQuery(sql_searchFood_2, new String[]{searchList.get(a)});
             if (cursor != null && cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
