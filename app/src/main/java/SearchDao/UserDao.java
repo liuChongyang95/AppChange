@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 
 import java.util.TooManyListenersException;
+
+import JavaBean.User;
 import Util.Staticfinal_Value;
 import Database.DBHelper;
 
@@ -27,8 +29,9 @@ public class UserDao {
     private Context context;
 
     private Staticfinal_Value sfv;
+
     public UserDao(Context context) {
-        sfv=new Staticfinal_Value();
+        sfv = new Staticfinal_Value();
         UserdbHelper = new DBHelper(context, "DApp.db", null, sfv.staticVersion());
     }
 
@@ -60,6 +63,7 @@ public class UserDao {
         } else
             failed_cause = "没有该用户";
 
+        UsersDb.close();
         return failed_cause;
     }
 
@@ -71,6 +75,7 @@ public class UserDao {
         if (cursor.moveToFirst() == true) {
             from_getUserName = cursor.getString(cursor.getColumnIndex("User_Nickname"));
         }
+        UsersDb.close();
         cursor.close();
         return from_getUserName;
     }
@@ -83,6 +88,7 @@ public class UserDao {
         if (cursor.moveToFirst() == true)
             from_getUserId = cursor.getString(cursor.getColumnIndex("User_id"));
         cursor.close();
+        UsersDb.close();
         return from_getUserId;
     }
 
@@ -98,9 +104,9 @@ public class UserDao {
             photo = bitmapDrawable;
         }
         cursor.close();
+        UsersDb.close();
         return photo;
     }
 
-//    public String getUsername()
 
 }

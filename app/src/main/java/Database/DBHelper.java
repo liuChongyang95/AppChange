@@ -83,7 +83,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("Ri_Food_ep_id", "");
         sqLiteDatabase.insert("Fruit", null, values);
         values.clear();
-        values.put("Ri_Food_name", "青苹果");
+        values.put("Ri_Food_name", "apple");
         values.put("Ri_Food_id", "00001");
         values.put("Ri_Food_photo", getPicture(apple_1));
         values.put("Ri_Food_ep_id", "00005 00006");

@@ -17,12 +17,16 @@ import Util.Staticfinal_Value;
 
 /**
  * Created by Administrator on 2017/12/31.
+ * <p>
+ * Fruit 是Ri_Food
  */
 
 public class FruitDao {
     private SQLiteDatabase fruitsDb;
     private Context context;
     private String fruitName;
+    private String fruitId;
+    private String fruitEp_id;
     private Fruit fruit;
     private DBHelper fruitDBHelper;
     private Staticfinal_Value sfv;
@@ -52,33 +56,54 @@ public class FruitDao {
                 fruitList.add(fruit);
             }
         }
+        cursor.close();
+        fruitsDb.close();
         return fruitList;
     }
 
     //Search
     public List<Fruit> searchFruit(String searchFruitText) {
+        //第一层 模糊搜索食物名称
+        List<String> searchList = new ArrayList<>();
+        List<Fruit> resultList = new ArrayList<>();
         String sql_searchFruit = "select * from Fruit where Ri_Food_name Like '%" + searchFruitText + "%'";
-        List<Fruit> searchList = new ArrayList<>();
         fruitsDb = fruitDBHelper.getReadableDatabase();
         Cursor cursor_search = fruitsDb.rawQuery(sql_searchFruit, null);
         if (cursor_search != null && cursor_search.getCount() != 0) {
             while (cursor_search.moveToNext()) {
-                byte[] b = cursor_search.getBlob(cursor_search.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
-                //将获取的数据转换成drawable
-                Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
-                Drawable drawable = bitmapDrawable;
-                //第一层 模糊搜索食物名称
-                fruitName = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_name"));
-//                fruitNutrition = cursor_search.getString(cursor_search.getColumnIndex("nutrition"));
-                fruit = new Fruit(fruitName, drawable, null, null);
-                searchList.add(fruit);
-                cursor_search.close();
-//                String sql_searchFood_2="select * from Fruit where Ri_Food_id=?";
-//                Cursor cursor=fruitsDb.rawQuery(sql_searchFood_2,new String[]{})
+//                byte[] b = cursor_search.getBlob(cursor_search.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
+//                //将获取的数据转换成drawable
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
+//                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
+//                Drawable drawable = bitmapDrawable;
+//                fruitName = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_name"));
+                fruitEp_id=cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_ep_id"));
+                fruitId = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_id"));
+                searchList.add(fruitId);
+                //向第二层传递食物ID
+            }
+        }
+        cursor_search.close();
+        //第二层 查询同ID食物
+        String sql_searchFood_2 = "select * from Fruit where Ri_Food_id=?";
+        for (int a = 0; a< searchList.size(); a++) {
+            Cursor cursor = fruitsDb.rawQuery(sql_searchFood_2, new String[]{searchList.get(a)});
+            if (cursor != null && cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    byte[] b = cursor.getBlob(cursor.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
+                    //将获取的数据转换成drawable
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
+                    Drawable drawable_2 = bitmapDrawable;
+                    fruitName = cursor.getString(cursor.getColumnIndex("Ri_Food_name"));
+//                        fruitId = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_id");
+//                        fruitEp_id=cursor.getString(cursor);
+                    fruit = new Fruit(fruitName, drawable_2, null, null);
+                    resultList.add(fruit);
+                }
             }
         }
         fruitsDb.close();
-        return searchList;
+        return resultList;
     }
 }
