@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,10 +32,13 @@ public class FruitDao {
     private String fruitId;
     private String fruitEp_id;
     private String[] fruitEp_id_split = null;
+    private String sql_searchFruit;
+    private String aSearchFruitText;
     private Fruit fruit;
     private DBHelper fruitDBHelper;
     private TreeSet treeSet;
     private Staticfinal_Value sfv;
+    private final static String TAG = "FruitDao";
 
 
     public FruitDao(Context context) {
@@ -67,36 +71,36 @@ public class FruitDao {
     }
 
     //Search
-    public List<Fruit> searchFruit(String searchFruitText) {
+    public List<Fruit> searchFruit(String searchFruitText_all) {
+        Cursor cursor_search = null;
         treeSet = new TreeSet();
         //第一层 模糊搜索食物名称
         List<String> searchList = new ArrayList<>();
         List<Fruit> resultList = new ArrayList<>();
-        String sql_searchFruit = "select * from Fruit where Ri_Food_name Like '%" + searchFruitText + "%'";
         fruitsDb = fruitDBHelper.getReadableDatabase();
-        Cursor cursor_search = fruitsDb.rawQuery(sql_searchFruit, null);
-        if (cursor_search != null && cursor_search.getCount() != 0) {
-            while (cursor_search.moveToNext()) {
-//                byte[] b = cursor_search.getBlob(cursor_search.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
-//                //将获取的数据转换成drawable
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
-//                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
-//                Drawable drawable = bitmapDrawable;
-//                fruitName = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_name"));
-                fruitId = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_id"));
-                searchList.add(fruitId);
-                fruitEp_id = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_ep_id"));
-                if (fruitEp_id != null) {
-                    fruitEp_id_split = fruitEp_id.split("\\s+");
-                    searchList.addAll(Arrays.asList(fruitEp_id_split));
+        //单词分解 
+        for (int a = 0; a < searchFruitText_all.length(); a++) {
+            aSearchFruitText = String.valueOf(searchFruitText_all.charAt(a));
+            sql_searchFruit = "select * from Fruit where Ri_Food_name Like '%" + aSearchFruitText + "%'";
+//            Log.d(TAG, sql_searchFruit);
+            cursor_search = fruitsDb.rawQuery(sql_searchFruit, null);
+            if (cursor_search != null && cursor_search.getCount() != 0) {
+                while (cursor_search.moveToNext()) {
+                    fruitId = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_id"));
+                    searchList.add(fruitId);
+                    fruitEp_id = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_ep_id"));
+                    if (fruitEp_id != null) {
+                        fruitEp_id_split = fruitEp_id.split("\\s+");
+                        searchList.addAll(Arrays.asList(fruitEp_id_split));
+                    }
+                    treeSet.addAll(searchList);
                 }
-                treeSet.addAll(searchList);
-                searchList.clear();
-                searchList.addAll(treeSet);
-                //向第二层传递食物ID
             }
         }
+        searchList.clear();
+        searchList.addAll(treeSet);
         cursor_search.close();
+        //向第二层传递食物ID
         //第二层 查询同ID食物
         String sql_searchFood_2 = "select * from Fruit where Ri_Food_id=?";
         for (int a = 0; a < searchList.size(); a++) {
