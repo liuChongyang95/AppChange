@@ -66,6 +66,12 @@ public class DBHelper extends SQLiteOpenHelper {
         Drawable apple_2 = mContext.getResources().getDrawable(R.drawable.apple_2);
         Drawable apple_3 = mContext.getResources().getDrawable(R.drawable.apple_3);
         ContentValues values = new ContentValues();
+        values.put("Ri_Food_name", "青苹果");
+        values.put("Ri_Food_id", "000010");
+        values.put("Ri_Food_photo", getPicture(apple_1));
+        values.put("Ri_Food_ep_id", "00005 00006");
+        sqLiteDatabase.insert("Fruit", null, values);
+        values.clear();
         values.put("Ri_Food_name", "橘子");
         values.put("Ri_Food_id", "00003");
         values.put("Ri_Food_photo", getPicture(orange));

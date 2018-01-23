@@ -73,12 +73,24 @@ public class FruitDao {
     //Search
     public List<Fruit> searchFruit(String searchFruitText_all) {
         Cursor cursor_search = null;
+        Cursor cursor_ID = null;
+        Cursor cursor_name_all = null;
         treeSet = new TreeSet();
         //第一层 模糊搜索食物名称
         List<String> searchList = new ArrayList<>();
         List<Fruit> resultList = new ArrayList<>();
         fruitsDb = fruitDBHelper.getReadableDatabase();
-        //单词分解
+
+        //全词
+        String sql = "select * from Fruit where Ri_Food_name Like '%" + searchFruitText_all + "%'";
+        cursor_name_all = fruitsDb.rawQuery(sql, null);
+        if (cursor_name_all != null && cursor_name_all.getCount() != 0) {
+            while (cursor_name_all.moveToNext()) {
+                fruitId = cursor_name_all.getString(cursor_name_all.getColumnIndex("Ri_Food_id"));
+                searchList.add(fruitId);
+            }
+        }
+        //切词
         for (int a = 0; a < searchFruitText_all.length(); a++) {
             aSearchFruitText = String.valueOf(searchFruitText_all.charAt(a));
             sql_searchFruit = "select * from Fruit where Ri_Food_name Like '%" + aSearchFruitText + "%'";
@@ -104,15 +116,15 @@ public class FruitDao {
         //第二层 查询同ID食物
         String sql_searchFood_2 = "select * from Fruit where Ri_Food_id=?";
         for (int a = 0; a < searchList.size(); a++) {
-            Cursor cursor = fruitsDb.rawQuery(sql_searchFood_2, new String[]{searchList.get(a)});
-            if (cursor != null && cursor.getCount() != 0) {
-                while (cursor.moveToNext()) {
-                    byte[] b = cursor.getBlob(cursor.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
+            cursor_ID = fruitsDb.rawQuery(sql_searchFood_2, new String[]{searchList.get(a)});
+            if (cursor_ID != null && cursor_ID.getCount() != 0) {
+                while (cursor_ID.moveToNext()) {
+                    byte[] b = cursor_ID.getBlob(cursor_ID.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
                     //将获取的数据转换成drawable
                     Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
                     Drawable drawable_2 = bitmapDrawable;
-                    fruitName = cursor.getString(cursor.getColumnIndex("Ri_Food_name"));
+                    fruitName = cursor_ID.getString(cursor_ID.getColumnIndex("Ri_Food_name"));
 //                        fruitId = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_id");
 //                        fruitEp_id=cursor.getString(cursor);
                     fruit = new Fruit(fruitName, drawable_2, null, null);
@@ -120,6 +132,7 @@ public class FruitDao {
                 }
             }
         }
+        cursor_ID.close();
         fruitsDb.close();
         return resultList;
     }
