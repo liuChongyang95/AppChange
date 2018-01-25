@@ -38,7 +38,7 @@ import SearchDao.UserDao;
 import Util.Fastblur;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainAll extends AppCompatActivity {
+public class MainAll extends AppCompatActivity implements View.OnClickListener {
     private GridView gridView;
     private List<Map<String, Object>> data_list;
     private SimpleAdapter sim_adapter;
@@ -47,6 +47,7 @@ public class MainAll extends AppCompatActivity {
     private TextView user_name;
     private CircleImageView user_photo;
     private Button user_change;
+    private Bundle bundle_id;
 
     // 图片封装为一个数组
     private int[] icon = {R.drawable.food, R.drawable.sport,
@@ -69,11 +70,11 @@ public class MainAll extends AppCompatActivity {
         user_photo = findViewById(R.id.user_info_pic);
         user_name = findViewById(R.id.user_info);
         user_change = findViewById(R.id.user_info_change);
-
+        user_change.setOnClickListener(this);
         userDao = new UserDao(MainAll.this);
         Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        from_login_user_id = bundle.getString("from_Login_User_id");
+        Bundle bundle_id = intent.getExtras();
+        from_login_user_id = bundle_id.getString("from_Login_User_id");
         user_name.setText(userDao.getUserName(from_login_user_id));
         user_photo.setImageDrawable(userDao.getUser_Photo(from_login_user_id));
 
@@ -131,7 +132,18 @@ public class MainAll extends AppCompatActivity {
         LinearLayout linearLayout = findViewById(R.id.main_all_LL);
         Drawable register_bg = setBlurBackground(bitmap);
         linearLayout.setBackground(register_bg);
+    }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.user_info_change:
+                Intent intent = new Intent();
+                intent.setClass(MainAll.this, User_info_All.class);
+                bundle_id = new Bundle();
+                intent.putExtras(bundle_id);
+                startActivityForResult(intent, 1);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -158,5 +170,12 @@ public class MainAll extends AppCompatActivity {
         return data_list;
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                break;
+            default:
+        }
+    }
 }

@@ -115,7 +115,8 @@
                 <RadioGroup
                     android:id="@+id/rg_sex"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <RadioButton
                         android:id="@+id/rb_male"
@@ -132,6 +133,39 @@
                         android:textColor="#fff" />
                 </RadioGroup>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:text="职业:"
+                    android:textColor="#fff" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/register_career"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/background_login_btn_div"
+                        android:text="设置职业"
+                        android:textColor="#fff" />
+
+                    <TextView
+                        android:layout_marginLeft="35dp"
+                        android:id="@+id/register_career_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="XXXXX"
+                        android:textColor="#fff" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -108,5 +108,18 @@ public class UserDao {
         return photo;
     }
 
+    public String getIntensity(String careerName, String shape) {
+        String inTensity=null;
+        SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
+        String sql = "select Intensity from Career where Career=? and Shape=?";
+        Cursor cursor = UsersDb.rawQuery(sql, new String[]{careerName, shape});
+        if (cursor.moveToFirst() == true) {
+            inTensity = cursor.getString(cursor.getColumnIndex("Intensity"));
+        }
+        cursor.close();
+        UsersDb.close();
+        return inTensity;
+    }
+
 
 }
