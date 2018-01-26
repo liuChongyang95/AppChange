@@ -19,7 +19,7 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ScrollView
         android:id="@+id/register_relative"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
