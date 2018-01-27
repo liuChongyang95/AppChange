@@ -98,6 +98,7 @@ public class Login_App extends AppCompatActivity {
                     intent.setClass(Login_App.this, MainAll.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("from_Login_User_id", intent_Userid);
+                    bundle.putString("from_Login_User_Username",username_str);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 } else {

@@ -27,6 +27,8 @@ public class UserDao {
 
     private DBHelper UserdbHelper;
     private Context context;
+    private String userInfo;
+
 
     private Staticfinal_Value sfv;
 
@@ -68,28 +70,28 @@ public class UserDao {
     }
 
     public String getUserName(String userId) {
-        String from_getUserName = null;
+        userInfo = null;
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql_1 = "select User_Nickname from User where User_id =?";
         Cursor cursor = UsersDb.rawQuery(sql_1, new String[]{userId});
         if (cursor.moveToFirst() == true) {
-            from_getUserName = cursor.getString(cursor.getColumnIndex("User_Nickname"));
+            userInfo = cursor.getString(cursor.getColumnIndex("User_Nickname"));
         }
         UsersDb.close();
         cursor.close();
-        return from_getUserName;
+        return userInfo;
     }
 
     public String getUserId(String username) {
-        String from_getUserId = null;
+        userInfo = null;
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_id from Login where Username= ?";
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{username});
         if (cursor.moveToFirst() == true)
-            from_getUserId = cursor.getString(cursor.getColumnIndex("User_id"));
+            userInfo = cursor.getString(cursor.getColumnIndex("User_id"));
         cursor.close();
         UsersDb.close();
-        return from_getUserId;
+        return userInfo;
     }
 
     public Drawable getUser_Photo(String userId) {
@@ -109,17 +111,114 @@ public class UserDao {
     }
 
     public String getIntensity(String careerName, String shape) {
-        String inTensity=null;
+        userInfo = null;
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql = "select Intensity from Career where Career=? and Shape=?";
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{careerName, shape});
         if (cursor.moveToFirst() == true) {
-            inTensity = cursor.getString(cursor.getColumnIndex("Intensity"));
+            userInfo = cursor.getString(cursor.getColumnIndex("Intensity"));
         }
         cursor.close();
         UsersDb.close();
-        return inTensity;
+        return userInfo;
+    }
+
+    public String getNickname(String userId) {
+        userInfo = null;
+        SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
+        String sql = "select User_Nickname from User where User_id= ?";
+        Cursor cursor = UsersDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst() == true)
+            userInfo = cursor.getString(cursor.getColumnIndex("User_Nickname"));
+        cursor.close();
+        UsersDb.close();
+        return userInfo;
+
+    }
+
+    public String getSex(String userId) {
+        userInfo = null;
+        SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
+        String sql = "select User_Sex from User where User_id=?";
+        Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst() == true)
+            userInfo = cursor.getString(cursor.getColumnIndex("User_Sex"));
+        cursor.close();
+        UserDb.close();
+        return userInfo;
+    }
+
+    public String getBirth(String userId) {
+        userInfo = null;
+        SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
+        String sql = "select User_Birth from User where User_id=?";
+        Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst() == true)
+            userInfo = cursor.getString(cursor.getColumnIndex("User_Birth"));
+        cursor.close();
+        UserDb.close();
+        return userInfo;
+    }
+
+    public String getTall(String userId) {
+        userInfo = null;
+        SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
+        String sql = "select User_Tall from User where User_id=?";
+        Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst() == true)
+            userInfo = cursor.getString(cursor.getColumnIndex("User_Tall"));
+        cursor.close();
+        UserDb.close();
+        return userInfo;
+    }
+
+    public String getWeight(String userId) {
+        userInfo = null;
+        SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
+        String sql = "select User_Real_weight from User where User_id=?";
+        Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst())
+            userInfo = cursor.getString(cursor.getColumnIndex("User_Real_weight"));
+        cursor.close();
+        UserDb.close();
+        return userInfo;
+    }
+
+    public String getExpect_weight(String userId) {
+        userInfo = null;
+        SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
+        String sql = "select User_Expect_weight from User where User_id=?";
+        Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst())
+            userInfo = cursor.getString(cursor.getColumnIndex("User_Expect_weight"));
+        cursor.close();
+        UserDb.close();
+        return userInfo;
+    }
+
+    public String getCareer(String userId) {
+        userInfo = null;
+        SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
+        String sql = "select Career from User where User_id=?";
+        Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst())
+            userInfo = cursor.getString(cursor.getColumnIndex("Career"));
+        cursor.close();
+        UserDb.close();
+        return userInfo;
     }
 
 
+
+    public String getShape(String userId) {
+        userInfo = null;
+        SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
+        String sql = "select User_Shape from User where User_id=?";
+        Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst())
+            userInfo = cursor.getString(cursor.getColumnIndex("User_Shape"));
+        cursor.close();
+        UserDb.close();
+        return userInfo;
+    }
 }

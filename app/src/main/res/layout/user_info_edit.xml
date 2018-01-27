@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relative_all_edit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFACD"
+    android:background="#ABABAB"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:padding="10dp">
@@ -13,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#FFEFD5"
-        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -40,7 +41,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="头像:" />
+                    android:text="头像:"
+                    android:textColor="#fff" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_info_edit_photo"
@@ -61,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min" />
+                        android:src="@drawable/edit_min_wh_1" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -75,7 +77,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="用户ID:" />
+                    android:text="用户ID:"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/user_info_medical_id"
@@ -84,7 +87,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:text="XXX" />
+                    android:text="XXX"
+                    android:textColor="#fff" />
             </LinearLayout>
 
             <LinearLayout
@@ -96,7 +100,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="昵称:" />
+                    android:text="昵称:"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/user_info_edit_nickname"
@@ -105,7 +110,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:text="XXX" />
+                    android:text="XXX"
+                    android:textColor="#fff" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -117,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min" />
+                        android:src="@drawable/edit_min_wh_1" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -131,16 +137,18 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="登录账号:" />
+                    android:text="登录账号:"
+                    android:textColor="#fff" />
 
                 <TextView
-                    android:id="@+id/user_info_login_id"
+                    android:id="@+id/user_info_login_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:text="XXX" />
+                    android:text="XXX"
+                    android:textColor="#fff" />
 
 
             </LinearLayout>
@@ -154,7 +162,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="性别:" />
+                    android:text="性别:"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/user_info_edit_sex"
@@ -163,7 +172,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:text="XXX" />
+                    android:text="XXX"
+                    android:textColor="#fff" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -175,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min" />
+                        android:src="@drawable/edit_min_wh_1" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -189,7 +199,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="出生日期:" />
+                    android:text="出生日期:"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/user_info_edit_birth"
@@ -198,7 +209,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:text="XXX" />
+                    android:text="XXX"
+                    android:textColor="#fff" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -210,7 +222,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min" />
+                        android:src="@drawable/edit_min_wh_1" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -224,7 +236,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="身高:" />
+                    android:text="身高:"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/user_info_edit_tall"
@@ -233,7 +246,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:text="XXX" />
+                    android:text="XXX"
+                    android:textColor="#fff" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -245,10 +259,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min" />
+                        android:src="@drawable/edit_min_wh_1" />
                 </RelativeLayout>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -258,7 +273,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="体重:" />
+                    android:text="实际体重:"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/user_info_edit_weight"
@@ -267,7 +283,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:text="XXX" />
+                    android:text="XXX"
+                    android:textColor="#fff" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -279,7 +296,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min" />
+                        android:src="@drawable/edit_min_wh_1" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -293,7 +310,31 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="职业:" />
+                    android:text="理想体重:"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/user_info_Expect_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
+                    android:text="XXX"
+                    android:textColor="#fff" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="职业:"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/user_info_edit_career"
@@ -302,7 +343,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:text="XXX" />
+                    android:text="XXX"
+                    android:textColor="#fff" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -314,7 +356,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min" />
+                        android:src="@drawable/edit_min_wh_1" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -328,7 +370,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="劳动强度:" />
+                    android:text="劳动强度:"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/user_info_intensity"
@@ -337,7 +380,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:text="XXX" />
+                    android:text="XXX"
+                    android:textColor="#fff" />
 
             </LinearLayout>
 
@@ -350,7 +394,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="体型:" />
+                    android:text="体型:"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/user_info_shape"
@@ -359,7 +404,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:text="XXX" />
+                    android:text="XXX"
+                    android:textColor="#fff" />
 
             </LinearLayout>
 
@@ -372,7 +418,8 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="更改密码" />
+                    android:text="更改密码"
+                    android:textColor="#fff" />
 
 
                 <RelativeLayout
@@ -385,7 +432,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min" />
+                        android:src="@drawable/edit_min_wh_1" />
                 </RelativeLayout>
 
             </LinearLayout>
