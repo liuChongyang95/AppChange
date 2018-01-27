@@ -99,6 +99,7 @@ public class User_info_All extends AppCompatActivity {
         Drawable register_bg = setBlurBackground(bitmap);
         all_edit.setBackground(register_bg);
     }
+    
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Drawable setBlurBackground(Bitmap bmp) {
         final Bitmap blurBmp = Fastblur.fastblur(User_info_All.this, bmp, 13);//0-25，表示模糊值
