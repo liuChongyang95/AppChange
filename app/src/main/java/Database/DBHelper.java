@@ -71,9 +71,9 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql_Login = "DROP TABLE IF EXISTS Login";
         String sql_Career = "DROP TABLE IF EXISTS Career";
         sqLiteDatabase.execSQL(sql_Fruit);
+        sqLiteDatabase.execSQL(sql_Career);
         sqLiteDatabase.execSQL(sql_User);
         sqLiteDatabase.execSQL(sql_Login);
-        sqLiteDatabase.execSQL(sql_Career);
         onCreate(sqLiteDatabase);
     }
 

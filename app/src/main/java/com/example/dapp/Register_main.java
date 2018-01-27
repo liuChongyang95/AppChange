@@ -106,7 +106,7 @@ public class Register_main extends AppCompatActivity {
         }
         setContentView(R.layout.register_app);
         sfv = new Staticfinal_Value();
-        userDao=new UserDao(this);
+        userDao = new UserDao(this);
         dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
 
 
@@ -239,9 +239,9 @@ public class Register_main extends AppCompatActivity {
                     values_User.put("User_Real_weight", register_weight_str);
                     values_User.put("User_Expect_weight", register_weight_str_amb);
                     values_User.put("Career", register_career_str);
+                    values_User.put("User_Shape", register_shape);
                     Drawable apple = this.getResources().getDrawable(R.drawable.apple);
                     values_User.put("User_Photo", dbHelper.getPicture(apple));
-                    values_User.put("User_Shape", register_shape);
                     values_User.put("User_Intensity", register_intensity_str);
 
 

@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/roundedrectangle_login"
-                android:text="老师" />
+                android:text="教师" />
 
             <Button
                 android:id="@+id/office"
