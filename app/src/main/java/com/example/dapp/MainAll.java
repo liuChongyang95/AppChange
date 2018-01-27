@@ -181,4 +181,11 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
             default:
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        user_name.setText(userDao.getUserName(from_login_user_id));
+        user_photo.setImageDrawable(userDao.getUser_Photo(from_login_user_id));
+    }
 }

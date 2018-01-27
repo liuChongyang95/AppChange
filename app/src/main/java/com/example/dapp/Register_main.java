@@ -455,6 +455,11 @@ public class Register_main extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.bind(this);

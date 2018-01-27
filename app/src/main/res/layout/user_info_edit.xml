@@ -33,6 +33,7 @@
             android:showDividers="end|beginning|middle">
 
             <LinearLayout
+                android:id="@+id/user_info_LL_photo"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
@@ -92,8 +93,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/user_info_LL_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:focusable="true"
                 android:orientation="horizontal">
 
                 <TextView

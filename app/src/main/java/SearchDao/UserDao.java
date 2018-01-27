@@ -1,5 +1,6 @@
 package SearchDao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -209,7 +210,6 @@ public class UserDao {
     }
 
 
-
     public String getShape(String userId) {
         userInfo = null;
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
@@ -220,5 +220,13 @@ public class UserDao {
         cursor.close();
         UserDb.close();
         return userInfo;
+    }
+
+    public void changNickname(String userId, String userNickname) {
+        userInfo = null;
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("User_Nickname", userNickname);
+        UserDb.update("User", values, "User_id = ?", new String[]{userId});
     }
 }
