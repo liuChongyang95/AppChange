@@ -35,6 +35,9 @@
             <LinearLayout
                 android:id="@+id/user_info_LL_photo"
                 android:layout_width="match_parent"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
 
@@ -65,6 +68,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/edit_min_wh_1" />
+
+
                 </RelativeLayout>
             </LinearLayout>
 

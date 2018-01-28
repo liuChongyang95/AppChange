@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -63,7 +64,7 @@ public class Register_main extends AppCompatActivity {
     private TextView register_birth_tv;
     private String zc_year, zc_month, zc_day;
     private float register_tall_str;
-    private float register_weight_str;
+    private double register_weight_str;
     private float register_weight_str_amb;
     private int sex_i;
     private Date register_birth_str_date;
@@ -83,6 +84,7 @@ public class Register_main extends AppCompatActivity {
     DecimalScaleRulerView mWeightRulerView;
     TextView mWeightValueTwo;
     Button btn_choosen_result;
+    BigDecimal b_mWeight;
 
 
     private float mHeight = 170;
@@ -90,7 +92,7 @@ public class Register_main extends AppCompatActivity {
     private float mMinHeight = 100;
 
 
-    private float mWeight = 60.0f;
+    private float mWeight = 60;
     private float mMaxWeight = 200;
     private float mMinWeight = 25;
 
@@ -121,23 +123,6 @@ public class Register_main extends AppCompatActivity {
         ButterKnife.bind(this);  //依赖注入
         init();
 
-//        if (savedInstanceState != null) {
-//            register_name_str = savedInstanceState.getString("user_name_save");
-//            register_password_str = savedInstanceState.getString("user_password_save");
-//            register_password2_str = savedInstanceState.getString("user_password2_save");
-//            sex = savedInstanceState.getString("user_sex_save");
-//            register_birth_str = savedInstanceState.getString("user_birth_save");
-//            int sex_selected = savedInstanceState.getInt("user_sex_i");
-//            register_name.setText(register_name_str);
-//            register_password2.setText(register_password2_str);
-//            register_password.setText(register_password_str);
-//            register_birth_tv.setText(register_birth_str);
-//            radioGroup_sex.check(sex_selected);
-//            Intent intent = getIntent();
-//            Bundle bundle = intent.getExtras();
-//            register_tall_str = bundle.getString("user_tall");
-//            register_weight_str = bundle.getString("user_weight");
-//        }
         Toolbar toolbar = findViewById(R.id.register_toolBar);
         register_name = findViewById(R.id.register_name);
         register_password = findViewById(R.id.register_password);
@@ -213,6 +198,7 @@ public class Register_main extends AppCompatActivity {
                 sex = selectedSex();
                 register_birth_str = register_birth_tv.getText().toString().trim();
                 register_weight_str = mWeight;
+
                 register_tall_str = mHeight;
                 register_weight_str_amb = mHeight - 105;
 //                try {
@@ -294,7 +280,7 @@ public class Register_main extends AppCompatActivity {
 //        mWeightWheelView.setValueChangeListener(new ScaleRulerView.OnValueChangeListener() {
 //            @Override
 //            public void onValueChange(float value) {
-//                mWeightValue.setText(value + "");
+//                mWeightValue.setText((int) value + "kg");
 //                mWeight = value;
 //            }
 //        });
@@ -304,8 +290,9 @@ public class Register_main extends AppCompatActivity {
         mWeightRulerView.setValueChangeListener(new DecimalScaleRulerView.OnValueChangeListener() {
             @Override
             public void onValueChange(float value) {
-                mWeightValueTwo.setText(value + "kg");
+                mWeightValueTwo.setText((int)value + "kg");
                 mWeight = value;
+
             }
         });
     }
@@ -367,39 +354,9 @@ public class Register_main extends AppCompatActivity {
         return sex;
     }
 
-    //    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        String name = register_name.getText().toString().trim();
-//        String password = register_password.getText().toString().trim();
-//        String password2 = register_password2.getText().toString().trim();
-//        sex = selectedSex();
-//        String birth = register_birth_tv.getText().toString().trim();
-//        int sex_selected = sex_i;
-//        outState.putString("user_name_save", name);
-//        outState.putString("user_password_save", password);
-//        outState.putString("user_password2_save", password2);
-//        outState.putString("user_sex_save", sex);
-//        outState.putString("user_birth_save", birth);
-//        outState.putInt("user_sex_i", sex_selected);
-//
-//    }
 
     public String getShape(double R_weight, double A_weight) {
-//        tall = tall / 100;
-//        double BMI = weight / (tall * tall);
-//
-//        if (BMI < 18.5) {
-//            register_shape = "太轻";
-//        } else if (BMI >= 18.5 && BMI <= 25) {
-//            register_shape = "正常";
-//        } else if (BMI > 25 && BMI < 28) {
-//            register_shape = "过重";
-//        } else if (BMI >= 28 && BMI <= 32) {
-//            register_shape = "肥胖";
-//        } else {
-//            register_shape = "非常肥胖";
-//        }
+
         double rate = (R_weight - A_weight) / A_weight;
         if (rate <= -0.2) {
             register_shape = "消瘦";

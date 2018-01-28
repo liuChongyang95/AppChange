@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 
+import java.io.ByteArrayOutputStream;
 import java.util.TooManyListenersException;
 
 import JavaBean.User;
@@ -223,10 +224,29 @@ public class UserDao {
     }
 
     public void changNickname(String userId, String userNickname) {
-        userInfo = null;
         SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("User_Nickname", userNickname);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        UserDb.close();
+    }
+
+    public void changeUser_Photo(String userId, Drawable userPhoto) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("User_Photo", getPicture(userPhoto));
+        UserDb.update("User", values, "User_id=?", new String[]{userId});
+        UserDb.close();
+    }
+
+    private byte[] getPicture(Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+        return os.toByteArray();
     }
 }

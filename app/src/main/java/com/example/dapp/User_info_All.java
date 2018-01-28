@@ -1,34 +1,38 @@
 package com.example.dapp;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Display;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 import SearchDao.UserDao;
 import Util.Fastblur;
@@ -37,6 +41,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class User_info_All extends AppCompatActivity implements View.OnClickListener {
     private String get_edit_ID;
+    public static final int CHOOSE_PHOTO = 2;
+    public static final int TAKE_PHOTO = 1;
+    public static final int PHOTO_REQUEST_CUT = 3;
     TextView edit_user_ID;
     TextView edit_user_nickname;
     TextView edit_user_loginName;
@@ -129,7 +136,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                 editText.setHint("点击输入");
                 final AlertDialog.Builder inputDialog =
                         new AlertDialog.Builder(this);
-                inputDialog.setTitle("修改昵称").setView(editText, 50, 0, 50, 0);
+                inputDialog.setTitle("修改昵称").setView(editText);
                 inputDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -149,28 +156,94 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                             userDao.changNickname(get_edit_ID, editText.getText().toString());
                         else dialog.dismiss();
                     }
-                }).show().setOnShowListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(DialogInterface dialogInterface) {
-                        showKeyboard(editText);
-                    }
-                });
+                }).show();
+                break;
+            case R.id.user_info_LL_photo:
+                if (ContextCompat.checkSelfPermission(User_info_All.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(User_info_All.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                } else {
+                    openAlbum();
+                }
                 break;
         }
     }
 
-    public void showKeyboard(EditText editText) {
-        if (editText != null) {
-            //设置可获得焦点
-            editText.setFocusable(true);
-            editText.setFocusableInTouchMode(true);
-            //请求获得焦点
-            editText.requestFocus();
-            //调用系统输入法
-            InputMethodManager inputManager = (InputMethodManager) editText.getContext().getSystemService(INPUT_METHOD_SERVICE);
-            inputManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+    private void openAlbum() {
+        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        intent.setType("image/*");
+        startActivityForResult(intent, CHOOSE_PHOTO);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openAlbum();
+                } else {
+                    Toast.makeText(this, "请求失败", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case CHOOSE_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        //4.4以上系统
+                        handleImageOnKitKat(data);
+                    } else {
+                        //4.4以下系统
+                        handleImageBeforeKitKat(data);
+                    }
+                }
+                break;
+            case PHOTO_REQUEST_CUT:
+                if (data != null) {
+                    Bitmap bitmap = data.getParcelableExtra("data");
+                    Drawable photo;
+                    photo = new BitmapDrawable(bitmap);
+                    userDao.changeUser_Photo(get_edit_ID, photo);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void crop(Uri uri) {
+        // 裁剪图片意图
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        // 裁剪框的比例，1：1
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // 裁剪后输出图片的尺寸大小
+        intent.putExtra("outputX", 250);
+        intent.putExtra("outputY", 250);
+        intent.putExtra("outputFormat", "jpg");// 图片格式
+        intent.putExtra("noFaceDetection", true);// 取消人脸识别
+        intent.putExtra("return-data", true);
+        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
+        startActivityForResult(intent, PHOTO_REQUEST_CUT);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void handleImageOnKitKat(Intent data) {
+        Uri uri = data.getData();
+        crop(uri);
+    }
+
+    private void handleImageBeforeKitKat(Intent data) {
+        Uri uri = data.getData();
+        crop(uri);
+    }
+
 
     @SuppressLint("SetTextI18n")
     @Override
