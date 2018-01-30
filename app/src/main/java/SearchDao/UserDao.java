@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 
 import java.io.ByteArrayOutputStream;
+import java.util.Date;
 import java.util.TooManyListenersException;
 
 import JavaBean.User;
@@ -43,7 +44,7 @@ public class UserDao {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql = "select * from Login where Username=? and  password=?";
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{username, password});
-        if (cursor.moveToFirst() == true) {
+        if (cursor.moveToFirst()) {
             cursor.close();
             return true;
         } else
@@ -55,11 +56,11 @@ public class UserDao {
         String sql_1 = "select * from Login where Username=?";
         String failed_cause;
         Cursor cursor = UsersDb.rawQuery(sql_1, new String[]{username});
-        if (cursor.moveToFirst() == true) {
+        if (cursor.moveToFirst()) {
             cursor.close();
             String sql_2 = "select * from Login where password=? and Username =?";
             Cursor cursor1 = UsersDb.rawQuery(sql_2, new String[]{username, password});
-            if (cursor1.moveToFirst() == false) {
+            if (!cursor1.moveToFirst()) {
                 cursor1.close();
                 failed_cause = "密码错误";
             } else
@@ -76,7 +77,7 @@ public class UserDao {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql_1 = "select User_Nickname from User where User_id =?";
         Cursor cursor = UsersDb.rawQuery(sql_1, new String[]{userId});
-        if (cursor.moveToFirst() == true) {
+        if (cursor.moveToFirst()) {
             userInfo = cursor.getString(cursor.getColumnIndex("User_Nickname"));
         }
         UsersDb.close();
@@ -89,7 +90,7 @@ public class UserDao {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_id from Login where Username= ?";
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{username});
-        if (cursor.moveToFirst() == true)
+        if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_id"));
         cursor.close();
         UsersDb.close();
@@ -101,7 +102,7 @@ public class UserDao {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Photo from User where User_id=?";
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{userId});
-        if (cursor.moveToFirst() == true) {
+        if (cursor.moveToFirst()) {
             byte[] bytes = cursor.getBlob(cursor.getColumnIndex("User_Photo"));
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
             BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
@@ -112,12 +113,12 @@ public class UserDao {
         return photo;
     }
 
-    public String getIntensity(String careerName, String shape) {
+    public String getIntensity(String careerName) {
         userInfo = null;
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
-        String sql = "select Intensity from Career where Career=? and Shape=?";
-        Cursor cursor = UsersDb.rawQuery(sql, new String[]{careerName, shape});
-        if (cursor.moveToFirst() == true) {
+        String sql = "select Intensity from Career where Career=?";
+        Cursor cursor = UsersDb.rawQuery(sql, new String[]{careerName});
+        if (cursor.moveToFirst()) {
             userInfo = cursor.getString(cursor.getColumnIndex("Intensity"));
         }
         cursor.close();
@@ -130,7 +131,7 @@ public class UserDao {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Nickname from User where User_id= ?";
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{userId});
-        if (cursor.moveToFirst() == true)
+        if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Nickname"));
         cursor.close();
         UsersDb.close();
@@ -143,7 +144,7 @@ public class UserDao {
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Sex from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
-        if (cursor.moveToFirst() == true)
+        if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Sex"));
         cursor.close();
         UserDb.close();
@@ -155,7 +156,7 @@ public class UserDao {
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Birth from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
-        if (cursor.moveToFirst() == true)
+        if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Birth"));
         cursor.close();
         UserDb.close();
@@ -167,7 +168,7 @@ public class UserDao {
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Tall from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
-        if (cursor.moveToFirst() == true)
+        if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Tall"));
         cursor.close();
         UserDb.close();
@@ -236,6 +237,78 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("User_Photo", getPicture(userPhoto));
         UserDb.update("User", values, "User_id=?", new String[]{userId});
+        UserDb.close();
+    }
+
+    public void changeSex(String userId, String userSex) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("User_Sex", userSex);
+        UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        UserDb.close();
+    }
+
+    public void changeBirth(String userId, java.sql.Date userBirth) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("User_Birth", String.valueOf(userBirth));
+        UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        UserDb.close();
+    }
+
+    public void changeTall(String userId, String userTall) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("User_Tall", userTall);
+        UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        UserDb.close();
+    }
+
+    public void changeWeight(String userId, String userWeight) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("User_Real_weight", userWeight);
+        UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        UserDb.close();
+    }
+
+    public void changeExpectWeight(String userId, Float userEWeight) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("User_Expect_weight", String.valueOf(userEWeight));
+        UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        UserDb.close();
+    }
+
+    public void changeShape(String userId, String userShape) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("User_Shape", userShape);
+        UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        UserDb.close();
+    }
+
+    public void changeCareer(String userId, String userCareer) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Career", userCareer);
+        UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        UserDb.close();
+    }
+
+    public void changeIntensity(String userId, String userIntensity) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("User_Intensity", userIntensity);
+        UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        UserDb.close();
+    }
+
+    public void changePassword(String userId, String userPassword) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", userPassword);
+        UserDb.update("Login", values, "User_id = ?", new String[]{userId});
         UserDb.close();
     }
 

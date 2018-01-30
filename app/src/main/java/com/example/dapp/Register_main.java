@@ -112,9 +112,9 @@ public class Register_main extends AppCompatActivity {
         dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
 
 
-        mHeightValue = findViewById(R.id.tv_user_height_value);
 //        mWeightWheelView = findViewById(R.id.scaleWheelView_weight);
 //        mWeightValue = findViewById(R.id.tv_user_weight_value);
+        mHeightValue = findViewById(R.id.tv_user_height_value);
         mWeightRulerView = findViewById(R.id.ruler_weight);
         mWeightValueTwo = findViewById(R.id.tv_user_weight_value_two);
         mHeightWheelView = findViewById(R.id.scaleWheelView_height);
@@ -182,6 +182,7 @@ public class Register_main extends AppCompatActivity {
 //        BitmapDrawable bd = new BitmapDrawable(context.getResources(), bm);
 //        return bd;    }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -207,7 +208,7 @@ public class Register_main extends AppCompatActivity {
 //                    e.printStackTrace();
 //                }
                 register_shape = getShape(register_weight_str, register_weight_str_amb);
-                register_intensity_str = userDao.getIntensity(register_career_str, register_shape);
+                register_intensity_str = userDao.getIntensity(register_career_str);
 
 
                 if (register_password2_str.equals(register_password_str) && register_password2_str != null) {
@@ -264,10 +265,10 @@ public class Register_main extends AppCompatActivity {
 
 
     private void init() {
-        mHeightValue.setText((int) mHeight + "cm");
+
 //        mWeightValue.setText(mWeight + "");
         mWeightValueTwo.setText(mWeight + "kg");
-
+        mHeightValue.setText((int) mHeight + "cm");
         mHeightWheelView.initViewParam(mHeight, mMaxHeight, mMinHeight);
         mHeightWheelView.setValueChangeListener(new ScaleRulerView.OnValueChangeListener() {
             @Override
@@ -290,7 +291,7 @@ public class Register_main extends AppCompatActivity {
         mWeightRulerView.setValueChangeListener(new DecimalScaleRulerView.OnValueChangeListener() {
             @Override
             public void onValueChange(float value) {
-                mWeightValueTwo.setText((int)value + "kg");
+                mWeightValueTwo.setText((int) value + "kg");
                 mWeight = value;
 
             }

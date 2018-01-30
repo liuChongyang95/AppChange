@@ -25,6 +25,7 @@ import java.util.Map;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -66,7 +67,7 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.main_all);
-
+        Log.d("MainAll", "onCreate: ");
         user_photo = findViewById(R.id.user_info_pic);
         user_name = findViewById(R.id.user_info);
         user_change = findViewById(R.id.user_info_change);
@@ -140,6 +141,7 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        Log.d("MainAll", "onClick: ");
         switch (view.getId()) {
             case R.id.user_info_change:
                 Intent intent = new Intent();
@@ -182,10 +184,36 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+
     @Override
     protected void onResume() {
+        Log.d("MainAll", "onResume: ");
         super.onResume();
         user_name.setText(userDao.getUserName(from_login_user_id));
         user_photo.setImageDrawable(userDao.getUser_Photo(from_login_user_id));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("MainAll", "onStart: ");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("MainAll", "onPause: ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("MainAll", "onStop: ");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("MainAll", "onDestroy: ");
     }
 }

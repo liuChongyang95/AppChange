@@ -35,10 +35,10 @@
             <LinearLayout
                 android:id="@+id/user_info_LL_photo"
                 android:layout_width="match_parent"
-                android:onClick="onClick"
+                android:layout_height="50dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:layout_height="50dp"
+                android:onClick="onClick"
                 android:orientation="horizontal">
 
                 <TextView
@@ -101,9 +101,9 @@
                 android:id="@+id/user_info_LL_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:onClick="onClick"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="onClick"
                 android:orientation="horizontal">
 
                 <TextView
@@ -164,8 +164,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/user_info_LL_sex"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
                 android:orientation="horizontal">
 
                 <TextView
@@ -201,8 +205,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/user_info_LL_birth"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
                 android:orientation="horizontal">
 
                 <TextView
@@ -246,6 +254,33 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:text="年龄:"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/user_info_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
+                    android:textColor="#fff" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_info_LL_tall"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:text="身高:"
                     android:textColor="#fff" />
 
@@ -275,8 +310,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/user_info_LL_weight"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
                 android:orientation="horizontal">
 
                 <TextView
@@ -335,8 +374,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/user_info_LL_career"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
                 android:orientation="horizontal">
 
                 <TextView
@@ -420,8 +463,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/user_info_LL_password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
                 android:orientation="horizontal">
 
                 <TextView

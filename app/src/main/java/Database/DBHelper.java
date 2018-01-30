@@ -38,7 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String CREATE_USER = "create table User (User_id integer ,User_Nickname " +
             "varchar(20) not null ," + "  User_Birth date not null, User_Sex char(6) not null, User_Tall varchar(6) not null," +
             "User_Real_weight varchar(6) not null, User_Expect_weight varchar(6),Record_time TimeStamp DEFAULT(datetime('now', 'localtime')),Career varchar(16)," +
-            PicColumns_user.picture + " blob not null ,User_Shape char(6), " +
+             PicColumns_user.picture + " blob not null ,User_Shape char(6), " +
             "User_Intensity varchar(10) not null,constraint User_PK primary key (User_id,Record_time) ) ";
     //           用户登录
     // name用户名

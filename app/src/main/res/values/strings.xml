@@ -5,4 +5,5 @@
     <string name="loginButton">登录</string>
     <string name="registerButton">注册</string>
     <string name="user_info_change_img">\u263A我的资料</string>
+    <string name="edit_weight">\u2022</string>
 </resources>

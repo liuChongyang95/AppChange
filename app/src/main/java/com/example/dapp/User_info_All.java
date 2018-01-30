@@ -3,7 +3,8 @@ package com.example.dapp;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Credentials;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,12 +29,21 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 import SearchDao.UserDao;
 import Util.Fastblur;
@@ -42,8 +53,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class User_info_All extends AppCompatActivity implements View.OnClickListener {
     private String get_edit_ID;
     public static final int CHOOSE_PHOTO = 2;
-    public static final int TAKE_PHOTO = 1;
     public static final int PHOTO_REQUEST_CUT = 3;
+    public static final int DATE_PICKER_ID = 4;
+
     TextView edit_user_ID;
     TextView edit_user_nickname;
     TextView edit_user_loginName;
@@ -55,9 +67,15 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
     TextView edit_user_intensity;
     TextView edit_user_shape;
     TextView edit_user_weight_expect;
+    TextView edit_user_age;
     CircleImageView edit_user_photo;
     String get_edit_LoginName;
-
+    String zc_year, zc_month, zc_day;
+    String changeBirth = null;
+    String editCareer = null;
+    Date changeBirth_sql;
+    private Date edit_birth_str_date;
+    private float edit_expect_weight;
     private UserDao userDao = new UserDao(this);
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -86,6 +104,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
         edit_user_intensity = findViewById(R.id.user_info_intensity);
         edit_user_shape = findViewById(R.id.user_info_shape);
         edit_user_weight_expect = findViewById(R.id.user_info_Expect_weight);
+        edit_user_age = findViewById(R.id.user_info_age);
 
 
         setSupportActionBar(toolbar);
@@ -112,7 +131,11 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
         edit_user_weight_expect.setText(userDao.getExpect_weight(get_edit_ID) + "kg");
         edit_user_career.setText(userDao.getCareer(get_edit_ID));
         edit_user_shape.setText(userDao.getShape(get_edit_ID));
-        edit_user_intensity.setText(userDao.getIntensity(userDao.getCareer(get_edit_ID), userDao.getShape(get_edit_ID)));
+        edit_user_intensity.setText(userDao.getIntensity(userDao.getCareer(get_edit_ID)));
+        edit_birth_str_date = Date.valueOf(edit_user_birth.getText().toString());
+        int a = getAge(edit_birth_str_date);
+        edit_user_age.setText(String.valueOf(a));
+
 
         BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.black);
         Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -131,6 +154,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            //修改昵称
             case R.id.user_info_LL_nickname:
                 final EditText editText = new EditText(User_info_All.this);
                 editText.setHint("点击输入");
@@ -152,18 +176,199 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                 inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (editText.length() != 0)
+                        if (editText.length() != 0) {
                             userDao.changNickname(get_edit_ID, editText.getText().toString());
-                        else dialog.dismiss();
+                            Toast.makeText(User_info_All.this, editText.getText().toString(), Toast.LENGTH_SHORT).show();
+                        } else dialog.dismiss();
                     }
                 }).show();
                 break;
+            //头像
             case R.id.user_info_LL_photo:
                 if (ContextCompat.checkSelfPermission(User_info_All.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(User_info_All.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 } else {
                     openAlbum();
                 }
+                break;
+            //性别
+            case R.id.user_info_LL_sex:
+                final String[] items = {"男性", "女性"};
+                final int[] yourChoice = {-1};
+                AlertDialog.Builder singleChoiceDialog =
+                        new AlertDialog.Builder(User_info_All.this);
+                singleChoiceDialog.setTitle("修改性别");
+                // 第二个参数是默认选项，此处设置为0
+                singleChoiceDialog.setSingleChoiceItems(items, -1,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                yourChoice[0] = which;
+                            }
+                        });
+                singleChoiceDialog.setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (yourChoice[0] != -1) {
+                                    userDao.changeSex(get_edit_ID, items[yourChoice[0]]);
+                                    Toast.makeText(User_info_All.this,
+                                            items[yourChoice[0]],
+                                            Toast.LENGTH_SHORT).show();
+                                } else dialog.dismiss();
+                            }
+                        });
+                singleChoiceDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        onResume();
+                    }
+                });
+                singleChoiceDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                singleChoiceDialog.show();
+                break;
+            case R.id.user_info_LL_birth:
+                showDialog(DATE_PICKER_ID);
+                break;
+
+            case R.id.user_info_LL_tall:
+                final String[] edit_result_tall = {null};
+                AlertDialog.Builder tallDialog =
+                        new AlertDialog.Builder(User_info_All.this);
+                final View[] dialogView = {LayoutInflater.from(User_info_All.this)
+                        .inflate(R.layout.dialog_tall, null)};
+                final EditText big = dialogView[0].findViewById(R.id.bignumber_tall);
+                final EditText small = dialogView[0].findViewById(R.id.smallnumber_tall);
+                tallDialog.setTitle("输入身高");
+                tallDialog.setView(dialogView[0]);
+                tallDialog.setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 获取EditView中的输入内容
+                                if (big.length() != 0) {
+                                    int a = Integer.parseInt(big.getText().toString().trim());
+                                    if (a < 250 && a > 30) {
+                                        if (small.length() == 0) {
+                                            edit_result_tall[0] = big.getText().toString() + ".0";
+                                            userDao.changeTall(get_edit_ID, edit_result_tall[0]);
+                                            edit_expect_weight = Float.valueOf(edit_result_tall[0]) - 105;
+                                            userDao.changeExpectWeight(get_edit_ID, edit_expect_weight);
+                                            String editShape = getShape(userDao.getWeight(get_edit_ID), userDao.getExpect_weight(get_edit_ID));
+                                            userDao.changeShape(get_edit_ID, editShape);
+                                            Toast.makeText(User_info_All.this, edit_result_tall[0] + "cm", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            edit_result_tall[0] = big.getText().toString() + "." + small.getText().toString();
+                                            userDao.changeTall(get_edit_ID, edit_result_tall[0]);
+                                            edit_expect_weight = Float.valueOf(edit_result_tall[0]) - 105;
+                                            userDao.changeExpectWeight(get_edit_ID, edit_expect_weight);
+                                            String editShape = getShape(userDao.getWeight(get_edit_ID), userDao.getExpect_weight(get_edit_ID));
+                                            userDao.changeShape(get_edit_ID, editShape);
+                                            Toast.makeText(User_info_All.this, edit_result_tall[0] + "cm", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        dialog.dismiss();
+                                        Toast.makeText(User_info_All.this, "数据可能错误", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    dialog.dismiss();
+                                    Toast.makeText(User_info_All.this, "无更改信息，或者格式不符合规范", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                tallDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        onResume();
+                    }
+                });
+                tallDialog.show();
+                break;
+            //体重
+            case R.id.user_info_LL_weight:
+                final String[] edit_result_weight = {null};
+                AlertDialog.Builder weightDialog =
+                        new AlertDialog.Builder(User_info_All.this);
+                final View[] dialogView_weight = {LayoutInflater.from(User_info_All.this)
+                        .inflate(R.layout.dialog_weight, null)};
+                final EditText big_weight = dialogView_weight[0].findViewById(R.id.bignumber_weight);
+                final EditText small_weight = dialogView_weight[0].findViewById(R.id.smallnumber_weight);
+                weightDialog.setTitle("输入体重");
+                weightDialog.setView(dialogView_weight[0]);
+                weightDialog.setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 获取EditView中的输入内容
+                                if (big_weight.length() != 0) {
+                                    int a = Integer.parseInt(big_weight.getText().toString().trim());
+                                    if (a < 200 && a > 10) {
+                                        if (small_weight.length() == 0) {
+                                            edit_result_weight[0] = big_weight.getText().toString() + ".0";
+                                            userDao.changeWeight(get_edit_ID, edit_result_weight[0]);
+                                            String editShape = getShape(userDao.getWeight(get_edit_ID), userDao.getExpect_weight(get_edit_ID));
+                                            userDao.changeShape(get_edit_ID, editShape);
+                                            Toast.makeText(User_info_All.this, edit_result_weight[0] + "cm", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            edit_result_weight[0] = big_weight.getText().toString() + "." + small_weight.getText().toString();
+                                            userDao.changeWeight(get_edit_ID, edit_result_weight[0]);
+                                            String editShape = getShape(userDao.getWeight(get_edit_ID), userDao.getExpect_weight(get_edit_ID));
+                                            userDao.changeShape(get_edit_ID, editShape);
+                                            Toast.makeText(User_info_All.this, edit_result_weight[0] + "cm", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        dialog.dismiss();
+                                        Toast.makeText(User_info_All.this, "数据可能错误", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    dialog.dismiss();
+                                    Toast.makeText(User_info_All.this, "无更改信息，或者格式不符合规范", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                weightDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        onResume();
+                    }
+                });
+                weightDialog.show();
+                break;
+            case R.id.user_info_LL_career:
+                Intent intent = new Intent();
+                intent.setClass(User_info_All.this, Register_career.class);
+                startActivityForResult(intent, 5);
+                break;
+            case R.id.user_info_LL_password:
+                AlertDialog.Builder passwordDialog =
+                        new AlertDialog.Builder(User_info_All.this);
+                final View dialogView_password = LayoutInflater.from(User_info_All.this)
+                        .inflate(R.layout.dialog_password, null);
+                passwordDialog.setTitle("更改密码");
+                passwordDialog.setView(dialogView_password);
+                passwordDialog.setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 获取EditView中的输入内容
+                                EditText password1 =
+                                        dialogView_password.findViewById(R.id.change_password_1);
+                                EditText password2 =
+                                        dialogView_password.findViewById(R.id.change_password_2);
+                                if (password1.getText().toString().trim().equals(password2.getText().toString().trim()) && password1.getText().toString().trim().length()>=5) {
+                                    String editpassword = password1.getText().toString().trim();
+                                    userDao.changePassword(get_edit_ID, editpassword);
+                                    Toast.makeText(User_info_All.this, "更改成功", Toast.LENGTH_SHORT).show();
+                                } else
+                                    Toast.makeText(User_info_All.this, "密码确认失败，或者长度不够", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                passwordDialog.show();
                 break;
         }
     }
@@ -175,7 +380,8 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -210,6 +416,15 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                     userDao.changeUser_Photo(get_edit_ID, photo);
                 }
                 break;
+            case 5:
+                if (resultCode == RESULT_OK) {
+                    editCareer = data.getStringExtra("career_name");
+                    userDao.changeCareer(get_edit_ID, editCareer);
+                    String editIntensity = userDao.getIntensity(editCareer);
+                    userDao.changeIntensity(get_edit_ID, editIntensity);
+                    onResume();
+                }
+                break;
             default:
                 break;
         }
@@ -236,14 +451,129 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void handleImageOnKitKat(Intent data) {
         Uri uri = data.getData();
-        crop(uri);
+        String imagePath = null;
+        if (DocumentsContract.isDocumentUri(this, uri)) {
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                crop(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                crop(contentUri);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            crop(uri);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            crop(uri);
+        }
+//        displayImage(imagePath);
     }
+
+   /* private void displayImage(String imagePath) {
+        if (imagePath != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        } else {
+            Toast.makeText(this, "获取图片失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getImagePath(Uri uri, String selection) {
+        String path = null;
+        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }*/
+
 
     private void handleImageBeforeKitKat(Intent data) {
         Uri uri = data.getData();
         crop(uri);
     }
 
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_PICKER_ID:
+                // onDateSetListener为用户点击设置时执行的回调函数，数字是默认显示的日期，
+                // 注意月份设置11而实际显示12，会自动加1
+                return new DatePickerDialog(this, onDateSetListener, 1991, 2, 2);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        // 第一个参数指整个DatePicker，第二个参数是当前设置的年份，
+        // 第三个参数是当前设置的月份，注意的是，获取设置的月份时需要加1，因为java中规定月份在0~11之间
+
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            // 通过Toast对话框输出当前设置的日期
+            zc_year = Integer.toString(year);
+            if (monthOfYear < 9) {
+                monthOfYear = monthOfYear + 1;
+                zc_month = Integer.toString(monthOfYear);
+                zc_month = "0" + zc_month;
+            } else {
+                monthOfYear = monthOfYear + 1;
+                zc_month = Integer.toString(monthOfYear);
+            }
+            if (dayOfMonth < 10) {
+                zc_day = Integer.toString(dayOfMonth);
+                zc_day = "0" + zc_day;
+            } else {
+                zc_day = Integer.toString(dayOfMonth);
+            }
+            changeBirth = zc_year + "-" + zc_month + "-" + zc_day;
+            changeBirth_sql = java.sql.Date.valueOf(changeBirth);
+            userDao.changeBirth(get_edit_ID, changeBirth_sql);
+            onResume();
+            Toast.makeText(view.getContext(), changeBirth, Toast.LENGTH_SHORT).show();
+        }
+
+    };
+
+    public String getShape(String R_weight, String A_weight) {
+        String shape;
+        double rate = (Double.valueOf(R_weight) - Double.valueOf(A_weight)) / Double.valueOf(A_weight);
+        if (rate <= -0.2) {
+            shape = "消瘦";
+        } else if (rate > -0.2 && rate < -0.1) {
+            shape = "偏瘦";
+        } else if (rate >= -0.1 && rate <= 0.1) {
+            shape = "正常";
+        } else if (rate > 0.1 && rate < 0.2) {
+            shape = "超重";
+        } else {
+            shape = "肥胖";
+        }
+        return shape;
+    }
+
+    public int getAge(Date birthDay) {
+        Calendar cal = Calendar.getInstance();
+        if (cal.before(birthDay)) {
+            throw new IllegalArgumentException("The birthDay is before Now.It 's unbelievable!");
+        }
+        int yearNow = cal.get(Calendar.YEAR);
+        int monthNow = cal.get(Calendar.MONTH);
+        int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);
+        cal.setTime(birthDay);
+        int yearBirth = cal.get(Calendar.YEAR);
+        int monthBirth = cal.get(Calendar.MONTH);
+        int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
+        int age = yearNow - yearBirth;
+        if (monthNow <= monthBirth) {
+            if (monthNow == monthBirth) {
+                if (dayOfMonthNow < dayOfMonthBirth)
+                    age--;
+            } else {
+                age--;
+            }
+        }
+        return age;
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -258,7 +588,10 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
         edit_user_weight_expect.setText(userDao.getExpect_weight(get_edit_ID) + "kg");
         edit_user_career.setText(userDao.getCareer(get_edit_ID));
         edit_user_shape.setText(userDao.getShape(get_edit_ID));
-        edit_user_intensity.setText(userDao.getIntensity(userDao.getCareer(get_edit_ID), userDao.getShape(get_edit_ID)));
+        edit_user_intensity.setText(userDao.getIntensity(userDao.getCareer(get_edit_ID)));
+        edit_birth_str_date = Date.valueOf(edit_user_birth.getText().toString());
+        int a = getAge(edit_birth_str_date);
+        edit_user_age.setText(String.valueOf(a));
     }
 
 

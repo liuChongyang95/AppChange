@@ -1,5 +1,6 @@
 package SearchDao;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -65,12 +66,15 @@ public class FruitDao {
                 fruitList.add(fruit);
             }
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
         fruitsDb.close();
         return fruitList;
     }
 
     //Search
+    @SuppressLint("Recycle")
     public List<Fruit> searchFruit(String searchFruitText_all) {
         Cursor cursor_search = null;
         Cursor cursor_ID = null;
@@ -80,38 +84,42 @@ public class FruitDao {
         List<String> searchList = new ArrayList<>();
         List<Fruit> resultList = new ArrayList<>();
         fruitsDb = fruitDBHelper.getReadableDatabase();
-
         //全词
-        String sql = "select * from Fruit where Ri_Food_name Like '%" + searchFruitText_all + "%'";
+        String sql = "select Ri_Food_id from Fruit where Ri_Food_name Like '%" + searchFruitText_all + "%'";
         cursor_name_all = fruitsDb.rawQuery(sql, null);
         if (cursor_name_all != null && cursor_name_all.getCount() != 0) {
             while (cursor_name_all.moveToNext()) {
                 fruitId = cursor_name_all.getString(cursor_name_all.getColumnIndex("Ri_Food_id"));
                 searchList.add(fruitId);
+                Log.d(TAG, fruitId);
             }
         }
         //切词
         for (int a = 0; a < searchFruitText_all.length(); a++) {
             aSearchFruitText = String.valueOf(searchFruitText_all.charAt(a));
             sql_searchFruit = "select * from Fruit where Ri_Food_name Like '%" + aSearchFruitText + "%'";
-//            Log.d(TAG, sql_searchFruit);
+//          Log.d(TAG, sql_searchFruit);
             cursor_search = fruitsDb.rawQuery(sql_searchFruit, null);
             if (cursor_search != null && cursor_search.getCount() != 0) {
                 while (cursor_search.moveToNext()) {
                     fruitId = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_id"));
                     searchList.add(fruitId);
+                    Log.d(TAG, fruitId);
                     fruitEp_id = cursor_search.getString(cursor_search.getColumnIndex("Ri_Food_ep_id"));
                     if (fruitEp_id != null) {
                         fruitEp_id_split = fruitEp_id.split("\\s+");
+                        Log.d(TAG, String.valueOf(fruitEp_id_split));
                         searchList.addAll(Arrays.asList(fruitEp_id_split));
                     }
-                    treeSet.addAll(searchList);
                 }
             }
         }
+        treeSet.addAll(searchList);
         searchList.clear();
         searchList.addAll(treeSet);
-        cursor_search.close();
+        if (cursor_search != null) {
+            cursor_search.close();
+        }
         //向第二层传递食物ID
         //第二层 查询同ID食物
         String sql_searchFood_2 = "select * from Fruit where Ri_Food_id=?";
@@ -132,7 +140,9 @@ public class FruitDao {
                 }
             }
         }
-        cursor_ID.close();
+        if (cursor_ID != null) {
+            cursor_ID.close();
+        }
         fruitsDb.close();
         return resultList;
     }
