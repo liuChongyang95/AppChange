@@ -21,16 +21,19 @@
                 android:layout_height="wrap_content"
                 android:background="#FFA07A"
                 android:orientation="vertical">
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="3px"
                     android:background="#000" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="必填项目"
                     android:textSize="17dp"
                     android:textStyle="italic" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="3px"
@@ -180,8 +183,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="选填项目"
-                    android:textSize="17dp"
                     android:textColor="#fff"
+                    android:textSize="17dp"
                     android:textStyle="italic" />
 
                 <View

@@ -64,6 +64,8 @@
         <activity
             android:name=".User_info_All"
             android:label="个人信息" />
+        <activity
+            android:name=".Food_searchToAdd"/>
 
     </application>
 
