@@ -138,9 +138,6 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
 
-            case R.id.myEditText:
-
-                break;
         }
     }
 }

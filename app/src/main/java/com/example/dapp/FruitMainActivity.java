@@ -13,8 +13,11 @@ import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import Adapter.FoodAdapter;
 import Adapter.FruitAdapter;
+import JavaBean.Food;
 import JavaBean.Fruit;
+import SearchDao.FoodDao;
 import SearchDao.FruitDao;
 
 public class FruitMainActivity extends AppCompatActivity {
@@ -27,6 +30,9 @@ public class FruitMainActivity extends AppCompatActivity {
     private String userId;
     private List<Fruit> fruitSearchList = new ArrayList<>();
     private FruitAdapter fruitAdapter;
+    private List<Food> foodSearchList = new ArrayList<>();
+    private FoodDao foodDao;
+    private FoodAdapter foodAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,25 +58,33 @@ public class FruitMainActivity extends AppCompatActivity {
         searchEText.setText(searchFood_name);
 
 
-        fruitDao = new FruitDao(this);
-        fruitSearchList = fruitDao.searchFruit(searchFood_name);
-        if (fruitSearchList.size() == 0) {
+//        fruitDao = new FruitDao(this);
+//        fruitSearchList = fruitDao.searchFruit(searchFood_name);
+        foodDao = new FoodDao(this);
+        foodSearchList = foodDao.findAllSeason(searchFood_name);
+//        if (fruitSearchList.size() == 0) {
+        if (foodSearchList.size() == 0) {
             Intent intent_null = new Intent(this, SearchNullResult.class);
             startActivity(intent_null);
             finish();
         } else {
-            fruitAdapter = new FruitAdapter(FruitMainActivity.this, R.layout.fruit_item, fruitSearchList);
-            listView.setAdapter(fruitAdapter);
+            foodAdapter = new FoodAdapter(FruitMainActivity.this, R.layout.fruit_item, foodSearchList);
+//            fruitAdapter = new FruitAdapter(FruitMainActivity.this, R.layout.fruit_item, fruitSearchList);
+            listView.setAdapter(foodAdapter);
+//      listView.setAdapter(fruitAdapter);
         }
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (listView.getCount() > 0) {
-                    Fruit fruit = fruitSearchList.get(i);
+//                    Fruit fruit = fruitSearchList.get(i);
+                    Food food = foodSearchList.get(i);
                     Intent intent = new Intent(FruitMainActivity.this, FruitSelect.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("fruit_name", fruit.getRi_Food_name());
+//                    bundle.putString("fruit_name", fruit.getRi_Food_name());
+                    bundle.putString("fruit_name", food.getName());
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }

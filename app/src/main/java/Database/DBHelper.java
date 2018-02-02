@@ -10,19 +10,31 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.dapp.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by Administrator on 2017/12/29.
  */
 
 public class DBHelper extends SQLiteOpenHelper {
+
 
     public static class PicColumns implements BaseColumns {
         public static final String picture = "Ri_Food_photo";
@@ -32,7 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String picture = "User_Photo";
     }
 
-    //           水果模拟
+              // 水果模拟
     private static final String CREATE_FRUIT = "create table Fruit (Ri_Food_name varchar(20) primary key ,Ri_Food_id char(20) not null," +
             "Ri_Food_ep_id varchar(20)," + PicColumns.picture + " blob not null)";
     //           患者信息
@@ -40,14 +52,13 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String CREATE_USER = "create table User (User_id integer ,User_Nickname " +
             "varchar(20) not null ," + "  User_Birth date not null, User_Sex char(6) not null, User_Tall varchar(6) not null," +
             "User_Real_weight varchar(6) not null, User_Expect_weight varchar(6),Record_time TimeStamp DEFAULT(datetime('now', 'localtime')),Career varchar(16)," +
-             PicColumns_user.picture + " blob not null ,User_Shape char(6), " +
+            PicColumns_user.picture + " blob not null ,User_Shape char(6), " +
             "User_Intensity varchar(10) not null,constraint User_PK primary key (User_id,Record_time) ) ";
     //           用户登录
     // name用户名
-    private static final String CREATE_LOGIN = "create table Login(Username varchar(20) primary key ,password varchar(30), User_id integer ,foreign key (User_id) references User(User_id) on update cascade)";
+    private static final String CREATE_LOGIN = "create table Login(Username varchar(16) primary key ,password varchar(30), User_id integer ,foreign key (User_id) references User(User_id) on update cascade)";
     //           职业设定
     private static final String CREATE_CAREER = "create table Career(Career varchar(16),Intensity char(14),Shape char(10),Career_energy_min integer,Career_energy_max integer ,constraint Career_PK primary key(Career,Shape))";
-
 
     private Context mContext;
 
@@ -64,6 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_CAREER);
         initDataBase_Food(sqLiteDatabase, mContext);
         initDataBase_Career(sqLiteDatabase, mContext);
+
     }
 
     @Override
@@ -496,5 +508,10 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("Career_energy_max", "15");
         sqLiteDatabase.insert("Career", null, values);
         values.clear();
+
+
     }
+
+
+//
 }
