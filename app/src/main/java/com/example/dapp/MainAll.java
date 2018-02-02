@@ -36,14 +36,11 @@ import Util.Fastblur;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainAll extends AppCompatActivity implements View.OnClickListener {
-    private GridView gridView;
     private List<Map<String, Object>> data_list;
-    private SimpleAdapter sim_adapter;
     private UserDao userDao;
     private String from_login_user_id;
     private TextView user_name;
     private CircleImageView user_photo;
-    private Button user_change;
     private Bundle bundle_id;//全局bundle
 
     // 图片封装为一个数组
@@ -66,7 +63,7 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
         Log.d("MainAll", "onCreate: ");
         user_photo = findViewById(R.id.user_info_pic);
         user_name = findViewById(R.id.user_info);
-        user_change = findViewById(R.id.user_info_change);
+        Button user_change = findViewById(R.id.user_info_change);
         user_change.setOnClickListener(this);
 
 
@@ -88,7 +85,7 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
                 MainAll.this.finish();
             }
         });
-        gridView = findViewById(R.id.gridView);
+        final GridView gridView = findViewById(R.id.gridView);
         //新建List
         data_list = new ArrayList<>();
         //获取数据
@@ -96,7 +93,7 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
         //新建适配器
         String[] from = {"image", "text"};
         int[] to = {R.id.image, R.id.text};
-        sim_adapter = new SimpleAdapter(this, data_list, R.layout.main_all_item, from, to);
+        final SimpleAdapter sim_adapter = new SimpleAdapter(this, data_list, R.layout.main_all_item, from, to);
         //配置适配器
         gridView.setAdapter(sim_adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -151,14 +148,12 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Drawable setBlurBackground(Bitmap bmp) {
         final Bitmap blurBmp = Fastblur.fastblur(MainAll.this, bmp, 13);//0-25，表示模糊值
-        final Drawable drawable_bg = MainAll.getDrawable(MainAll.this, blurBmp);//将bitmap类型图片 转为 Drawable类型
-        return drawable_bg;
+        return getDrawable(this, blurBmp);
     }
 
     //bitmap 转 drawable
     public static Drawable getDrawable(Context context, Bitmap bm) {
-        BitmapDrawable bd = new BitmapDrawable(context.getResources(), bm);
-        return bd;
+        return new BitmapDrawable(context.getResources(), bm);
     }
 
     public List<Map<String, Object>> getData() {
@@ -184,33 +179,9 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onResume() {
-        Log.d("MainAll", "onResume: ");
         super.onResume();
         user_name.setText(userDao.getUserName(from_login_user_id));
         user_photo.setImageDrawable(userDao.getUser_Photo(from_login_user_id));
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d("MainAll", "onStart: ");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("MainAll", "onPause: ");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("MainAll", "onStop: ");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("MainAll", "onDestroy: ");
-    }
 }

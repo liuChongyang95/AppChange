@@ -30,8 +30,6 @@ public class Register_career extends AppCompatActivity implements View.OnClickLi
     private Button heavy_4;
     private Button heavy_6;
 
-    private String career_name;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +84,7 @@ public class Register_career extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.teacher:
-                career_name = light_1.getText().toString();
+                String career_name = light_1.getText().toString();
                 Intent teacher = new Intent();
                 teacher.putExtra("career_name", career_name);
                 setResult(RESULT_OK, teacher);

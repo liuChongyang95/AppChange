@@ -69,6 +69,7 @@ public class FruitDao {
         if (cursor != null) {
             cursor.close();
         }
+
         fruitsDb.close();
         return fruitList;
     }
@@ -78,7 +79,7 @@ public class FruitDao {
     public List<Fruit> searchFruit(String searchFruitText_all) {
         Cursor cursor_search = null;
         Cursor cursor_ID = null;
-        Cursor cursor_name_all = null;
+        Cursor cursor_name_all;
         treeSet = new TreeSet();
         //第一层 模糊搜索食物名称
         List<String> searchList = new ArrayList<>();
@@ -93,6 +94,9 @@ public class FruitDao {
                 searchList.add(fruitId);
                 Log.d(TAG, fruitId);
             }
+        }
+        if (cursor_name_all != null) {
+            cursor_name_all.close();
         }
         //切词
         for (int a = 0; a < searchFruitText_all.length(); a++) {
@@ -143,6 +147,7 @@ public class FruitDao {
         if (cursor_ID != null) {
             cursor_ID.close();
         }
+        fruitDBHelper.close();
         fruitsDb.close();
         return resultList;
     }

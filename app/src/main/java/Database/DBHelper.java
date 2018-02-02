@@ -73,7 +73,11 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_USER);
         sqLiteDatabase.execSQL(CREATE_LOGIN);
         sqLiteDatabase.execSQL(CREATE_CAREER);
-        initDataBase_Food(sqLiteDatabase, mContext);
+        try {
+            initDataBase_Food(sqLiteDatabase, mContext);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initDataBase_Career(sqLiteDatabase, mContext);
 
     }
@@ -91,7 +95,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public byte[] getPicture(Drawable drawable) {
+    public byte[] getPicture(Drawable drawable) throws IOException {
         if (drawable == null) {
             return null;
         }
@@ -99,10 +103,12 @@ public class DBHelper extends SQLiteOpenHelper {
         Bitmap bitmap = bitmapDrawable.getBitmap();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-        return os.toByteArray();
+        byte[] ba = os.toByteArray();
+        os.close();
+        return ba;
     }
 
-    private void initDataBase_Food(SQLiteDatabase sqLiteDatabase, Context mContext) {
+    private void initDataBase_Food(SQLiteDatabase sqLiteDatabase, Context mContext) throws IOException {
         Drawable apple = mContext.getResources().getDrawable(R.drawable.apple);
         Drawable pear = mContext.getResources().getDrawable(R.drawable.pear);
         Drawable orange = mContext.getResources().getDrawable(R.drawable.orange);

@@ -10,16 +10,11 @@ import java.util.List;
 import Database.DBHelper;
 import JavaBean.Food;
 import Util.DBUtil;
-import Util.Staticfinal_Value;
 
 public class FoodDao {
-    private Staticfinal_Value sfv;
-    private DBHelper foodDBHelper;
     private DBUtil dbUtil;
 
     public FoodDao(Context context) {
-        sfv = new Staticfinal_Value();
-        foodDBHelper = new DBHelper(context, "food.db", null, sfv.staticVersion());
         dbUtil=new DBUtil(context);
     }
 
@@ -44,8 +39,6 @@ public class FoodDao {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assert myDateBase != null;
-
         myDateBase.close();
         return foods;
     }

@@ -30,8 +30,6 @@ public class Login_App extends AppCompatActivity {
     private String password_str;
     private TextView register;
     private Button login;
-    private DBHelper dbHelper;
-    private SQLiteDatabase userDB;
     private UserDao userDao;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;

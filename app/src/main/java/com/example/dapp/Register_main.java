@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,37 +46,23 @@ import Util.Staticfinal_Value;
 
 public class Register_main extends AppCompatActivity {
 
-    private Staticfinal_Value sfv;
     private UserDao userDao;
 
     private static final int DATE_PICKER_ID = 0;
     private EditText register_name;
     private EditText register_password;
     private EditText register_password2;
-    private String register_name_str;
-    private String register_password_str;
-    private String register_password2_str;
     private RadioGroup radioGroup_sex;
     private RadioButton radioButton_male;
     private RadioButton radioButton_female;
     private String sex;
-    private Button register_birth;
     private String register_birth_str;//出生日期
     private TextView register_birth_tv;
-    private String zc_year, zc_month, zc_day;
-    private float register_tall_str;
-    private double register_weight_str;
-    private float register_weight_str_amb;
-    private int sex_i;
     private Date register_birth_str_date;
     private DBHelper dbHelper;
     private String register_shape;
-    private int register_age;
-    private Button register_career;
     private TextView register_career_tv;
     private String register_career_str;
-    private String register_intensity_str;
-    private Date record_time;
 
     ScaleRulerView mHeightWheelView;
     TextView mHeightValue;
@@ -88,8 +75,6 @@ public class Register_main extends AppCompatActivity {
 
 
     private float mHeight = 170;
-    private float mMaxHeight = 220;
-    private float mMinHeight = 100;
 
 
     private float mWeight = 60;
@@ -107,7 +92,7 @@ public class Register_main extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.register_app);
-        sfv = new Staticfinal_Value();
+        Staticfinal_Value sfv = new Staticfinal_Value();
         userDao = new UserDao(this);
         dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
 
@@ -130,9 +115,9 @@ public class Register_main extends AppCompatActivity {
         radioGroup_sex = findViewById(R.id.rg_sex);
         radioButton_male = findViewById(R.id.rb_male);
         radioButton_female = findViewById(R.id.rb_female);
-        register_birth = findViewById(R.id.register_burn);
+        Button register_birth = findViewById(R.id.register_burn);
         register_birth_tv = findViewById(R.id.register_burn_tv);
-        register_career = findViewById(R.id.register_career);
+        Button register_career = findViewById(R.id.register_career);
         register_career_tv = findViewById(R.id.register_career_tv);
 
         register_career.setOnClickListener(new View.OnClickListener() {
@@ -193,22 +178,22 @@ public class Register_main extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.register_sure:
 
-                register_name_str = register_name.getText().toString().trim();
-                register_password_str = register_password.getText().toString().trim();
-                register_password2_str = register_password2.getText().toString().trim();
+                String register_name_str = register_name.getText().toString().trim();
+                String register_password_str = register_password.getText().toString().trim();
+                String register_password2_str = register_password2.getText().toString().trim();
                 sex = selectedSex();
                 register_birth_str = register_birth_tv.getText().toString().trim();
-                register_weight_str = mWeight;
+                double register_weight_str = mWeight;
 
-                register_tall_str = mHeight;
-                register_weight_str_amb = mHeight - 105;
+                float register_tall_str = mHeight;
+                float register_weight_str_amb = mHeight - 105;
 //                try {
 //                    register_age = getAge(register_birth_str_date);//计算年龄
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                }
                 register_shape = getShape(register_weight_str, register_weight_str_amb);
-                register_intensity_str = userDao.getIntensity(register_career_str);
+                String register_intensity_str = userDao.getIntensity(register_career_str);
 
 
                 if (register_password2_str.equals(register_password_str) && register_password2_str != null) {
@@ -228,7 +213,11 @@ public class Register_main extends AppCompatActivity {
                     values_User.put("Career", register_career_str);
                     values_User.put("User_Shape", register_shape);
                     Drawable apple = this.getResources().getDrawable(R.drawable.apple);
-                    values_User.put("User_Photo", dbHelper.getPicture(apple));
+                    try {
+                        values_User.put("User_Photo", dbHelper.getPicture(apple));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     values_User.put("User_Intensity", register_intensity_str);
 
 
@@ -244,11 +233,12 @@ public class Register_main extends AppCompatActivity {
                         db.insertOrThrow("Login", null, values_Login);
                         db.setTransactionSuccessful();
                         Toast.makeText(Register_main.this, "注册成功", Toast.LENGTH_SHORT).show();
+                        db.endTransaction();
+                        db.close();
                         finish();
                     } catch (SQLiteConstraintException ex) {
-                        Toast.makeText(this, "用户名重复,注册失败", Toast.LENGTH_LONG).show();
-                    } finally {
                         db.endTransaction();
+                        Toast.makeText(this, "用户名重复,注册失败", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(this, "密码确认失败或密码不符合规范", Toast.LENGTH_LONG).show();
@@ -269,6 +259,8 @@ public class Register_main extends AppCompatActivity {
 //        mWeightValue.setText(mWeight + "");
         mWeightValueTwo.setText(mWeight + "kg");
         mHeightValue.setText((int) mHeight + "cm");
+        float mMinHeight = 100;
+        float mMaxHeight = 220;
         mHeightWheelView.initViewParam(mHeight, mMaxHeight, mMinHeight);
         mHeightWheelView.setValueChangeListener(new ScaleRulerView.OnValueChangeListener() {
             @Override
@@ -314,7 +306,8 @@ public class Register_main extends AppCompatActivity {
 
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             // 通过Toast对话框输出当前设置的日期
-            zc_year = Integer.toString(year);
+            String zc_year = Integer.toString(year);
+            String zc_month;
             if (monthOfYear < 9) {
                 monthOfYear = monthOfYear + 1;
                 zc_month = Integer.toString(monthOfYear);
@@ -323,6 +316,7 @@ public class Register_main extends AppCompatActivity {
                 monthOfYear = monthOfYear + 1;
                 zc_month = Integer.toString(monthOfYear);
             }
+            String zc_day;
             if (dayOfMonth < 10) {
                 zc_day = Integer.toString(dayOfMonth);
                 zc_day = "0" + zc_day;
@@ -344,11 +338,10 @@ public class Register_main extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (radioButton_male.getId() == i) {
                     sex = "男";
-                    sex_i = radioButton_male.getId();
+
                 }
                 if (radioButton_female.getId() == i) {
                     sex = "女";
-                    sex_i = radioButton_female.getId();
                 }
             }
         });

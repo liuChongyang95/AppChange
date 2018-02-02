@@ -41,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -52,28 +53,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class User_info_All extends AppCompatActivity implements View.OnClickListener {
     private String get_edit_ID;
-    public static final int CHOOSE_PHOTO = 2;
-    public static final int PHOTO_REQUEST_CUT = 3;
-    public static final int DATE_PICKER_ID = 4;
-
-    TextView edit_user_ID;
-    TextView edit_user_nickname;
-    TextView edit_user_loginName;
-    TextView edit_user_sex;
-    TextView edit_user_birth;
-    TextView edit_user_tall;
-    TextView edit_user_weight;
-    TextView edit_user_career;
-    TextView edit_user_intensity;
-    TextView edit_user_shape;
-    TextView edit_user_weight_expect;
-    TextView edit_user_age;
-    CircleImageView edit_user_photo;
-    String get_edit_LoginName;
-    String zc_year, zc_month, zc_day;
-    String changeBirth = null;
-    String editCareer = null;
-    Date changeBirth_sql;
+    private TextView edit_user_nickname;
+    private TextView edit_user_sex;
+    private TextView edit_user_birth;
+    private TextView edit_user_tall;
+    private TextView edit_user_weight;
+    private TextView edit_user_career;
+    private TextView edit_user_intensity;
+    private TextView edit_user_shape;
+    private TextView edit_user_weight_expect;
+    private TextView edit_user_age;
+    private CircleImageView edit_user_photo;
     private Date edit_birth_str_date;
     private float edit_expect_weight;
     private UserDao userDao = new UserDao(this);
@@ -93,9 +83,9 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
         RelativeLayout all_edit = findViewById(R.id.relative_all_edit);
         Toolbar toolbar = findViewById(R.id.user_info_edit_toolbar);
         edit_user_photo = findViewById(R.id.user_info_edit_photo);
-        edit_user_ID = findViewById(R.id.user_info_medical_id);
+        TextView edit_user_ID = findViewById(R.id.user_info_medical_id);
         edit_user_nickname = findViewById(R.id.user_info_edit_nickname);
-        edit_user_loginName = findViewById(R.id.user_info_login_name);
+        TextView edit_user_loginName = findViewById(R.id.user_info_login_name);
         edit_user_sex = findViewById(R.id.user_info_edit_sex);
         edit_user_birth = findViewById(R.id.user_info_edit_birth);
         edit_user_tall = findViewById(R.id.user_info_edit_tall);
@@ -118,7 +108,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
         Intent intent = getIntent();
         Bundle bundle_from_MA = intent.getExtras();
         get_edit_ID = bundle_from_MA.getString("from_Login_User_id");
-        get_edit_LoginName = bundle_from_MA.getString("from_Login_User_Username");
+        String get_edit_LoginName = bundle_from_MA.getString("from_Login_User_Username");
         UserDao userDao = new UserDao(this);
         edit_user_photo.setImageDrawable(userDao.getUser_Photo(get_edit_ID));
         edit_user_ID.setText(get_edit_ID);
@@ -233,7 +223,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                 singleChoiceDialog.show();
                 break;
             case R.id.user_info_LL_birth:
-                showDialog(DATE_PICKER_ID);
+                showDialog(4);
                 break;
 
             case R.id.user_info_LL_tall:
@@ -360,7 +350,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                                         dialogView_password.findViewById(R.id.change_password_1);
                                 EditText password2 =
                                         dialogView_password.findViewById(R.id.change_password_2);
-                                if (password1.getText().toString().trim().equals(password2.getText().toString().trim()) && password1.getText().toString().trim().length()>=5) {
+                                if (password1.getText().toString().trim().equals(password2.getText().toString().trim()) && password1.getText().toString().trim().length() >= 5) {
                                     String editpassword = password1.getText().toString().trim();
                                     userDao.changePassword(get_edit_ID, editpassword);
                                     Toast.makeText(User_info_All.this, "更改成功", Toast.LENGTH_SHORT).show();
@@ -376,7 +366,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
     private void openAlbum() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("image/*");
-        startActivityForResult(intent, CHOOSE_PHOTO);
+        startActivityForResult(intent, 2);
     }
 
     @Override
@@ -397,7 +387,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case CHOOSE_PHOTO:
+            case 2:
                 if (resultCode == RESULT_OK) {
                     if (Build.VERSION.SDK_INT >= 19) {
                         //4.4以上系统
@@ -408,17 +398,21 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                     }
                 }
                 break;
-            case PHOTO_REQUEST_CUT:
+            case 3:
                 if (data != null) {
                     Bitmap bitmap = data.getParcelableExtra("data");
                     Drawable photo;
                     photo = new BitmapDrawable(bitmap);
-                    userDao.changeUser_Photo(get_edit_ID, photo);
+                    try {
+                        userDao.changeUser_Photo(get_edit_ID, photo);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case 5:
                 if (resultCode == RESULT_OK) {
-                    editCareer = data.getStringExtra("career_name");
+                    String editCareer = data.getStringExtra("career_name");
                     userDao.changeCareer(get_edit_ID, editCareer);
                     String editIntensity = userDao.getIntensity(editCareer);
                     userDao.changeIntensity(get_edit_ID, editIntensity);
@@ -445,7 +439,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
         intent.putExtra("noFaceDetection", true);// 取消人脸识别
         intent.putExtra("return-data", true);
         // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
-        startActivityForResult(intent, PHOTO_REQUEST_CUT);
+        startActivityForResult(intent, 3);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -496,7 +490,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
 
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-            case DATE_PICKER_ID:
+            case 4:
                 // onDateSetListener为用户点击设置时执行的回调函数，数字是默认显示的日期，
                 // 注意月份设置11而实际显示12，会自动加1
                 return new DatePickerDialog(this, onDateSetListener, 1991, 2, 2);
@@ -510,7 +504,8 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
 
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             // 通过Toast对话框输出当前设置的日期
-            zc_year = Integer.toString(year);
+            String zc_year = Integer.toString(year);
+            String zc_month;
             if (monthOfYear < 9) {
                 monthOfYear = monthOfYear + 1;
                 zc_month = Integer.toString(monthOfYear);
@@ -519,14 +514,15 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                 monthOfYear = monthOfYear + 1;
                 zc_month = Integer.toString(monthOfYear);
             }
+            String zc_day;
             if (dayOfMonth < 10) {
                 zc_day = Integer.toString(dayOfMonth);
                 zc_day = "0" + zc_day;
             } else {
                 zc_day = Integer.toString(dayOfMonth);
             }
-            changeBirth = zc_year + "-" + zc_month + "-" + zc_day;
-            changeBirth_sql = java.sql.Date.valueOf(changeBirth);
+            String changeBirth = zc_year + "-" + zc_month + "-" + zc_day;
+            Date changeBirth_sql = Date.valueOf(changeBirth);
             userDao.changeBirth(get_edit_ID, changeBirth_sql);
             onResume();
             Toast.makeText(view.getContext(), changeBirth, Toast.LENGTH_SHORT).show();

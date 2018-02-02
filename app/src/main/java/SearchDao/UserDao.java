@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.TooManyListenersException;
 
@@ -46,9 +47,14 @@ public class UserDao {
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{username, password});
         if (cursor.moveToFirst()) {
             cursor.close();
+            UserdbHelper.close();
+            UsersDb.close();
             return true;
-        } else
+        } else {
+            UserdbHelper.close();
+            UsersDb.close();
             return false;
+        }
     }
 
     public String failedCause(String username, String password) {
@@ -67,19 +73,19 @@ public class UserDao {
                 failed_cause = null;
         } else
             failed_cause = "没有该用户";
-
+        UserdbHelper.close();
         UsersDb.close();
         return failed_cause;
     }
 
     public String getUserName(String userId) {
-        userInfo = null;
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql_1 = "select User_Nickname from User where User_id =?";
         Cursor cursor = UsersDb.rawQuery(sql_1, new String[]{userId});
         if (cursor.moveToFirst()) {
             userInfo = cursor.getString(cursor.getColumnIndex("User_Nickname"));
         }
+        UserdbHelper.close();
         UsersDb.close();
         cursor.close();
         return userInfo;
@@ -92,6 +98,7 @@ public class UserDao {
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{username});
         if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_id"));
+        UserdbHelper.close();
         cursor.close();
         UsersDb.close();
         return userInfo;
@@ -108,31 +115,32 @@ public class UserDao {
             BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
             photo = bitmapDrawable;
         }
+        UserdbHelper.close();
         cursor.close();
         UsersDb.close();
         return photo;
     }
 
     public String getIntensity(String careerName) {
-        userInfo = null;
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql = "select Intensity from Career where Career=?";
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{careerName});
         if (cursor.moveToFirst()) {
             userInfo = cursor.getString(cursor.getColumnIndex("Intensity"));
         }
+        UserdbHelper.close();
         cursor.close();
         UsersDb.close();
         return userInfo;
     }
 
     public String getNickname(String userId) {
-        userInfo = null;
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Nickname from User where User_id= ?";
         Cursor cursor = UsersDb.rawQuery(sql, new String[]{userId});
         if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Nickname"));
+        UserdbHelper.close();
         cursor.close();
         UsersDb.close();
         return userInfo;
@@ -140,80 +148,79 @@ public class UserDao {
     }
 
     public String getSex(String userId) {
-        userInfo = null;
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Sex from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
         if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Sex"));
+        UserdbHelper.close();
         cursor.close();
         UserDb.close();
         return userInfo;
     }
 
     public String getBirth(String userId) {
-        userInfo = null;
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Birth from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
         if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Birth"));
+        UserdbHelper.close();
         cursor.close();
         UserDb.close();
         return userInfo;
     }
 
     public String getTall(String userId) {
-        userInfo = null;
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Tall from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
         if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Tall"));
+        UserdbHelper.close();
         cursor.close();
         UserDb.close();
         return userInfo;
     }
 
     public String getWeight(String userId) {
-        userInfo = null;
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Real_weight from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
         if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Real_weight"));
+        UserdbHelper.close();
         cursor.close();
         UserDb.close();
         return userInfo;
     }
 
     public String getExpect_weight(String userId) {
-        userInfo = null;
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Expect_weight from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
         if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Expect_weight"));
         cursor.close();
+        UserdbHelper.close();
         UserDb.close();
         return userInfo;
     }
 
     public String getCareer(String userId) {
-        userInfo = null;
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select Career from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
         if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("Career"));
         cursor.close();
+        UserdbHelper.close();
         UserDb.close();
         return userInfo;
     }
 
 
     public String getShape(String userId) {
-        userInfo = null;
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Shape from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
@@ -221,6 +228,7 @@ public class UserDao {
             userInfo = cursor.getString(cursor.getColumnIndex("User_Shape"));
         cursor.close();
         UserDb.close();
+        UserdbHelper.close();
         return userInfo;
     }
 
@@ -230,14 +238,16 @@ public class UserDao {
         values.put("User_Nickname", userNickname);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
-    public void changeUser_Photo(String userId, Drawable userPhoto) {
+    public void changeUser_Photo(String userId, Drawable userPhoto) throws IOException {
         SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("User_Photo", getPicture(userPhoto));
         UserDb.update("User", values, "User_id=?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
     public void changeSex(String userId, String userSex) {
@@ -246,6 +256,7 @@ public class UserDao {
         values.put("User_Sex", userSex);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
     public void changeBirth(String userId, java.sql.Date userBirth) {
@@ -254,6 +265,7 @@ public class UserDao {
         values.put("User_Birth", String.valueOf(userBirth));
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
     public void changeTall(String userId, String userTall) {
@@ -262,6 +274,7 @@ public class UserDao {
         values.put("User_Tall", userTall);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
     public void changeWeight(String userId, String userWeight) {
@@ -270,6 +283,7 @@ public class UserDao {
         values.put("User_Real_weight", userWeight);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
     public void changeExpectWeight(String userId, Float userEWeight) {
@@ -278,6 +292,7 @@ public class UserDao {
         values.put("User_Expect_weight", String.valueOf(userEWeight));
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
     public void changeShape(String userId, String userShape) {
@@ -286,6 +301,7 @@ public class UserDao {
         values.put("User_Shape", userShape);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
     public void changeCareer(String userId, String userCareer) {
@@ -294,6 +310,7 @@ public class UserDao {
         values.put("Career", userCareer);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
     public void changeIntensity(String userId, String userIntensity) {
@@ -302,6 +319,7 @@ public class UserDao {
         values.put("User_Intensity", userIntensity);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
     public void changePassword(String userId, String userPassword) {
@@ -310,9 +328,10 @@ public class UserDao {
         values.put("password", userPassword);
         UserDb.update("Login", values, "User_id = ?", new String[]{userId});
         UserDb.close();
+        UserdbHelper.close();
     }
 
-    private byte[] getPicture(Drawable drawable) {
+    private byte[] getPicture(Drawable drawable) throws IOException {
         if (drawable == null) {
             return null;
         }
@@ -320,6 +339,8 @@ public class UserDao {
         Bitmap bitmap = bitmapDrawable.getBitmap();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-        return os.toByteArray();
+        byte[] ba = os.toByteArray();
+        os.close();
+        return ba;
     }
 }

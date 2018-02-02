@@ -28,7 +28,7 @@ public class Food_Record_all extends AppCompatActivity implements View.OnClickLi
     private GridView gridView;
     private SimpleAdapter sim_adapter;
     private LinearLayout add_food_LL;
-    Bundle bundle_from_MA;
+    private Bundle bundle_from_MA;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class Food_Record_all extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         bundle_from_MA = intent.getExtras();
 
         setSupportActionBar(toolbar);
@@ -86,9 +86,9 @@ public class Food_Record_all extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_food_record_LL:
-                Intent intent=new Intent(Food_Record_all.this,Food_searchToAdd.class);
-                intent.putExtras(bundle_from_MA);
-                startActivity(intent);
+                Intent intent1 = new Intent(Food_Record_all.this, Food_searchToAdd.class);
+                intent1.putExtras(bundle_from_MA);
+                startActivity(intent1);
                 break;
         }
     }

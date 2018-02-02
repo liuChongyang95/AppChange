@@ -24,7 +24,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class Food_searchToAdd extends AppCompatActivity implements View.OnClickListener {
-    Bundle bundle_from_FRa;
+    private Bundle bundle_from_FRa;
     private String getId;
     private String foodName;
     private Drawable mQuery;
