@@ -6,7 +6,8 @@
     package="com.example.dapp">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -60,12 +61,13 @@
         <activity
             android:name=".Register_career"
             android:label="职业选择" />
-        <!--<activity android:name=".ScaleRuler_tall_weight"></activity>-->
         <activity
             android:name=".User_info_All"
             android:label="个人信息" />
+        <activity android:name=".Food_searchToAdd" />
         <activity
-            android:name=".Food_searchToAdd"/>
+            android:name=".All_nutrition"
+            android:label="营养信息" />
 
     </application>
 

@@ -186,7 +186,7 @@ public class DrawUtil {
         return width;
     }
 
-    public static int getTabletScreenHeight(Context context) {
+    private static int getTabletScreenHeight(Context context) {
         int height = 0;
         if (context != null) {
             WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -199,7 +199,7 @@ public class DrawUtil {
                     sMethodForHeight = sClass.getMethod("getRealHeight");
                 }
                 height = (Integer) sMethodForHeight.invoke(display);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
 

@@ -15,17 +15,19 @@
         android:layout_marginLeft="10dp"
         android:orientation="vertical"
         android:layout_gravity="center_vertical"
-        >
+        android:layout_marginStart="10dp">
 
         <TextView
             android:id="@+id/search_fruit_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="17sp"
             android:layout_gravity="center_vertical"
             />
 
         <TextView
             android:id="@+id/search_fruit_nutrition"
+            android:textSize="17sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

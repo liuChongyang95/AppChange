@@ -37,7 +37,6 @@ import SearchDao.UserDao;
 import Util.DrawUtil;
 import View.DecimalScaleRulerView;
 import View.ScaleRulerView;
-import butterknife.ButterKnife;
 import Util.Staticfinal_Value;
 
 /**
@@ -105,7 +104,6 @@ public class Register_main extends AppCompatActivity {
         mHeightWheelView = findViewById(R.id.scaleWheelView_height);
 //        btn_choosen_result = findViewById(R.id.btn_choose_result);
 
-        ButterKnife.bind(this);  //依赖注入
         init();
 
         Toolbar toolbar = findViewById(R.id.register_toolBar);
@@ -413,6 +411,5 @@ public class Register_main extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.bind(this);
     }
 }
