@@ -24,11 +24,6 @@ import SearchDao.FruitDao;
 
 public class FruitSearch extends AppCompatActivity {
 
-    private List<Fruit> fruitSearchList = new ArrayList<>();
-    private ListView searchListView;
-    private String searchFruitText;
-    private FruitDao fruitDao;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,12 +38,12 @@ public class FruitSearch extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        searchListView = findViewById(R.id.fruit_search);
+        ListView searchListView = findViewById(R.id.fruit_search);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        searchFruitText = bundle.getString("searchText");
-        fruitDao = new FruitDao(FruitSearch.this);
-        fruitSearchList = fruitDao.searchFruit(searchFruitText);
+        String searchFruitText = bundle.getString("searchText");
+        FruitDao fruitDao = new FruitDao(FruitSearch.this);
+        List<Fruit> fruitSearchList = fruitDao.searchFruit(searchFruitText);
         if (fruitSearchList.size() == 0) {
             Intent intent_null = new Intent(this, SearchNullResult.class);
             startActivity(intent_null);

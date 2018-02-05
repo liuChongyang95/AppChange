@@ -9,9 +9,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import Fragment_fs.Fragment_FS_GI;
@@ -25,10 +27,11 @@ import SearchDao.FoodDao;
  * Created by Administrator on 2017/12/28.
  */
 
-public class FruitSelect extends AppCompatActivity {
+public class FruitSelect extends AppCompatActivity implements View.OnClickListener {
     private String fruitName;
     private Bundle bundle;
     private FoodDao foodDao = new FoodDao(this);
+    private RadioButton[] bottom_rbs = new RadioButton[2];
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class FruitSelect extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.fruit_message);
         Toolbar toolbar = findViewById(R.id.toolBar_fS);
@@ -61,6 +64,10 @@ public class FruitSelect extends AppCompatActivity {
         food_title();
         food_nutrition();
         food_gi();
+
+        bottom_rbs[0] = findViewById(R.id.fs_bottomVS);
+        bottom_rbs[1] = findViewById(R.id.fs_bottomRec);
+
     }
 
     private void food_title() {
@@ -87,5 +94,14 @@ public class FruitSelect extends AppCompatActivity {
         fragment_fs_gi.loading_GI(GI, GI_per);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fs_bottomVS:
+
+                break;
+
+        }
+    }
 }
 

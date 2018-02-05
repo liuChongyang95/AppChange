@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:layout_height="wrap_content"
     android:background="#FDF5E6"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolBar_fS"
@@ -33,31 +32,82 @@
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#FFC1C1" />
-
-    <fragment
-        android:id="@+id/title_fragment"
-        android:name="Fragment_fs.Fragment_FS_titalinfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <fragment
-        android:id="@+id/nutrition_fragment"
-        android:name="Fragment_fs.Fragment_FS_nutritioninfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <View android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:background="#FFC1C1"
-        />
-    <fragment
-        android:id="@+id/gi_fragment"
-        android:name="Fragment_fs.Fragment_FS_GI"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp" />
-</LinearLayout>
+        android:layout_above="@id/bottomRG_view"
+        android:layout_below="@id/toolBar_fS">
+
+        <LinearLayout
+            android:id="@+id/fm_ll_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#FFC1C1" />
+
+            <fragment
+                android:id="@+id/title_fragment"
+                android:name="Fragment_fs.Fragment_FS_titalinfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <fragment
+                android:id="@+id/nutrition_fragment"
+                android:name="Fragment_fs.Fragment_FS_nutritioninfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="#FFC1C1" />
+
+            <fragment
+                android:id="@+id/gi_fragment"
+                android:name="Fragment_fs.Fragment_FS_GI"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/bottomRG_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/fs_bottomMenu"
+        android:background="#FFC1C1" />
+
+    <RadioGroup
+        android:id="@+id/fs_bottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FDF5E6"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/fs_bottomVS"
+            style="@style/BottomMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:drawableTop="@drawable/compare"
+            android:text="试算" />
+
+        <RadioButton
+            android:id="@+id/fs_bottomRec"
+            style="@style/BottomMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/selected_gray"
+            android:text="记录" />
+
+    </RadioGroup>
+</RelativeLayout>

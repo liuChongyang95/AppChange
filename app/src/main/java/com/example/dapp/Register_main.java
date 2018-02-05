@@ -254,7 +254,6 @@ public class Register_main extends AppCompatActivity {
 
     private void init() {
 
-//        mWeightValue.setText(mWeight + "");
         mWeightValueTwo.setText(mWeight + "kg");
         mHeightValue.setText((int) mHeight + "cm");
         float mMinHeight = 100;
@@ -267,14 +266,7 @@ public class Register_main extends AppCompatActivity {
                 mHeight = value;
             }
         });
-//        mWeightWheelView.initViewParam(mWeight, mMaxWeight, mMinWeight);
-//        mWeightWheelView.setValueChangeListener(new ScaleRulerView.OnValueChangeListener() {
-//            @Override
-//            public void onValueChange(float value) {
-//                mWeightValue.setText((int) value + "kg");
-//                mWeight = value;
-//            }
-//        });
+
         mWeightRulerView.setParam(DrawUtil.dip2px(10), DrawUtil.dip2px(32), DrawUtil.dip2px(24),
                 DrawUtil.dip2px(14), DrawUtil.dip2px(9), DrawUtil.dip2px(12));
         mWeightRulerView.initViewParam(mWeight, 20.0f, 200.0f, 1);
@@ -324,7 +316,6 @@ public class Register_main extends AppCompatActivity {
             }
             register_birth_str = zc_year + "-" + zc_month + "-" + zc_day;
             register_birth_tv.setText(register_birth_str);
-//            register_birth_str_date=Timestamp.valueOf( register_birth_str);
             register_birth_str_date = java.sql.Date.valueOf(register_birth_str);
             Toast.makeText(view.getContext(), register_birth_str, Toast.LENGTH_SHORT).show();
         }

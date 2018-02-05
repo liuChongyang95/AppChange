@@ -79,8 +79,10 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
         setContentView(R.layout.user_info_edit);
-        RelativeLayout all_edit = findViewById(R.id.relative_all_edit);
         Toolbar toolbar = findViewById(R.id.user_info_edit_toolbar);
         edit_user_photo = findViewById(R.id.user_info_edit_photo);
         TextView edit_user_ID = findViewById(R.id.user_info_medical_id);
@@ -127,17 +129,6 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
         edit_user_age.setText(String.valueOf(a));
 
 
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.black);
-        Bitmap bitmap = bitmapDrawable.getBitmap();
-        Drawable register_bg = setBlurBackground(bitmap);
-        all_edit.setBackground(register_bg);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private Drawable setBlurBackground(Bitmap bmp) {
-        final Bitmap blurBmp = Fastblur.fastblur(User_info_All.this, bmp, 13);//0-25，表示模糊值
-        final Drawable drawable_bg = MainAll.getDrawable(User_info_All.this, blurBmp);//将bitmap类型图片 转为 Drawable类型
-        return drawable_bg;
     }
 
     @SuppressLint("RestrictedApi")

@@ -28,7 +28,7 @@ public class FoodDao {
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 Food food = new Food();
-                food.setId(c.getString(c.getColumnIndex("Food_dic_id")));
+                food.setEnergy(c.getString(c.getColumnIndex("Food_dic_energy")));
                 food.setName(c.getString(c.getColumnIndex("Food_dic_name")));
                 foods.add(food);
                 c.moveToNext();

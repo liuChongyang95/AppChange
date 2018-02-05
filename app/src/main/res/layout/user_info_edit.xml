@@ -4,7 +4,7 @@
     android:id="@+id/relative_all_edit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ABABAB"
+    android:background="#FDF5E6"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:padding="10dp">
@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#FFEFD5"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="头像:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min_wh_1" />
+                        android:src="@drawable/edit_gray" />
 
 
                 </RelativeLayout>
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="用户ID:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -96,7 +96,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
             </LinearLayout>
 
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="昵称:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -125,7 +125,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -138,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min_wh_1" />
+                        android:src="@drawable/edit_gray" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="登录账号:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -164,7 +164,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
 
@@ -184,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="性别:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -195,7 +195,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -208,7 +208,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min_wh_1" />
+                        android:src="@drawable/edit_gray" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -227,7 +227,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="出生日期:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -238,7 +238,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -251,7 +251,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min_wh_1" />
+                        android:src="@drawable/edit_gray"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -266,7 +266,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="年龄:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -276,7 +276,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
             </LinearLayout>
@@ -295,7 +295,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="身高:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -306,7 +306,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -319,7 +319,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min_wh_1" />
+                        android:src="@drawable/edit_gray" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -338,7 +338,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="实际体重:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -349,7 +349,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -362,7 +362,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min_wh_1" />
+                        android:src="@drawable/edit_gray"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -377,7 +377,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="理想体重:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -388,7 +388,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
             </LinearLayout>
 
@@ -406,7 +406,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="职业:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -417,7 +417,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -430,7 +430,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min_wh_1" />
+                        android:src="@drawable/edit_gray" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -445,7 +445,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="劳动强度:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -456,7 +456,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
             </LinearLayout>
@@ -471,7 +471,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="体型:"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <TextView
@@ -482,7 +482,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
             </LinearLayout>
@@ -501,7 +501,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="更改密码"
-                    android:textColor="#fff"
+
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -514,7 +514,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/edit_min_wh_1" />
+                        android:src="@drawable/edit_gray"/>
                 </RelativeLayout>
 
             </LinearLayout>
