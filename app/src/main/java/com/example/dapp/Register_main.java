@@ -57,7 +57,6 @@ public class Register_main extends AppCompatActivity {
     private String sex;
     private String register_birth_str;//出生日期
     private TextView register_birth_tv;
-    private Date register_birth_str_date;
     private DBHelper dbHelper;
     private String register_shape;
     private TextView register_career_tv;
@@ -65,20 +64,10 @@ public class Register_main extends AppCompatActivity {
 
     ScaleRulerView mHeightWheelView;
     TextView mHeightValue;
-    ScaleRulerView mWeightWheelView;
-    TextView mWeightValue;
     DecimalScaleRulerView mWeightRulerView;
     TextView mWeightValueTwo;
-    Button btn_choosen_result;
-    BigDecimal b_mWeight;
-
-
     private float mHeight = 170;
-
-
     private float mWeight = 60;
-    private float mMaxWeight = 200;
-    private float mMinWeight = 25;
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -90,19 +79,18 @@ public class Register_main extends AppCompatActivity {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
         setContentView(R.layout.register_app);
         Staticfinal_Value sfv = new Staticfinal_Value();
         userDao = new UserDao(this);
         dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
 
-
-//        mWeightWheelView = findViewById(R.id.scaleWheelView_weight);
-//        mWeightValue = findViewById(R.id.tv_user_weight_value);
         mHeightValue = findViewById(R.id.tv_user_height_value);
         mWeightRulerView = findViewById(R.id.ruler_weight);
         mWeightValueTwo = findViewById(R.id.tv_user_weight_value_two);
         mHeightWheelView = findViewById(R.id.scaleWheelView_height);
-//        btn_choosen_result = findViewById(R.id.btn_choose_result);
 
         init();
 
@@ -145,25 +133,8 @@ public class Register_main extends AppCompatActivity {
             }
         });
 
-//        模糊图片
-//        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.warmbg);
-//        Bitmap bitmap = bitmapDrawable.getBitmap();
-//        RelativeLayout relativeLayout = findViewById(R.id.register_relative);
-//        Drawable register_bg = setBlurBackground(bitmap);
-//        relativeLayout.setBackground(register_bg);
-//
     }
-//
-//    private Drawable setBlurBackground(Bitmap bmp) {
-//        final Bitmap blurBmp = Fastblur.fastblur(Register_main.this, bmp, 20);//0-25，表示模糊值
-//        final Drawable drawable = Register_main.getDrawable(Register_main.this, blurBmp);//将bitmap类型图片 转为 Drawable类型
-//        return drawable;
-//    }
-//
-//    //bitmap 转 drawable
-//    public static Drawable getDrawable(Context context, Bitmap bm) {
-//        BitmapDrawable bd = new BitmapDrawable(context.getResources(), bm);
-//        return bd;    }
+
 
 
     @Override
@@ -185,11 +156,6 @@ public class Register_main extends AppCompatActivity {
 
                 float register_tall_str = mHeight;
                 float register_weight_str_amb = mHeight - 105;
-//                try {
-//                    register_age = getAge(register_birth_str_date);//计算年龄
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
                 register_shape = getShape(register_weight_str, register_weight_str_amb);
                 String register_intensity_str = userDao.getIntensity(register_career_str);
 
@@ -218,9 +184,7 @@ public class Register_main extends AppCompatActivity {
                     }
                     values_User.put("User_Intensity", register_intensity_str);
 
-
 //                    values_User.put("Record_time", record_time.getTime());
-
 
                     values_Login.put("Username", register_name_str);//用户名
                     values_Login.put("password", register_password_str);
@@ -266,7 +230,6 @@ public class Register_main extends AppCompatActivity {
                 mHeight = value;
             }
         });
-
         mWeightRulerView.setParam(DrawUtil.dip2px(10), DrawUtil.dip2px(32), DrawUtil.dip2px(24),
                 DrawUtil.dip2px(14), DrawUtil.dip2px(9), DrawUtil.dip2px(12));
         mWeightRulerView.initViewParam(mWeight, 20.0f, 200.0f, 1);
@@ -275,7 +238,6 @@ public class Register_main extends AppCompatActivity {
             public void onValueChange(float value) {
                 mWeightValueTwo.setText((int) value + "kg");
                 mWeight = value;
-
             }
         });
     }
@@ -316,7 +278,6 @@ public class Register_main extends AppCompatActivity {
             }
             register_birth_str = zc_year + "-" + zc_month + "-" + zc_day;
             register_birth_tv.setText(register_birth_str);
-            register_birth_str_date = java.sql.Date.valueOf(register_birth_str);
             Toast.makeText(view.getContext(), register_birth_str, Toast.LENGTH_SHORT).show();
         }
     };
@@ -356,7 +317,7 @@ public class Register_main extends AppCompatActivity {
     }
 
 
-    public int getAge(Date birthDay) throws Exception {
+    public int getAge(Date birthDay) {
         Calendar cal = Calendar.getInstance();
         if (cal.before(birthDay)) {
             throw new IllegalArgumentException("The birthDay is before Now.It 's unbelievable!");
@@ -380,7 +341,6 @@ public class Register_main extends AppCompatActivity {
         return age;
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -394,13 +354,4 @@ public class Register_main extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

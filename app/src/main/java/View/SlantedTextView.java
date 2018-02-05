@@ -43,7 +43,7 @@ public class SlantedTextView extends View {
     private float mSlantedLength = 40;
     private float mTextSize = 16;
     private int mSlantedBackgroundColor = Color.TRANSPARENT;
-    private int mTextColor = Color.WHITE;
+    private int mTextColor = Color.GRAY;
     private String mSlantedText = "";
     private int mMode = MODE_LEFT;
 

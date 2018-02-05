@@ -6,6 +6,7 @@ package View;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -79,12 +80,12 @@ public class DecimalScaleRulerView extends View {
 
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTextSize(DrawUtil.sp2px(16));
-        mTextPaint.setColor(0xFFFFFF);
+        mTextPaint.setColor(Color.GRAY);
         mTextHeight = TextUtil.getFontHeight(mTextPaint);
 
         mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLinePaint.setStrokeWidth(mLineWidth);
-        mLinePaint.setColor(0xFFFFFF);
+        mLinePaint.setColor(Color.GRAY);
     }
 
     public void setParam(int itemSpacing, int maxLineHeight, int middleLineHeight, int minLineHeight, int textMarginTop, int textSize) {
