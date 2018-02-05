@@ -4,7 +4,7 @@
     android:id="@+id/main_all_LL"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3000"
+    android:background="#FDF5E6"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -13,9 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFC1C1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,8 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="XXXXX-XXXXX"
-            android:textColor="#fff" />
+            android:text="XXXXX-XXXXX" />
 
         <Button
             android:id="@+id/user_info_change"
@@ -44,8 +48,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/check_border"
             android:gravity="center"
-            android:text="@string/user_info_change_img"
-            android:textColor="#FFF" />
+            android:text="@string/user_info_change_img" />
 
         <!--作者：gyymz1993-->
         <!--链接：https://www.jianshu.com/p/e5e8a98fc5d9-->
@@ -53,6 +56,11 @@
         <!--著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。-->
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFC1C1" />
 
     <GridView
         android:id="@+id/gridView"

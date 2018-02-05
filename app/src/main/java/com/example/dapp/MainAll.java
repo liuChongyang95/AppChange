@@ -24,6 +24,8 @@ import java.util.Map;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -34,6 +36,9 @@ import android.widget.TextView;
 import SearchDao.UserDao;
 import Util.Fastblur;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.graphics.Color.BLACK;
+import static android.graphics.Color.TRANSPARENT;
 
 public class MainAll extends AppCompatActivity implements View.OnClickListener {
     private List<Map<String, Object>> data_list;
@@ -59,8 +64,14 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+//        作者：王业
+//        链接：https://www.zhihu.com/question/31994153/answer/100408273
+//        来源：知乎
+//        著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
         setContentView(R.layout.main_all);
-        Log.d("MainAll", "onCreate: ");
         user_photo = findViewById(R.id.user_info_pic);
         user_name = findViewById(R.id.user_info);
         Button user_change = findViewById(R.id.user_info_change);
@@ -79,6 +90,7 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         toolbar.getBackground().setAlpha(0);
         setSupportActionBar(toolbar);
+        
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,11 +138,11 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
             }
         });
         //模糊图片
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.black);
-        Bitmap bitmap = bitmapDrawable.getBitmap();
-        LinearLayout linearLayout = findViewById(R.id.main_all_LL);
-        Drawable register_bg = setBlurBackground(bitmap);
-        linearLayout.setBackground(register_bg);
+//        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.black);
+//        Bitmap bitmap = bitmapDrawable.getBitmap();
+//        LinearLayout linearLayout = findViewById(R.id.main_all_LL);
+//        Drawable register_bg = setBlurBackground(bitmap);
+//        linearLayout.setBackground(register_bg);
     }
 
     @Override
@@ -145,12 +157,12 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private Drawable setBlurBackground(Bitmap bmp) {
-        final Bitmap blurBmp = Fastblur.fastblur(MainAll.this, bmp, 13);//0-25，表示模糊值
-        return getDrawable(this, blurBmp);
-    }
-
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    private Drawable setBlurBackground(Bitmap bmp) {
+//        final Bitmap blurBmp = Fastblur.fastblur(MainAll.this, bmp, 13);//0-25，表示模糊值
+//        return getDrawable(this, blurBmp);
+//    }
+//
     //bitmap 转 drawable
     public static Drawable getDrawable(Context context, Bitmap bm) {
         return new BitmapDrawable(context.getResources(), bm);

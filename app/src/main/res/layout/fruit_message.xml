@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="#FDF5E6"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -49,6 +50,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <View android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#FFC1C1"
+        />
     <fragment
         android:id="@+id/gi_fragment"
         android:name="Fragment_fs.Fragment_FS_GI"
