@@ -30,7 +30,6 @@ import Database.DBHelper;
 public class UserDao {
 
     private DBHelper UserdbHelper;
-    private Context context;
     private String userInfo;
 
 

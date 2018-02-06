@@ -266,7 +266,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="年龄:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -276,7 +275,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-
                     android:textSize="17sp" />
 
             </LinearLayout>
@@ -295,7 +293,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="身高:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -306,7 +303,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-
                     android:textSize="17sp" />
 
                 <RelativeLayout

@@ -94,6 +94,7 @@ public class FruitMainActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
 //                    bundle.putString("fruit_name", fruit.getRi_Food_name());
                     bundle.putString("fruit_name", food.getName());
+                    bundle.putString("from_Login_User_id",userId);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }

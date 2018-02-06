@@ -28,7 +28,6 @@ import Util.Staticfinal_Value;
 
 public class FruitDao {
     private SQLiteDatabase fruitsDb;
-    private Context context;
     private String fruitName;
     private String fruitId;
     private String fruitEp_id;

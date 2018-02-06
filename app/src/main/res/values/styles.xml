@@ -18,4 +18,6 @@
         <item name="android:textSize">17sp</item>
         <item name="android:background">#FDF5E6</item>
     </style>
+
+
 </resources>

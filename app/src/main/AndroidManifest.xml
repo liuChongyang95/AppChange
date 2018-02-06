@@ -65,6 +65,9 @@
         <activity
             android:name=".All_nutrition"
             android:label="营养信息" />
+        <activity
+            android:name=".Nutrition_Test"
+            android:label="营养试算" />
 
     </application>
 

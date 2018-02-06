@@ -1,6 +1,8 @@
 package com.example.dapp;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,11 +14,17 @@ import SearchDao.FoodDao;
 
 public class All_nutrition extends AppCompatActivity {
 
-    private String[] nutrition_item = {"能量", "蛋白质", "脂肪", "碳水化物", "膳食纤维", "水分", "胆固醇", "维生素A", "维生素B1", "维生素B2", "维生素B3", "维生素C", "维生素E", "钙", "钠", "铁", "镁", "锌", "磷", "钾"};
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21) {
+            View view = getWindow().getDecorView();
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
         setContentView(R.layout.fs_all_nutriton);
         Toolbar allNutritionToolbar = findViewById(R.id.all_nutrition_toolbar);
         setSupportActionBar(allNutritionToolbar);
