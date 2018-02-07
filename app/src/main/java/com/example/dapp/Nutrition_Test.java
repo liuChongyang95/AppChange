@@ -88,6 +88,8 @@ public class Nutrition_Test extends AppCompatActivity {
         r_protein = findViewById(R.id.VS_rec_protein);
         ps_protein = findViewById(R.id.VS_protein_ps);
         f_water = findViewById(R.id.VS_user_water);
+        TextView toolbarText_NT = findViewById(R.id.search_text_NT);
+
         TextView r_water = findViewById(R.id.VS_rec_water);
         String ps_water;
         f_CH = findViewById(R.id.VS_user_CH);
@@ -148,6 +150,7 @@ public class Nutrition_Test extends AppCompatActivity {
         float food_quantity = bundle_from_FS.getInt("food_quantity");
         food_name = bundle_from_FS.getString("fruit_name");
 
+        toolbarText_NT.setText(food_name + "  营养试算");
         float percent = food_quantity / 100;
         nf_percent = nf.format(percent);
         Test_energy();

@@ -59,7 +59,9 @@ public class All_nutrition extends AppCompatActivity {
         TextView scrollViewP = findViewById(R.id.scrollView_P);
         TextView scrollViewZn = findViewById(R.id.scrollView_Zn);
         TextView scrollViewNa = findViewById(R.id.scrollView_Na);
+        TextView toolbarText = findViewById(R.id.search_text_FAN);
 
+        toolbarText.setText(foodName+"  营养信息");
         String energy = foodDao.find_energy(foodName) + "千卡";
         scrollViewEnergy.setText(energy);
         String CH = foodDao.find_CH(foodName) + "克";

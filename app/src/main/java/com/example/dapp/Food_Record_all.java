@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class Food_Record_all extends AppCompatActivity implements View.OnClickListener {
     private String[] record_item = {"分析报告", "记录修改", "饮食情况"};
-    private int[] record_pic = {R.drawable.reprot_a, R.drawable.reprot_re, R.drawable.report_con};
+    private int[] record_pic = {R.drawable.analysis_a, R.drawable.reprot_re, R.drawable.report};
     private List<Map<String, Object>> record_list;
     private Toolbar toolbar;
     private GridView gridView;

@@ -136,7 +136,6 @@ public class Register_main extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -160,7 +159,7 @@ public class Register_main extends AppCompatActivity {
                 String register_intensity_str = userDao.getIntensity(register_career_str);
 
 
-                if (register_password2_str.equals(register_password_str) && register_password2_str != null) {
+                if (register_password2_str.equals(register_password_str) && register_password2_str.length() > 0) {
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                     db.beginTransaction();
                     db.execSQL("PRAGMA foreign_keys=ON");
