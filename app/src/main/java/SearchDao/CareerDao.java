@@ -31,6 +31,7 @@ public class CareerDao {
         if (cursor != null) {
             cursor.close();
         }
+        careerDBhelper.close();
         sqLiteDatabase.close();
         return minE;
 
@@ -49,6 +50,7 @@ public class CareerDao {
         if (cursor != null) {
             cursor.close();
         }
+        careerDBhelper.close();
         sqLiteDatabase.close();
         return maxE;
 

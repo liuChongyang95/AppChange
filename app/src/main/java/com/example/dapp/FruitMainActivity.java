@@ -91,11 +91,12 @@ public class FruitMainActivity extends AppCompatActivity {
 //                    Fruit fruit = fruitSearchList.get(i);
                     Food food = foodSearchList.get(i);
                     Intent intent = new Intent(FruitMainActivity.this, FruitSelect.class);
-                    Bundle bundle = new Bundle();
+
 //                    bundle.putString("fruit_name", fruit.getRi_Food_name());
-                    bundle.putString("fruit_name", food.getName());
-                    bundle.putString("from_Login_User_id",userId);
-                    intent.putExtras(bundle);
+                    bundle_from_FsTA.putString("fruit_name", food.getName());
+                    bundle_from_FsTA.putString("fruit_id", food.getId());
+                    bundle_from_FsTA.putString("from_Login_User_id", userId);
+                    intent.putExtras(bundle_from_FsTA);
                     startActivity(intent);
                 }
             }

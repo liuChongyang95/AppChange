@@ -85,7 +85,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="用户ID:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -96,7 +95,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-
                     android:textSize="17sp" />
             </LinearLayout>
 
@@ -114,7 +112,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="昵称:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -125,7 +122,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -153,7 +149,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="登录账号:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -164,7 +159,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-
                     android:textSize="17sp" />
 
 
@@ -184,7 +178,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="性别:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -195,7 +188,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -227,7 +219,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="出生日期:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -238,7 +229,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -334,7 +324,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="实际体重:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -345,7 +334,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -373,7 +361,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="理想体重:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -402,7 +389,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="职业:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -413,7 +399,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-
                     android:textSize="17sp" />
 
                 <RelativeLayout
@@ -441,7 +426,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="劳动强度:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -452,7 +436,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-
                     android:textSize="17sp" />
 
             </LinearLayout>
@@ -467,7 +450,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="体型:"
-
                     android:textSize="17sp" />
 
                 <TextView
@@ -478,7 +460,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
                     android:text="XXX"
-
                     android:textSize="17sp" />
 
             </LinearLayout>
@@ -497,7 +478,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="更改密码"
-
                     android:textSize="17sp" />
 
                 <RelativeLayout

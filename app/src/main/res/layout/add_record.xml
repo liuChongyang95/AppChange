@@ -68,19 +68,19 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="设置日期"
+            android:text="手动设置"
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/date_today"
-            android:clickable="true"
-            android:onClick="onClick"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onClick"
             android:text="今天"
-            android:textSize="20sp"
-            android:focusable="true" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/date_record"
@@ -113,47 +113,65 @@
                 android:id="@+id/fo_breakfast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="早餐"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/fo_beforeL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="上午茶"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/fo_lunch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="中餐"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/fo_afterL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="下午茶"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/fo_dinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="晚餐"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/fo_beforeBF"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="上午茶"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/fo_afterBF"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="下午茶"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/fo_anytime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="间点"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -177,16 +195,26 @@
 
         <EditText
             android:id="@+id/food_size"
+            android:text="100"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="@drawable/roundedrectangle" />
+            android:layout_weight="1"
+            android:digits="0123456789"
+            android:background="@drawable/roundedrectangle"
+            android:maxLength="5" />
+
+        <TextView
+            android:id="@+id/size_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="克"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/food_size_energy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center_horizontal"
             android:hint="热量"
             android:textSize="20sp" />

@@ -44,22 +44,31 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String picture = "User_Photo";
     }
 
-              // 水果模拟
+    // 水果模拟
     private static final String CREATE_FRUIT = "create table Fruit (Ri_Food_name varchar(20) primary key ,Ri_Food_id char(20) not null," +
             "Ri_Food_ep_id varchar(20)," + PicColumns.picture + " blob not null)";
     //           患者信息
     // name昵称
-    private static final String CREATE_USER = "create table User (User_id integer ,User_Nickname " +
+    private static final String CREATE_USER = "create table User (User_id char(16) ,User_Nickname " +
             "varchar(20) not null ," + "  User_Birth date not null, User_Sex char(6) not null, User_Tall varchar(6) not null," +
-            "User_Real_weight varchar(6) not null, User_Expect_weight varchar(6),Record_time TimeStamp DEFAULT(datetime('now', 'localtime')),Career varchar(16)," +
+            "User_Real_weight varchar(6) not null, User_Expect_weight varchar(6),Record_time TimeStamp DEFAULT(date('now', 'localtime')),Career varchar(16)," +
             PicColumns_user.picture + " blob not null ,User_Shape char(6), " +
             "User_Intensity varchar(10) not null,constraint User_PK primary key (User_id,Record_time) ) ";
     //           用户登录
     // name用户名
-    private static final String CREATE_LOGIN = "create table Login(Username varchar(16) primary key ,password varchar(30), User_id integer ,foreign key (User_id) references User(User_id) on update cascade)";
+    private static final String CREATE_LOGIN = "create table Login(Username varchar(16) primary key ,password varchar(30), User_id char(16) ,foreign key (User_id) references User(User_id) on update cascade)";
     //           职业设定
     private static final String CREATE_CAREER = "create table Career(Career varchar(16),Intensity char(14),Shape char(10),Career_energy_min integer,Career_energy_max integer ,constraint Career_PK primary key(Career,Shape))";
 
+    private static final String CREATE_UserFood = "create table UserFood(_id integer primary key autoincrement,User_id char(16),Food_date date," +
+            "Food_class char(14),Food_id char(16) ,Food_ck char(10) not null,Food_intake char(6) not null," +
+            "Food_ingre_1 char(16) not null,Intake_1 char(6) not null,Food_ingre_2 char(16),Intake_2 char(6)," +
+            "Food_ingre_3 char(16),Intake_3 char(6),Food_ingre_4 char(16),Intake_4 char(6),Food_ingre_5 char(16)," +
+            "Intake_5 char(6),foreign key (User_id) references User(User_id) on update cascade)";
+
+    private static final String CREATE_FoodSH = "create table FoodSH(_id integer primary key autoincrement,SH_food_name char(24),SH_tempTime TimeStamp DEFAULT(date('now', 'localtime')) ,User_id char(16),foreign key (User_id) references User(User_id))";
+
+    private static final String CREATE_SH_temp = "create table tempSH(_id integer primary key autoincrement,tempName char(24),tempTime TimeStamp DEFAULT(date('now', 'localtime'))  ,User_id char(16),foreign key(User_id) references User(User_id))";
     private Context mContext;
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -73,6 +82,9 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_USER);
         sqLiteDatabase.execSQL(CREATE_LOGIN);
         sqLiteDatabase.execSQL(CREATE_CAREER);
+        sqLiteDatabase.execSQL(CREATE_UserFood);
+        sqLiteDatabase.execSQL(CREATE_FoodSH);
+        sqLiteDatabase.execSQL(CREATE_SH_temp);
         try {
             initDataBase_Food(sqLiteDatabase, mContext);
         } catch (IOException e) {
@@ -88,10 +100,16 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql_User = " DROP TABLE IF EXISTS User";
         String sql_Login = "DROP TABLE IF EXISTS Login";
         String sql_Career = "DROP TABLE IF EXISTS Career";
+        String sql_UserFood = "DROP TABLE IF EXISTS UserFood";
+        String sql_FoodSH = "DROP TABLE IF EXISTS FoodSH";
+        String sql_SH_temp = "DROP TABLE IF EXISTS SHtemp";
+        sqLiteDatabase.execSQL(sql_FoodSH);
+        sqLiteDatabase.execSQL(sql_SH_temp);
         sqLiteDatabase.execSQL(sql_Fruit);
         sqLiteDatabase.execSQL(sql_Career);
         sqLiteDatabase.execSQL(sql_User);
         sqLiteDatabase.execSQL(sql_Login);
+        sqLiteDatabase.execSQL(sql_UserFood);
         onCreate(sqLiteDatabase);
     }
 

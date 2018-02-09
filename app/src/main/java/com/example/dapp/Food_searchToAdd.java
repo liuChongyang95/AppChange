@@ -1,13 +1,18 @@
 package com.example.dapp;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,18 +26,38 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import Adapter.HistoryAdapter;
+import Database.DBHelper;
+import JavaBean.History;
+import SearchDao.HistoryDao;
+import Util.Staticfinal_Value;
 
 public class Food_searchToAdd extends AppCompatActivity implements View.OnClickListener {
     private Bundle bundle_from_FRa;
+    private List<History> histories = new ArrayList<>();
     private String getId;
     private String foodName;
     private Drawable mQuery;
     private EditText foodSearch;
     private boolean isnull = true;
     private ImageButton search_query;
+    private ListView listHistory;
+    private HistoryAdapter historyAdapter;
+    private Staticfinal_Value sfv;
+    private DBHelper dbHelper;
+    private HistoryDao historyDao;
+    private TextView clearHis;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -52,7 +77,6 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
         getId = bundle_from_FRa.getString("from_Login_User_id");
         Toolbar toolbar = findViewById(R.id.toolbar_food_searchtoAdd);
         foodSearch = findViewById(R.id.myEditText);
-        search_query = findViewById(R.id.search_to_add);
         setSupportActionBar(toolbar);
         toolbar.getBackground().setAlpha(0);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -61,6 +85,8 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
                 Food_searchToAdd.this.finish();
             }
         });
+        sfv = new Staticfinal_Value();
+        dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
         final Resources res = getResources();
         mQuery = res.getDrawable(R.drawable.clear);
         foodSearch.setOnTouchListener(new View.OnTouchListener() {
@@ -128,6 +154,8 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
                         Intent intent = new Intent(Food_searchToAdd.this, FruitMainActivity.class);
                         bundle_from_FRa.putString("searchFood_name", foodName);
                         intent.putExtras(bundle_from_FRa);
+                        transDate();
+
                         startActivity(intent);
                     }
                     return true;
@@ -135,6 +163,25 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
                 return false;
             }
         });
+        listHistory = findViewById(R.id.search_history);
+        historyDao = new HistoryDao(this);
+        histories = historyDao.getHistory(getId);
+        historyAdapter = new HistoryAdapter(this, R.layout.history_item, histories);
+        listHistory.setAdapter(historyAdapter);
+
+        listHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                History history = histories.get(position);
+                bundle_from_FRa.putString("searchFood_name", history.getFoodname());
+                Intent intent = new Intent(Food_searchToAdd.this, FruitMainActivity.class);
+                intent.putExtras(bundle_from_FRa);
+                startActivity(intent);
+            }
+        });
+
+        clearHis = findViewById(R.id.clear_history);
+        clearHis.setOnClickListener(this);
     }
 
 
@@ -146,9 +193,84 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
                 bundle_from_FRa.putString("searchFood_name", foodName);
                 Intent intent = new Intent(Food_searchToAdd.this, FruitMainActivity.class);
                 intent.putExtras(bundle_from_FRa);
+                transDate();
                 startActivity(intent);
                 break;
 
+            case R.id.clear_history:
+                Message message = new Message();
+                message.what = 0;
+                handler.sendMessage(message);
+                break;
         }
+    }
+
+    private Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+                    sqLiteDatabase.execSQL("delete from tempSH");
+                    dbHelper.close();
+                    sqLiteDatabase.close();
+                    onResume();
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+    });
+
+    private void transDate() {
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        ContentValues SHtemp = new ContentValues();
+        ContentValues FSH = new ContentValues();
+        String date;
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        String zc_month;
+        if (month <= 9) {
+            zc_month = 0 + Integer.toString(month);
+        } else zc_month = Integer.toString(month);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String zc_day;
+        if (day <= 9) {
+            zc_day = 0 + Integer.toString(day);
+        } else zc_day = Integer.toString(day);
+        date = year + "-" + zc_month + "-" + zc_day;
+        SHtemp.put("tempName", foodName);
+        SHtemp.put("User_id", getId);
+        SHtemp.put("tempTime", date);
+        FSH.put("SH_food_name", foodName);
+        FSH.put("User_id", getId);
+        try {
+            sqLiteDatabase.insertOrThrow("FoodSH", null, FSH);
+            sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
+        } catch (SQLiteConstraintException e) {
+            FSH.clear();
+            SHtemp.clear();
+        } finally {
+            dbHelper.close();
+            FSH.clear();
+            SHtemp.clear();
+            sqLiteDatabase.close();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listHistory = findViewById(R.id.search_history);
+        HistoryDao historyDao = new HistoryDao(this);
+        histories = historyDao.getHistory(getId);
+        historyAdapter = new HistoryAdapter(this, R.layout.history_item, histories);
+        listHistory.setAdapter(historyAdapter);
+        if (listHistory.getCount() <= 0) {
+            clearHis.setVisibility(View.INVISIBLE);
+        } else clearHis.setVisibility(View.VISIBLE);
+
     }
 }
