@@ -50,6 +50,10 @@ import Util.Staticfinal_Value;
 public class FruitSelect extends AppCompatActivity implements View.OnClickListener {
     private String fruitName;
     private String Energy;
+    private String Protein;
+    private String Fat;
+    private String DF;
+    private String CH;
 
     private Bundle bundle_from_FMA;
     private CareerDao careerDao = new CareerDao(this);
@@ -125,11 +129,30 @@ public class FruitSelect extends AppCompatActivity implements View.OnClickListen
     }
 
     private void food_nutrition() {
-        Energy = foodDao.find_energy(fruitName) + "千卡";
-        String Protein = foodDao.find_protein(fruitName) + "克";
-        String Fat = foodDao.find_fat(fruitName) + "克";
-        String DF = foodDao.find_DF(fruitName) + "克";
-        String CH = foodDao.find_CH(fruitName) + "克";
+        Energy = foodDao.find_energy(fruitName);
+        if (Energy != null && !Energy.equals("…") && !Energy.equals("Tr") && Energy.length() > 0 && !Energy.equals("─") && !Energy.equals("┄"))
+            Energy = foodDao.find_energy(fruitName) + "千卡";
+        else Energy = "—千卡";
+
+        Protein = foodDao.find_protein(fruitName);
+        if (Protein != null && !Protein.equals("…") && !Protein.equals("Tr") && Protein.length() > 0 && !Protein.equals("─") && !Protein.equals("┄"))
+            Protein = foodDao.find_protein(fruitName) + "克";
+        else Protein = "—克";
+
+        Fat = foodDao.find_fat(fruitName);
+        if (Fat != null && !Fat.equals("…") && !Fat.equals("Tr") && Fat.length() > 0 && !Fat.equals("─") && !Fat.equals("┄"))
+            Fat = foodDao.find_fat(fruitName) + "克";
+        else Fat = "—克";
+
+        DF = foodDao.find_DF(fruitName);
+        if (DF != null && !DF.equals("…") && !DF.equals("Tr") && DF.length() > 0 && !DF.equals("─") && !DF.equals("┄"))
+            DF = foodDao.find_DF(fruitName) + "克";
+        else DF = "—克";
+
+        CH = foodDao.find_CH(fruitName);
+        if (CH != null && !CH.equals("…") && !CH.equals("Tr") && CH.length() > 0 && !CH.equals("─") && !CH.equals("┄"))
+            CH = foodDao.find_CH(fruitName) + "克";
+        else CH = "—克";
         Fragment_FS_nutritioninfo fsNutritioninfo = (Fragment_FS_nutritioninfo) getSupportFragmentManager().findFragmentById(R.id.nutrition_fragment);
         fsNutritioninfo.loading_nutrition(Energy, Protein, CH, DF, Fat);
         fsNutritioninfo.setArguments(bundle_from_FMA);
@@ -234,15 +257,23 @@ public class FruitSelect extends AppCompatActivity implements View.OnClickListen
         food_q = add_view.findViewById(R.id.food_size);
         food_q_e = add_view.findViewById(R.id.food_size_energy);
         food_q.setText(initfood_q[0]);
+        float fq;
+        fq = Float.parseFloat(food_q.getText().toString().trim());
+        float percent = fq / 100;
+        String nf_per = nf.format(percent);
+        String g_energy = foodDao.find_energy(fruitName);
+        double energy = Float.valueOf(nf_per) * Float.valueOf(g_energy);
+        String energy_result = "热量" + nf.format(energy) + "千卡";
+        food_q_e.setText(energy_result);
 
         food_q.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                initfood_q[0] = null;
                 float fq;
                 try {
                     fq = Float.parseFloat(food_q.getText().toString().trim());

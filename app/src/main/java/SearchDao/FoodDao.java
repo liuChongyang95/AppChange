@@ -53,6 +53,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_energy"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_energy"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -74,6 +77,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_protein"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_protein"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -95,6 +101,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_DF"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_DF"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -116,6 +125,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_CH"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_CH"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -137,6 +149,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_fat"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_fat"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -158,6 +173,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_water"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_water"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -179,6 +197,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_CLS"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_CLS"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -200,6 +221,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_vA"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_vA"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -221,6 +245,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_vB1"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_vB1"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -242,6 +269,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_vB2"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_vB2"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -263,6 +293,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_vB3"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_vB3"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -284,6 +317,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_vC"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_vC"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -305,6 +341,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_vE"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_vE"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -326,6 +365,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_Fe"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_Fe"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -347,6 +389,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_Ga"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_Ga"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -368,6 +413,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_Na"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_Na"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -389,6 +437,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_P"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_P"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -410,6 +461,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_K"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_K"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -431,6 +485,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_Zn"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_Zn"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -452,6 +509,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_Mg"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_Mg"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -473,6 +533,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_GI"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_GI"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {
@@ -495,6 +558,9 @@ public class FoodDao {
             Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
             if (c.moveToFirst()) {
                 info = c.getString(c.getColumnIndex("Food_dic_GI_per"));
+                if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄")&& !info.equals("─"))
+                    info = c.getString(c.getColumnIndex("Food_dic_GI_per"));
+                else info = "—";
                 c.moveToNext();
             }
             if (!c.isClosed()) {

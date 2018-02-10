@@ -56,7 +56,6 @@ public class Fragment_FS_nutritioninfo extends Fragment {
             @Override
             public void onClick(View v) {
                 foodName = getArguments().getString("fruit_name");
-
                 Intent intent = new Intent(getActivity(), All_nutrition.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("all_nutrition_name", foodName);

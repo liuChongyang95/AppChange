@@ -150,7 +150,7 @@ public class Nutrition_Test extends AppCompatActivity {
         float food_quantity = bundle_from_FS.getInt("food_quantity");
         food_name = bundle_from_FS.getString("fruit_name");
 
-        toolbarText_NT.setText(food_name + "  营养试算");
+        toolbarText_NT.setText(food_name + "营养试算");
         float percent = food_quantity / 100;
         nf_percent = nf.format(percent);
         Test_energy();
@@ -203,190 +203,190 @@ public class Nutrition_Test extends AppCompatActivity {
     private void Test_protein() {
         String info;
         String g_protein = foodDao.find_protein(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "蛋白质 " + nf.format(fo_nutrition) + "克";
-        } else info = "—";
+        } else info = "蛋白质 —克";
         f_protein.setText(info);
     }
 
     private void Test_fat() {
         String info;
         String g_protein = foodDao.find_fat(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "脂肪 " + nf.format(fo_nutrition) + "克";
-        } else info = "—";
+        } else info = "脂肪 —克";
         f_fat.setText(info);
     }
 
     private void Test_water() {
         String info;
         String g_protein = foodDao.find_water(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "水分 " + nf.format(fo_nutrition) + "克";
-        } else info = "—";
+        } else info = "水分 —克";
         f_water.setText(info);
     }
 
     private void Test_CH() {
         String info;
         String g_protein = foodDao.find_CH(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "碳水化物 " + nf.format(fo_nutrition) + "克";
-        } else info = "—";
+        } else info = "碳水化物 —克";
         f_CH.setText(info);
     }
 
     private void Test_DF() {
         String info;
         String g_protein = foodDao.find_DF(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "膳食纤维 " + nf.format(fo_nutrition) + "克";
-        } else info = "—";
+        } else info = "膳食纤维 —克";
         f_DF.setText(info);
     }
 
     private void Test_VA() {
         String info;
         String g_protein = foodDao.find_vA(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "维生素A " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "维生素A —毫克";
         f_VA.setText(info);
     }
 
     private void Test_VB1() {
         String info;
         String g_protein = foodDao.find_vB1(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "维生素B1 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "维生素B1 —毫克";
         f_VB1.setText(info);
     }
 
     private void Test_VB2() {
         String info;
         String g_protein = foodDao.find_vB2(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "维生素B2 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "维生素B2 —毫克";
         f_VB2.setText(info);
     }
 
     private void Test_VB3() {
         String info;
         String g_protein = foodDao.find_vB3(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "维生素B3 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info ="维生素B3 —毫克";
         f_VB3.setText(info);
     }
 
     private void Test_VE() {
         String info;
         String g_protein = foodDao.find_vE(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "维生素E " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "维生素E —毫克";
         f_VE.setText(info);
     }
 
     private void Test_VC() {
         String info;
         String g_protein = foodDao.find_vC(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "维生素E " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info ="维生素E —毫克";
         f_VC.setText(info);
     }
 
     private void Test_Na() {
         String info;
         String g_protein = foodDao.find_Na(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "钠 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "钠 —毫克";
         f_NA.setText(info);
     }
 
     private void Test_Fe() {
         String info;
         String g_protein = foodDao.find_Fe(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "铁 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "铁 —毫克";
         f_FE.setText(info);
     }
 
     private void Test_Ga() {
         String info;
         String g_protein = foodDao.find_Ga(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "钙 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "钙 —毫克";
         f_GA.setText(info);
     }
 
     private void Test_Mg() {
         String info;
         String g_protein = foodDao.find_Mg(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "镁 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "镁 —毫克";
         f_MG.setText(info);
     }
 
     private void Test_P() {
         String info;
         String g_protein = foodDao.find_P(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "磷 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "磷 —毫克";
         f_P.setText(info);
     }
 
     private void Test_K() {
         String info;
         String g_protein = foodDao.find_K(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "钾 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info ="钾 —毫克";
         f_K.setText(info);
     }
 
     private void Test_Zn() {
         String info;
         String g_protein = foodDao.find_Zn(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "锌 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "锌 —毫克";
         f_ZN.setText(info);
     }
 
     private void Test_CLS() {
         String info;
         String g_protein = foodDao.find_CLS(food_name);
-        if (g_protein != null && !g_protein.equals("...") && !g_protein.equals("tr") && g_protein.length() > 0 && !g_protein.equals("─")) {
+        if (g_protein != null && !g_protein.equals("…") && !g_protein.equals("Tr") && g_protein.length() > 0 && !g_protein.equals("—") && !g_protein.equals("┄")&& !g_protein.equals("─")) {
             float fo_nutrition = Float.valueOf(nf_percent) * Float.valueOf(g_protein);
             info = "胆固醇 " + nf.format(fo_nutrition) + "毫克";
-        } else info = "—";
+        } else info = "胆固醇 —毫克";
         f_CLS.setText(info);
     }
 }

@@ -14,6 +14,7 @@ import SearchDao.FoodDao;
 
 public class All_nutrition extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,16 +62,17 @@ public class All_nutrition extends AppCompatActivity {
         TextView scrollViewNa = findViewById(R.id.scrollView_Na);
         TextView toolbarText = findViewById(R.id.search_text_FAN);
 
-        toolbarText.setText(foodName+"  营养信息");
+        toolbarText.setText(foodName + "营养信息");
+
         String energy = foodDao.find_energy(foodName) + "千卡";
         scrollViewEnergy.setText(energy);
         String CH = foodDao.find_CH(foodName) + "克";
         scrollViewCH.setText(CH);
         String DF = foodDao.find_DF(foodName) + "克";
         scrollViewDF.setText(DF);
-        String fat = foodDao.find_fat(foodName) + "克";
+        String fat = foodDao.find_fat(foodName)+ "克";
         scrollViewFat.setText(fat);
-        String protein = foodDao.find_protein(foodName) + "克";
+        String protein = foodDao.find_protein(foodName)+ "克";
         scrollViewProtein.setText(protein);
         String water = foodDao.find_water(foodName) + "克";
         scrollViewWater.setText(water);
