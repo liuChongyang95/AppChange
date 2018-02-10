@@ -26,7 +26,7 @@ public class HistoryDao {
     public List<History> getHistory(String userId) {
         List<History> historyList = new ArrayList<>();
         historyDB = dbHelper.getReadableDatabase();
-        String sql = "select tempName from tempSH where User_id = ? order by DATE(tempTime) ASC";
+        String sql = "select tempName from tempSH where User_id = ?  order by datetime(tempTime) desc";
         Cursor cursor = historyDB.rawQuery(sql, new String[]{userId});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {

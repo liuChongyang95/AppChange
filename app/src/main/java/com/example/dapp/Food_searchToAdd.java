@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -154,7 +155,7 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
                         Intent intent = new Intent(Food_searchToAdd.this, FruitMainActivity.class);
                         bundle_from_FRa.putString("searchFood_name", foodName);
                         intent.putExtras(bundle_from_FRa);
-                        transDate();
+                        transData();
 
                         startActivity(intent);
                     }
@@ -176,6 +177,7 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
                 bundle_from_FRa.putString("searchFood_name", history.getFoodname());
                 Intent intent = new Intent(Food_searchToAdd.this, FruitMainActivity.class);
                 intent.putExtras(bundle_from_FRa);
+                transData_ls(history.getFoodname());
                 startActivity(intent);
             }
         });
@@ -193,7 +195,7 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
                 bundle_from_FRa.putString("searchFood_name", foodName);
                 Intent intent = new Intent(Food_searchToAdd.this, FruitMainActivity.class);
                 intent.putExtras(bundle_from_FRa);
-                transDate();
+                transData();
                 startActivity(intent);
                 break;
 
@@ -223,48 +225,53 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
         }
     });
 
-    private void transDate() {
+    private void transData() {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ContentValues SHtemp = new ContentValues();
         ContentValues FSH = new ContentValues();
-        String date;
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        String zc_month;
-        if (month <= 9) {
-            zc_month = 0 + Integer.toString(month);
-        } else zc_month = Integer.toString(month);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        String zc_day;
-        if (day <= 9) {
-            zc_day = 0 + Integer.toString(day);
-        } else zc_day = Integer.toString(day);
-        date = year + "-" + zc_month + "-" + zc_day;
         SHtemp.put("tempName", foodName);
         SHtemp.put("User_id", getId);
-        SHtemp.put("tempTime", date);
         FSH.put("SH_food_name", foodName);
         FSH.put("User_id", getId);
         try {
             sqLiteDatabase.insertOrThrow("FoodSH", null, FSH);
             sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
         } catch (SQLiteConstraintException e) {
-            FSH.clear();
-            SHtemp.clear();
+            sqLiteDatabase.delete("tempSH", "tempName=?", new String[]{foodName});
+            sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
         } finally {
-            dbHelper.close();
             FSH.clear();
             SHtemp.clear();
             sqLiteDatabase.close();
+            dbHelper.close();
+        }
+    }
+
+    private void transData_ls(String foodName){
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        ContentValues SHtemp = new ContentValues();
+        ContentValues FSH = new ContentValues();
+        SHtemp.put("tempName", foodName);
+        SHtemp.put("User_id", getId);
+        FSH.put("SH_food_name", foodName);
+        FSH.put("User_id", getId);
+        try {
+            sqLiteDatabase.insertOrThrow("FoodSH", null, FSH);
+            sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
+        } catch (SQLiteConstraintException e) {
+            sqLiteDatabase.delete("tempSH", "tempName=?", new String[]{foodName});
+            sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
+        } finally {
+            FSH.clear();
+            SHtemp.clear();
+            sqLiteDatabase.close();
+            dbHelper.close();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        listHistory = findViewById(R.id.search_history);
-        HistoryDao historyDao = new HistoryDao(this);
         histories = historyDao.getHistory(getId);
         historyAdapter = new HistoryAdapter(this, R.layout.history_item, histories);
         listHistory.setAdapter(historyAdapter);

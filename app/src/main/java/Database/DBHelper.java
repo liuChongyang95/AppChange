@@ -56,9 +56,11 @@ public class DBHelper extends SQLiteOpenHelper {
             "User_Intensity varchar(10) not null,constraint User_PK primary key (User_id,Record_time) ) ";
     //           用户登录
     // name用户名
-    private static final String CREATE_LOGIN = "create table Login(Username varchar(16) primary key ,password varchar(30), User_id char(16) ,foreign key (User_id) references User(User_id) on update cascade)";
+    private static final String CREATE_LOGIN = "create table Login(Username varchar(16) primary key ,password varchar(30), User_id char(16) ," +
+            "foreign key (User_id) references User(User_id) on update cascade)";
     //           职业设定
-    private static final String CREATE_CAREER = "create table Career(Career varchar(16),Intensity char(14),Shape char(10),Career_energy_min integer,Career_energy_max integer ,constraint Career_PK primary key(Career,Shape))";
+    private static final String CREATE_CAREER = "create table Career(Career varchar(16),Intensity char(14),Shape char(10),Career_energy_min integer,Career_energy_max integer ," +
+            "constraint Career_PK primary key(Career,Shape))";
 
     private static final String CREATE_UserFood = "create table UserFood(_id integer primary key autoincrement,User_id char(16),Food_date date," +
             "Food_class char(14),Food_id char(16) ,Food_ck char(10) not null,Food_intake char(6) not null," +
@@ -66,9 +68,11 @@ public class DBHelper extends SQLiteOpenHelper {
             "Food_ingre_3 char(16),Intake_3 char(6),Food_ingre_4 char(16),Intake_4 char(6),Food_ingre_5 char(16)," +
             "Intake_5 char(6),foreign key (User_id) references User(User_id) on update cascade)";
 
-    private static final String CREATE_FoodSH = "create table FoodSH(_id integer primary key autoincrement,SH_food_name char(24),SH_tempTime TimeStamp DEFAULT(date('now', 'localtime')) ,User_id char(16),foreign key (User_id) references User(User_id))";
+    private static final String CREATE_FoodSH = "create table FoodSH(SH_food_name char(24),SH_Time TimeStamp  DEFAULT CURRENT_TIMESTAMP primary key," +
+            "User_id char(16),foreign key (User_id) references User(User_id))";
 
-    private static final String CREATE_SH_temp = "create table tempSH(_id integer primary key autoincrement,tempName char(24),tempTime TimeStamp DEFAULT(date('now', 'localtime'))  ,User_id char(16),foreign key(User_id) references User(User_id))";
+    private static final String CREATE_SH_temp = "create table tempSH(tempName char(24) primary key,tempTime TimeStamp  DEFAULT CURRENT_TIMESTAMP," +
+            "User_id char(16),foreign key(User_id) references User(User_id))";
     private Context mContext;
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
