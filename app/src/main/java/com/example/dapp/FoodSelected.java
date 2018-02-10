@@ -20,7 +20,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -47,7 +46,7 @@ import Util.Staticfinal_Value;
  * Created by Administrator on 2017/12/28.
  */
 
-public class FruitSelect extends AppCompatActivity implements View.OnClickListener {
+public class FoodSelected extends AppCompatActivity implements View.OnClickListener {
     private String fruitName;
     private String Energy;
     private String Protein;
@@ -94,7 +93,7 @@ public class FruitSelect extends AppCompatActivity implements View.OnClickListen
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
-        setContentView(R.layout.fruit_message);
+        setContentView(R.layout.food_message);
         mInflater = LayoutInflater.from(this);
 
         Toolbar toolbar = findViewById(R.id.toolBar_fS);
@@ -103,7 +102,7 @@ public class FruitSelect extends AppCompatActivity implements View.OnClickListen
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FruitSelect.this.finish();
+                FoodSelected.this.finish();
             }
         });
 
@@ -178,7 +177,7 @@ public class FruitSelect extends AppCompatActivity implements View.OnClickListen
     }
 
     private void VS() {
-        final EditText VS_editText = new EditText(FruitSelect.this);
+        final EditText VS_editText = new EditText(FoodSelected.this);
         VS_editText.setHint("点击输入(最高5位数)");
         VS_editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5)});
         VS_editText.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -196,7 +195,7 @@ public class FruitSelect extends AppCompatActivity implements View.OnClickListen
             public void onClick(DialogInterface dialog, int which) {
                 if (VS_editText.length() > 0) {
                     int quantity = Integer.parseInt(VS_editText.getText().toString().trim());
-                    Intent intent = new Intent(FruitSelect.this, Nutrition_Test.class);
+                    Intent intent = new Intent(FoodSelected.this, Nutrition_Test.class);
                     bundle_from_FMA.putInt("food_quantity", quantity);
                     intent.putExtras(bundle_from_FMA);
                     startActivity(intent);
@@ -230,7 +229,7 @@ public class FruitSelect extends AppCompatActivity implements View.OnClickListen
         today.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                handler = new MyHandler(FruitSelect.this);弱引用
+//                handler = new MyHandler(FoodSelected.this);弱引用
                 Message message = new Message();
                 message.what = 0;
                 handler.sendMessage(message);
@@ -319,9 +318,9 @@ public class FruitSelect extends AppCompatActivity implements View.OnClickListen
                     db.close();
                     Add_dialog.dismiss();
                     dbHelper.close();
-                    Toast.makeText(FruitSelect.this, "添加成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodSelected.this, "添加成功", Toast.LENGTH_SHORT).show();
                 } else
-                    Toast.makeText(FruitSelect.this, "您是不是没设置餐量?", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodSelected.this, "您是不是没设置餐量?", Toast.LENGTH_SHORT).show();
             }
         });
         Add_dialog.show();
@@ -440,7 +439,7 @@ public class FruitSelect extends AppCompatActivity implements View.OnClickListen
                 case 0:
                     initDate = initDate();
                     date_setup.setText(initDate);
-                    Toast.makeText(FruitSelect.this, initDate, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodSelected.this, initDate, Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
                     showDialog(1);
@@ -523,16 +522,16 @@ public class FruitSelect extends AppCompatActivity implements View.OnClickListen
 
 //弱引用
 //    private static class MyHandler extends Handler {
-//        WeakReference<FruitSelect> fruitSelectWeakReference;
+//        WeakReference<FoodSelected> fruitSelectWeakReference;
 //
-//        MyHandler(FruitSelect fruitSelect) {
+//        MyHandler(FoodSelected fruitSelect) {
 //            fruitSelectWeakReference = new WeakReference<>(fruitSelect);
 //        }
 //
 //        @Override
 //        public void handleMessage(Message msg) {
 //            super.handleMessage(msg);
-//            FruitSelect fruitSelect = fruitSelectWeakReference.get();
+//            FoodSelected fruitSelect = fruitSelectWeakReference.get();
 //            if (fruitSelect != null) {
 //                String date;
 //                switch (msg.what) {

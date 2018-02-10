@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import SearchDao.FoodDao;
 
-public class All_nutrition extends AppCompatActivity {
+public class Nutrition_all extends AppCompatActivity {
 
 
     @Override
@@ -32,7 +32,7 @@ public class All_nutrition extends AppCompatActivity {
         allNutritionToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                All_nutrition.this.finish();
+                Nutrition_all.this.finish();
             }
         });
         Intent intent = getIntent();

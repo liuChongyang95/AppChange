@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.dapp.All_nutrition;
+import com.example.dapp.Nutrition_all;
 import com.example.dapp.R;
-
-import SearchDao.FoodDao;
 
 
 public class Fragment_FS_nutritioninfo extends Fragment {
@@ -56,7 +54,7 @@ public class Fragment_FS_nutritioninfo extends Fragment {
             @Override
             public void onClick(View v) {
                 foodName = getArguments().getString("fruit_name");
-                Intent intent = new Intent(getActivity(), All_nutrition.class);
+                Intent intent = new Intent(getActivity(), Nutrition_all.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("all_nutrition_name", foodName);
                 intent.putExtras(bundle);

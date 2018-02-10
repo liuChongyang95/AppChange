@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -43,7 +42,7 @@ import Util.Staticfinal_Value;
  * Created by Administrator on 2018/1/6.
  */
 
-public class Register_main extends AppCompatActivity {
+public class Register extends AppCompatActivity {
 
     private UserDao userDao;
 
@@ -110,7 +109,7 @@ public class Register_main extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(Register_main.this, Register_career.class);
+                intent.setClass(Register.this, CareerList.class);
                 startActivityForResult(intent, 2);
             }
         });
@@ -122,7 +121,7 @@ public class Register_main extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Register_main.this.finish();
+                Register.this.finish();
             }
         });
 
@@ -193,7 +192,7 @@ public class Register_main extends AppCompatActivity {
                         db.insertOrThrow("User", null, values_User);
                         db.insertOrThrow("Login", null, values_Login);
                         db.setTransactionSuccessful();
-                        Toast.makeText(Register_main.this, "注册成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Register.this, "注册成功", Toast.LENGTH_SHORT).show();
                         db.endTransaction();
                         db.close();
                         finish();

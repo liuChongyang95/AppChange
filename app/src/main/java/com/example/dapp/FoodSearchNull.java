@@ -13,7 +13,7 @@ import android.view.View;
  * Created by Administrator on 2017/12/31.
  */
 
-public class SearchNullResult extends AppCompatActivity {
+public class FoodSearchNull extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

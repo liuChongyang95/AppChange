@@ -2,7 +2,6 @@ package com.example.dapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
@@ -17,14 +16,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import Database.DBHelper;
 import SearchDao.UserDao;
 
 /**
  * Created by Administrator on 2018/1/2.
  */
 
-public class Login_App extends AppCompatActivity {
+public class Login extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private String username_str;
@@ -62,7 +60,7 @@ public class Login_App extends AppCompatActivity {
         register.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         register.setTextColor(Color.RED);
         register.setClickable(true);
-        userDao = new UserDao(Login_App.this);
+        userDao = new UserDao(Login.this);
         if (isRemember) {
             username_str = pref.getString("username_pref", "");
             password_str = pref.getString("password_pref", "");
@@ -92,12 +90,12 @@ public class Login_App extends AppCompatActivity {
                     }
                     editor.apply();
 
-                    Toast.makeText(Login_App.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
                     username_str = username.getText().toString().trim();
                     password_str = password.getText().toString().trim();
                     intent_Userid = userDao.getUserId(username_str);
                     Intent intent = new Intent();
-                    intent.setClass(Login_App.this, MainAll.class);
+                    intent.setClass(Login.this, All_function.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("from_Login_User_id", intent_Userid);
                     bundle.putString("from_Login_User_Username",username_str);
@@ -105,7 +103,7 @@ public class Login_App extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     String flag_cause = userDao.failedCause(username_str, password_str);
-                    Toast.makeText(Login_App.this, flag_cause, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, flag_cause, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -113,7 +111,7 @@ public class Login_App extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Login_App.this, Register_main.class);
+                Intent intent = new Intent(Login.this, Register.class);
                 startActivity(intent);
             }
         });

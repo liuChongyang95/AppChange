@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Adapter.FruitAdapter;
@@ -22,7 +21,7 @@ import SearchDao.FruitDao;
  * Created by Administrator on 2017/12/30.
  */
 
-public class FruitSearch extends AppCompatActivity {
+public class FoodSearch extends AppCompatActivity {
 
 
     @Override
@@ -33,7 +32,7 @@ public class FruitSearch extends AppCompatActivity {
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-        setContentView(R.layout.fruit_search);
+        setContentView(R.layout.food_search);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -42,14 +41,14 @@ public class FruitSearch extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String searchFruitText = bundle.getString("searchText");
-        FruitDao fruitDao = new FruitDao(FruitSearch.this);
+        FruitDao fruitDao = new FruitDao(FoodSearch.this);
         List<Fruit> fruitSearchList = fruitDao.searchFruit(searchFruitText);
         if (fruitSearchList.size() == 0) {
-            Intent intent_null = new Intent(this, SearchNullResult.class);
+            Intent intent_null = new Intent(this, FoodSearchNull.class);
             startActivity(intent_null);
             finish();
         } else {
-            FruitAdapter fruitAdapter = new FruitAdapter(FruitSearch.this, R.layout.fruit_item, fruitSearchList);
+            FruitAdapter fruitAdapter = new FruitAdapter(FoodSearch.this, R.layout.food_item, fruitSearchList);
             searchListView.setAdapter(fruitAdapter);
         }
     }

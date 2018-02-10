@@ -9,13 +9,10 @@ import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Credentials;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,29 +26,23 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.Calendar;
 
 import SearchDao.UserDao;
-import Util.Fastblur;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class User_info_All extends AppCompatActivity implements View.OnClickListener {
+public class All_userInfo extends AppCompatActivity implements View.OnClickListener {
     private String get_edit_ID;
     private TextView edit_user_nickname;
     private TextView edit_user_sex;
@@ -104,7 +95,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                User_info_All.this.finish();
+                All_userInfo.this.finish();
             }
         });
         Intent intent = getIntent();
@@ -137,7 +128,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             //修改昵称
             case R.id.user_info_LL_nickname:
-                final EditText editText = new EditText(User_info_All.this);
+                final EditText editText = new EditText(All_userInfo.this);
                 editText.setHint("点击输入");
                 final AlertDialog.Builder inputDialog =
                         new AlertDialog.Builder(this);
@@ -159,15 +150,15 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                     public void onClick(DialogInterface dialog, int which) {
                         if (editText.length() != 0) {
                             userDao.changNickname(get_edit_ID, editText.getText().toString());
-                            Toast.makeText(User_info_All.this, editText.getText().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(All_userInfo.this, editText.getText().toString(), Toast.LENGTH_SHORT).show();
                         } else dialog.dismiss();
                     }
                 }).show();
                 break;
             //头像
             case R.id.user_info_LL_photo:
-                if (ContextCompat.checkSelfPermission(User_info_All.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(User_info_All.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                if (ContextCompat.checkSelfPermission(All_userInfo.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(All_userInfo.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 } else {
                     openAlbum();
                 }
@@ -177,7 +168,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                 final String[] items = {"男性", "女性"};
                 final int[] yourChoice = {-1};
                 AlertDialog.Builder singleChoiceDialog =
-                        new AlertDialog.Builder(User_info_All.this);
+                        new AlertDialog.Builder(All_userInfo.this);
                 singleChoiceDialog.setTitle("修改性别");
                 // 第二个参数是默认选项，此处设置为0
                 singleChoiceDialog.setSingleChoiceItems(items, -1,
@@ -193,7 +184,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                             public void onClick(DialogInterface dialog, int which) {
                                 if (yourChoice[0] != -1) {
                                     userDao.changeSex(get_edit_ID, items[yourChoice[0]]);
-                                    Toast.makeText(User_info_All.this,
+                                    Toast.makeText(All_userInfo.this,
                                             items[yourChoice[0]],
                                             Toast.LENGTH_SHORT).show();
                                 } else dialog.dismiss();
@@ -220,8 +211,8 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
             case R.id.user_info_LL_tall:
                 final String[] edit_result_tall = {null};
                 AlertDialog.Builder tallDialog =
-                        new AlertDialog.Builder(User_info_All.this);
-                final View[] dialogView = {LayoutInflater.from(User_info_All.this)
+                        new AlertDialog.Builder(All_userInfo.this);
+                final View[] dialogView = {LayoutInflater.from(All_userInfo.this)
                         .inflate(R.layout.dialog_tall, null)};
                 final EditText big = dialogView[0].findViewById(R.id.bignumber_tall);
                 final EditText small = dialogView[0].findViewById(R.id.smallnumber_tall);
@@ -242,7 +233,7 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                                             userDao.changeExpectWeight(get_edit_ID, edit_expect_weight);
                                             String editShape = getShape(userDao.getWeight(get_edit_ID), userDao.getExpect_weight(get_edit_ID));
                                             userDao.changeShape(get_edit_ID, editShape);
-                                            Toast.makeText(User_info_All.this, edit_result_tall[0] + "cm", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(All_userInfo.this, edit_result_tall[0] + "cm", Toast.LENGTH_SHORT).show();
                                         } else {
                                             edit_result_tall[0] = big.getText().toString() + "." + small.getText().toString();
                                             userDao.changeTall(get_edit_ID, edit_result_tall[0]);
@@ -250,15 +241,15 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                                             userDao.changeExpectWeight(get_edit_ID, edit_expect_weight);
                                             String editShape = getShape(userDao.getWeight(get_edit_ID), userDao.getExpect_weight(get_edit_ID));
                                             userDao.changeShape(get_edit_ID, editShape);
-                                            Toast.makeText(User_info_All.this, edit_result_tall[0] + "cm", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(All_userInfo.this, edit_result_tall[0] + "cm", Toast.LENGTH_SHORT).show();
                                         }
                                     } else {
                                         dialog.dismiss();
-                                        Toast.makeText(User_info_All.this, "数据可能错误", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(All_userInfo.this, "数据可能错误", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
                                     dialog.dismiss();
-                                    Toast.makeText(User_info_All.this, "无更改信息，或者格式不符合规范", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(All_userInfo.this, "无更改信息，或者格式不符合规范", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -274,8 +265,8 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
             case R.id.user_info_LL_weight:
                 final String[] edit_result_weight = {null};
                 AlertDialog.Builder weightDialog =
-                        new AlertDialog.Builder(User_info_All.this);
-                final View[] dialogView_weight = {LayoutInflater.from(User_info_All.this)
+                        new AlertDialog.Builder(All_userInfo.this);
+                final View[] dialogView_weight = {LayoutInflater.from(All_userInfo.this)
                         .inflate(R.layout.dialog_weight, null)};
                 final EditText big_weight = dialogView_weight[0].findViewById(R.id.bignumber_weight);
                 final EditText small_weight = dialogView_weight[0].findViewById(R.id.smallnumber_weight);
@@ -294,21 +285,21 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                                             userDao.changeWeight(get_edit_ID, edit_result_weight[0]);
                                             String editShape = getShape(userDao.getWeight(get_edit_ID), userDao.getExpect_weight(get_edit_ID));
                                             userDao.changeShape(get_edit_ID, editShape);
-                                            Toast.makeText(User_info_All.this, edit_result_weight[0] + "cm", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(All_userInfo.this, edit_result_weight[0] + "cm", Toast.LENGTH_SHORT).show();
                                         } else {
                                             edit_result_weight[0] = big_weight.getText().toString() + "." + small_weight.getText().toString();
                                             userDao.changeWeight(get_edit_ID, edit_result_weight[0]);
                                             String editShape = getShape(userDao.getWeight(get_edit_ID), userDao.getExpect_weight(get_edit_ID));
                                             userDao.changeShape(get_edit_ID, editShape);
-                                            Toast.makeText(User_info_All.this, edit_result_weight[0] + "cm", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(All_userInfo.this, edit_result_weight[0] + "cm", Toast.LENGTH_SHORT).show();
                                         }
                                     } else {
                                         dialog.dismiss();
-                                        Toast.makeText(User_info_All.this, "数据可能错误", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(All_userInfo.this, "数据可能错误", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
                                     dialog.dismiss();
-                                    Toast.makeText(User_info_All.this, "无更改信息，或者格式不符合规范", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(All_userInfo.this, "无更改信息，或者格式不符合规范", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -322,13 +313,13 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.user_info_LL_career:
                 Intent intent = new Intent();
-                intent.setClass(User_info_All.this, Register_career.class);
+                intent.setClass(All_userInfo.this, CareerList.class);
                 startActivityForResult(intent, 5);
                 break;
             case R.id.user_info_LL_password:
                 AlertDialog.Builder passwordDialog =
-                        new AlertDialog.Builder(User_info_All.this);
-                final View dialogView_password = LayoutInflater.from(User_info_All.this)
+                        new AlertDialog.Builder(All_userInfo.this);
+                final View dialogView_password = LayoutInflater.from(All_userInfo.this)
                         .inflate(R.layout.dialog_password, null);
                 passwordDialog.setTitle("更改密码");
                 passwordDialog.setView(dialogView_password);
@@ -344,9 +335,9 @@ public class User_info_All extends AppCompatActivity implements View.OnClickList
                                 if (password1.getText().toString().trim().equals(password2.getText().toString().trim()) && password1.getText().toString().trim().length() >= 5) {
                                     String editpassword = password1.getText().toString().trim();
                                     userDao.changePassword(get_edit_ID, editpassword);
-                                    Toast.makeText(User_info_All.this, "更改成功", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(All_userInfo.this, "更改成功", Toast.LENGTH_SHORT).show();
                                 } else
-                                    Toast.makeText(User_info_All.this, "密码确认失败，或者长度不够", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(All_userInfo.this, "密码确认失败，或者长度不够", Toast.LENGTH_SHORT).show();
                             }
                         });
                 passwordDialog.show();

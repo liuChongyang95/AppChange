@@ -22,7 +22,7 @@ import JavaBean.Fruit;
 import SearchDao.FoodDao;
 import SearchDao.FruitDao;
 
-public class FruitMainActivity extends AppCompatActivity {
+public class FoodMainActivity extends AppCompatActivity {
 
     private ListView listView;
     private TextView searchEText;
@@ -47,14 +47,14 @@ public class FruitMainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
-        setContentView(R.layout.fruit_main);
+        setContentView(R.layout.food_main);
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         toolbar.getBackground().setAlpha(255);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FruitMainActivity.this.finish();
+                FoodMainActivity.this.finish();
             }
         });
         listView = findViewById(R.id.search_result);
@@ -73,12 +73,12 @@ public class FruitMainActivity extends AppCompatActivity {
         foodSearchList = foodDao.findAllSeason(searchFood_name);
 //        if (fruitSearchList.size() == 0) {
         if (foodSearchList.size() == 0) {
-            Intent intent_null = new Intent(this, SearchNullResult.class);
+            Intent intent_null = new Intent(this, FoodSearchNull.class);
             startActivity(intent_null);
             finish();
         } else {
-            foodAdapter = new FoodAdapter(FruitMainActivity.this, R.layout.fruit_item, foodSearchList);
-//            fruitAdapter = new FruitAdapter(FruitMainActivity.this, R.layout.fruit_item, fruitSearchList);
+            foodAdapter = new FoodAdapter(FoodMainActivity.this, R.layout.food_item, foodSearchList);
+//            fruitAdapter = new FruitAdapter(FoodMainActivity.this, R.layout.food_item, fruitSearchList);
             listView.setAdapter(foodAdapter);
 //      listView.setAdapter(fruitAdapter);
         }
@@ -90,7 +90,7 @@ public class FruitMainActivity extends AppCompatActivity {
                 if (listView.getCount() > 0) {
 //                    Fruit fruit = fruitSearchList.get(i);
                     Food food = foodSearchList.get(i);
-                    Intent intent = new Intent(FruitMainActivity.this, FruitSelect.class);
+                    Intent intent = new Intent(FoodMainActivity.this, FoodSelected.class);
 
 //                    bundle.putString("fruit_name", fruit.getRi_Food_name());
                     bundle_from_FsTA.putString("fruit_name", food.getName());

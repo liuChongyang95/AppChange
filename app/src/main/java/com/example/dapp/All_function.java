@@ -24,23 +24,16 @@ import java.util.Map;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import SearchDao.UserDao;
-import Util.Fastblur;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.graphics.Color.BLACK;
-import static android.graphics.Color.TRANSPARENT;
-
-public class MainAll extends AppCompatActivity implements View.OnClickListener {
+public class All_function extends AppCompatActivity implements View.OnClickListener {
     private List<Map<String, Object>> data_list;
     private UserDao userDao;
     private String from_login_user_id;
@@ -78,7 +71,7 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
         user_change.setOnClickListener(this);
 
 
-        userDao = new UserDao(MainAll.this);
+        userDao = new UserDao(All_function.this);
         Intent intent = getIntent();
         bundle_id = intent.getExtras();
         from_login_user_id = bundle_id.getString("from_Login_User_id");
@@ -94,7 +87,7 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainAll.this.finish();
+                All_function.this.finish();
             }
         });
         final GridView gridView = findViewById(R.id.gridView);
@@ -114,7 +107,7 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
                 switch (position) {
                     //饮食管理
                     case 0:
-                        Intent intent = new Intent(MainAll.this, Food_Record_all.class);
+                        Intent intent = new Intent(All_function.this, Food_allFunction.class);
                         intent.putExtras(bundle_id);
                         startActivity(intent);
                         break;
@@ -147,11 +140,11 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Log.d("MainAll", "onClick: ");
+        Log.d("All_function", "onClick: ");
         switch (view.getId()) {
             case R.id.user_info_change:
                 Intent intent = new Intent();
-                intent.setClass(MainAll.this, User_info_All.class);
+                intent.setClass(All_function.this, All_userInfo.class);
                 intent.putExtras(bundle_id);
                 startActivityForResult(intent, 1);
         }
@@ -159,7 +152,7 @@ public class MainAll extends AppCompatActivity implements View.OnClickListener {
 
 //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 //    private Drawable setBlurBackground(Bitmap bmp) {
-//        final Bitmap blurBmp = Fastblur.fastblur(MainAll.this, bmp, 13);//0-25，表示模糊值
+//        final Bitmap blurBmp = Fastblur.fastblur(All_function.this, bmp, 13);//0-25，表示模糊值
 //        return getDrawable(this, blurBmp);
 //    }
 //

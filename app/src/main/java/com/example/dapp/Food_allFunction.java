@@ -9,10 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Food_Record_all extends AppCompatActivity implements View.OnClickListener {
+public class Food_allFunction extends AppCompatActivity implements View.OnClickListener {
     private String[] record_item = {"分析报告", "记录修改", "饮食情况"};
     private int[] record_pic = {R.drawable.analysis_a, R.drawable.reprot_re, R.drawable.report};
     private List<Map<String, Object>> record_list;
@@ -73,7 +71,7 @@ public class Food_Record_all extends AppCompatActivity implements View.OnClickLi
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Food_Record_all.this.finish();
+                Food_allFunction.this.finish();
             }
         });
 
@@ -94,7 +92,7 @@ public class Food_Record_all extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_food_record_LL:
-                Intent intent1 = new Intent(Food_Record_all.this, Food_searchToAdd.class);
+                Intent intent1 = new Intent(Food_allFunction.this, Food_searchToAdd.class);
                 intent1.putExtras(bundle_from_MA);
                 startActivity(intent1);
                 break;

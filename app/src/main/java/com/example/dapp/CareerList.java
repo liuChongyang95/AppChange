@@ -10,7 +10,7 @@ import android.widget.Button;
 
 
 
-public class Register_career extends AppCompatActivity implements View.OnClickListener {
+public class CareerList extends AppCompatActivity implements View.OnClickListener {
 
     private Button light_1;
     private Button light_2;
@@ -40,7 +40,7 @@ public class Register_career extends AppCompatActivity implements View.OnClickLi
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Register_career.this.finish();
+                CareerList.this.finish();
             }
         });
         light_1 = findViewById(R.id.teacher);

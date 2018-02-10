@@ -20,7 +20,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,11 +30,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import Adapter.HistoryAdapter;
@@ -152,7 +148,7 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
                                     InputMethodManager.HIDE_NOT_ALWAYS);
                     if (!foodSearch.getText().toString().equals("")) {
                         foodName = foodSearch.getText().toString().trim();
-                        Intent intent = new Intent(Food_searchToAdd.this, FruitMainActivity.class);
+                        Intent intent = new Intent(Food_searchToAdd.this, FoodMainActivity.class);
                         bundle_from_FRa.putString("searchFood_name", foodName);
                         intent.putExtras(bundle_from_FRa);
                         transData();
@@ -175,7 +171,7 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 History history = histories.get(position);
                 bundle_from_FRa.putString("searchFood_name", history.getFoodname());
-                Intent intent = new Intent(Food_searchToAdd.this, FruitMainActivity.class);
+                Intent intent = new Intent(Food_searchToAdd.this, FoodMainActivity.class);
                 intent.putExtras(bundle_from_FRa);
                 transData_ls(history.getFoodname());
                 startActivity(intent);
@@ -193,7 +189,7 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
             case R.id.search_to_add:
                 foodName = foodSearch.getText().toString().trim();
                 bundle_from_FRa.putString("searchFood_name", foodName);
-                Intent intent = new Intent(Food_searchToAdd.this, FruitMainActivity.class);
+                Intent intent = new Intent(Food_searchToAdd.this, FoodMainActivity.class);
                 intent.putExtras(bundle_from_FRa);
                 transData();
                 startActivity(intent);
