@@ -41,7 +41,9 @@ public class HistoryAdapter extends ArrayAdapter<History> implements Filterable 
             viewHolder.name = view.findViewById(R.id.history_name_item);
             view.setTag(viewHolder);
         }
-        viewHolder.name.setText(history.getFoodname());
+        if (history != null) {
+            viewHolder.name.setText(history.getFoodname());
+        }
         return view;
     }
 

@@ -33,7 +33,7 @@ import android.widget.TextView;
 import SearchDao.UserDao;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class All_function extends AppCompatActivity implements View.OnClickListener {
+public class AllFunction extends AppCompatActivity implements View.OnClickListener {
     private List<Map<String, Object>> data_list;
     private UserDao userDao;
     private String from_login_user_id;
@@ -71,7 +71,7 @@ public class All_function extends AppCompatActivity implements View.OnClickListe
         user_change.setOnClickListener(this);
 
 
-        userDao = new UserDao(All_function.this);
+        userDao = new UserDao(AllFunction.this);
         Intent intent = getIntent();
         bundle_id = intent.getExtras();
         from_login_user_id = bundle_id.getString("from_Login_User_id");
@@ -87,7 +87,7 @@ public class All_function extends AppCompatActivity implements View.OnClickListe
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                All_function.this.finish();
+                AllFunction.this.finish();
             }
         });
         final GridView gridView = findViewById(R.id.gridView);
@@ -107,7 +107,7 @@ public class All_function extends AppCompatActivity implements View.OnClickListe
                 switch (position) {
                     //饮食管理
                     case 0:
-                        Intent intent = new Intent(All_function.this, Food_allFunction.class);
+                        Intent intent = new Intent(AllFunction.this, FoodAllFunction.class);
                         intent.putExtras(bundle_id);
                         startActivity(intent);
                         break;
@@ -140,11 +140,11 @@ public class All_function extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        Log.d("All_function", "onClick: ");
+        Log.d("AllFunction", "onClick: ");
         switch (view.getId()) {
             case R.id.user_info_change:
                 Intent intent = new Intent();
-                intent.setClass(All_function.this, All_userInfo.class);
+                intent.setClass(AllFunction.this, AllUserInfo.class);
                 intent.putExtras(bundle_id);
                 startActivityForResult(intent, 1);
         }
@@ -152,7 +152,7 @@ public class All_function extends AppCompatActivity implements View.OnClickListe
 
 //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 //    private Drawable setBlurBackground(Bitmap bmp) {
-//        final Bitmap blurBmp = Fastblur.fastblur(All_function.this, bmp, 13);//0-25，表示模糊值
+//        final Bitmap blurBmp = Fastblur.fastblur(AllFunction.this, bmp, 13);//0-25，表示模糊值
 //        return getDrawable(this, blurBmp);
 //    }
 //

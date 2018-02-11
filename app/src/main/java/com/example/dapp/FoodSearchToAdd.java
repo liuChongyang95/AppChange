@@ -40,8 +40,8 @@ import JavaBean.History;
 import SearchDao.HistoryDao;
 import Util.Staticfinal_Value;
 
-public class Food_searchToAdd extends AppCompatActivity implements View.OnClickListener {
-    private Bundle bundle_from_FRa;
+public class FoodSearchToAdd extends AppCompatActivity implements View.OnClickListener {
+    private Bundle bundle_from_FAF;
     private List<History> histories = new ArrayList<>();
     private String getId;
     private String foodName;
@@ -70,8 +70,8 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
         }
         setContentView(R.layout.food_searchtoadd);
         Intent intent = getIntent();
-        bundle_from_FRa = intent.getExtras();
-        getId = bundle_from_FRa.getString("from_Login_User_id");
+        bundle_from_FAF = intent.getExtras();
+        getId = bundle_from_FAF.getString("from_Login_User_id");
         Toolbar toolbar = findViewById(R.id.toolbar_food_searchtoAdd);
         foodSearch = findViewById(R.id.myEditText);
         setSupportActionBar(toolbar);
@@ -79,7 +79,7 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Food_searchToAdd.this.finish();
+                FoodSearchToAdd.this.finish();
             }
         });
         sfv = new Staticfinal_Value();
@@ -143,14 +143,14 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     ((InputMethodManager) foodSearch.getContext().getSystemService
                             (Context.INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(Food_searchToAdd.this.getCurrentFocus
+                            .hideSoftInputFromWindow(FoodSearchToAdd.this.getCurrentFocus
                                             ().getWindowToken(),
                                     InputMethodManager.HIDE_NOT_ALWAYS);
                     if (!foodSearch.getText().toString().equals("")) {
                         foodName = foodSearch.getText().toString().trim();
-                        Intent intent = new Intent(Food_searchToAdd.this, FoodMainActivity.class);
-                        bundle_from_FRa.putString("searchFood_name", foodName);
-                        intent.putExtras(bundle_from_FRa);
+                        Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
+                        bundle_from_FAF.putString("searchFood_name", foodName);
+                        intent.putExtras(bundle_from_FAF);
                         transData();
 
                         startActivity(intent);
@@ -170,9 +170,9 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 History history = histories.get(position);
-                bundle_from_FRa.putString("searchFood_name", history.getFoodname());
-                Intent intent = new Intent(Food_searchToAdd.this, FoodMainActivity.class);
-                intent.putExtras(bundle_from_FRa);
+                bundle_from_FAF.putString("searchFood_name", history.getFoodname());
+                Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
+                intent.putExtras(bundle_from_FAF);
                 transData_ls(history.getFoodname());
                 startActivity(intent);
             }
@@ -188,9 +188,9 @@ public class Food_searchToAdd extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.search_to_add:
                 foodName = foodSearch.getText().toString().trim();
-                bundle_from_FRa.putString("searchFood_name", foodName);
-                Intent intent = new Intent(Food_searchToAdd.this, FoodMainActivity.class);
-                intent.putExtras(bundle_from_FRa);
+                bundle_from_FAF.putString("searchFood_name", foodName);
+                Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
+                intent.putExtras(bundle_from_FAF);
                 transData();
                 startActivity(intent);
                 break;

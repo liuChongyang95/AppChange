@@ -44,9 +44,10 @@ public class FoodAdapter extends ArrayAdapter<Food> implements Filterable {
             viewHolder = (ViewHolder) view.getTag();
 
         }
-        assert food != null;
-        viewHolder.food_dic_energy.setText(food.getEnergy()+"千卡/100克");
-        viewHolder.food_dic_name.setText(food.getName());
+        if (food != null) {
+            viewHolder.food_dic_energy.setText(food.getEnergy()+"千卡/100克");
+            viewHolder.food_dic_name.setText(food.getName());
+        }
         return view;
     }
 

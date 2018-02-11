@@ -35,6 +35,7 @@ public class HistoryDao {
                 historyList.add(history);
             }
         }
+        cursor.close();
         dbHelper.close();
         historyDB.close();
         return historyList;

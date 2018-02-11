@@ -38,7 +38,7 @@
         </activity>
 
         <activity
-            android:name=".All_function"
+            android:name=".AllFunction"
             android:label="糖App" />
         <activity
             android:name=".FoodMainActivity"
@@ -52,22 +52,25 @@
             android:label="用户注册"
             android:launchMode="singleTask" />
         <activity
-            android:name=".Food_allFunction"
+            android:name=".FoodAllFunction"
             android:label="饮食管理" />
 
         <activity
             android:name=".CareerList"
             android:label="职业选择" />
         <activity
-            android:name=".All_userInfo"
+            android:name=".AllUserInfo"
             android:label="个人信息" />
-        <activity android:name=".Food_searchToAdd" />
+        <activity android:name=".FoodSearchToAdd" />
         <activity
             android:name=".Nutrition_all"
             android:label="营养信息" />
         <activity
             android:name=".Nutrition_Test"
             android:label="营养试算" />
+        <activity
+            android:name=".FoodRecordChange"
+            android:label="饮食记录" />
 
     </application>
 

@@ -49,8 +49,10 @@ public class FruitAdapter extends ArrayAdapter<Fruit> implements Filterable {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.food_Ri_Name.setText(fruit.getRi_Food_name());
-        viewHolder.food_Ri_photo.setImageDrawable(fruit.getRi_Food_photo());
+        if (fruit != null) {
+            viewHolder.food_Ri_Name.setText(fruit.getRi_Food_name());
+            viewHolder.food_Ri_photo.setImageDrawable(fruit.getRi_Food_photo());
+        }
         return view;
     }
 

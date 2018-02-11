@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Food_allFunction extends AppCompatActivity implements View.OnClickListener {
+public class FoodAllFunction extends AppCompatActivity implements View.OnClickListener {
     private String[] record_item = {"分析报告", "记录修改", "饮食情况"};
     private int[] record_pic = {R.drawable.analysis_a, R.drawable.reprot_re, R.drawable.report};
     private List<Map<String, Object>> record_list;
@@ -37,9 +37,9 @@ public class Food_allFunction extends AppCompatActivity implements View.OnClickL
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
-        setContentView(R.layout.food_record_all);
+        setContentView(R.layout.food_all_function);
         toolbar = findViewById(R.id.food_record_all_toolbar);
         gridView = findViewById(R.id.foodRecord_gridView);
         add_food_LL = findViewById(R.id.add_food_record_LL);
@@ -56,6 +56,10 @@ public class Food_allFunction extends AppCompatActivity implements View.OnClickL
                     case 0:
                         break;
                     case 1:
+                        Intent intent = new Intent();
+                        intent.setClass(FoodAllFunction.this, FoodRecordChange.class);
+                        intent.putExtras(bundle_from_MA);
+                        startActivity(intent);
                         break;
                     case 2:
                         break;
@@ -71,7 +75,7 @@ public class Food_allFunction extends AppCompatActivity implements View.OnClickL
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Food_allFunction.this.finish();
+                FoodAllFunction.this.finish();
             }
         });
 
@@ -92,7 +96,7 @@ public class Food_allFunction extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_food_record_LL:
-                Intent intent1 = new Intent(Food_allFunction.this, Food_searchToAdd.class);
+                Intent intent1 = new Intent(FoodAllFunction.this, FoodSearchToAdd.class);
                 intent1.putExtras(bundle_from_MA);
                 startActivity(intent1);
                 break;

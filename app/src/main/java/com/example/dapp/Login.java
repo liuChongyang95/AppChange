@@ -95,7 +95,7 @@ public class Login extends AppCompatActivity {
                     password_str = password.getText().toString().trim();
                     intent_Userid = userDao.getUserId(username_str);
                     Intent intent = new Intent();
-                    intent.setClass(Login.this, All_function.class);
+                    intent.setClass(Login.this, AllFunction.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("from_Login_User_id", intent_Userid);
                     bundle.putString("from_Login_User_Username",username_str);
