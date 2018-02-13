@@ -69,7 +69,10 @@
             android:name=".Nutrition_Test"
             android:label="营养试算" />
         <activity
-            android:name=".FoodRecordChange"
+            android:name=".FoodRecordListView"
+            android:label="饮食记录" />
+        <activity
+            android:name=".FoodRecordItem"
             android:label="饮食记录" />
 
     </application>

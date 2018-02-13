@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -17,12 +18,13 @@ import Adapter.UserfoodAdapter;
 import JavaBean.UserFood;
 import SearchDao.FoodRecordDao;
 
-public class FoodRecordChange extends AppCompatActivity {
+public class FoodRecordListView extends AppCompatActivity {
     private Bundle bundleFrom_FAF;
     private String userId;
     private List<UserFood> foodList = new ArrayList<>();
     private ListView listView;
     private UserfoodAdapter adapter;
+    private FoodRecordDao foodRecordDao;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,12 +48,12 @@ public class FoodRecordChange extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FoodRecordChange.this.finish();
+                FoodRecordListView.this.finish();
             }
         });
 
         listView = findViewById(R.id.frc_listView);
-        FoodRecordDao foodRecordDao = new FoodRecordDao(this);
+        foodRecordDao = new FoodRecordDao(this);
         foodList = foodRecordDao.getFoodrecord(userId);
         if (foodList.size() != 0) {
             adapter = new UserfoodAdapter(this, R.layout.foodrecord_item, foodList);
@@ -61,5 +63,25 @@ public class FoodRecordChange extends AppCompatActivity {
             startActivity(intent1);
         }
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UserFood userFood = foodList.get(position);
+                Intent intent2 = new Intent(FoodRecordListView.this, FoodRecordItem.class);
+                bundleFrom_FAF.putString("itemId", String.valueOf(userFood.get_id()));
+                intent2.putExtras(bundleFrom_FAF);
+                startActivity(intent2);
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        foodList=foodRecordDao.getFoodrecord(userId);
+        adapter = new UserfoodAdapter(this, R.layout.foodrecord_item, foodList);
+        listView.setAdapter(adapter);
     }
 }

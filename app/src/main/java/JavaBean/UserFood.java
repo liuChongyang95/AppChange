@@ -19,11 +19,14 @@ public class UserFood {
     private String intake5;
 
     private String foodName;
-    public UserFood(String foodDate, String foodClass, String foodName, String foodIntake) {
+
+    public UserFood(String foodDate, String foodClass, String foodName, String foodIntake, int item_Id) {
+        this.foodId = foodId;
         this.foodDate = foodDate;
         this.foodClass = foodClass;
         this.foodName = foodName;
         this.foodIntake = foodIntake;
+        this._id = item_Id;
     }
 
 

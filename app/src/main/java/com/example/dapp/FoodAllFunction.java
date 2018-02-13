@@ -57,7 +57,7 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
                         break;
                     case 1:
                         Intent intent = new Intent();
-                        intent.setClass(FoodAllFunction.this, FoodRecordChange.class);
+                        intent.setClass(FoodAllFunction.this, FoodRecordListView.class);
                         intent.putExtras(bundle_from_MA);
                         startActivity(intent);
                         break;

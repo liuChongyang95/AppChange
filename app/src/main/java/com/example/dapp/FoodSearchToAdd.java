@@ -152,7 +152,6 @@ public class FoodSearchToAdd extends AppCompatActivity implements View.OnClickLi
                         bundle_from_FAF.putString("searchFood_name", foodName);
                         intent.putExtras(bundle_from_FAF);
                         transData();
-
                         startActivity(intent);
                     }
                     return true;
@@ -225,43 +224,47 @@ public class FoodSearchToAdd extends AppCompatActivity implements View.OnClickLi
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ContentValues SHtemp = new ContentValues();
         ContentValues FSH = new ContentValues();
-        SHtemp.put("tempName", foodName);
-        SHtemp.put("User_id", getId);
-        FSH.put("SH_food_name", foodName);
-        FSH.put("User_id", getId);
-        try {
-            sqLiteDatabase.insertOrThrow("FoodSH", null, FSH);
-            sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
-        } catch (SQLiteConstraintException e) {
-            sqLiteDatabase.delete("tempSH", "tempName=?", new String[]{foodName});
-            sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
-        } finally {
-            FSH.clear();
-            SHtemp.clear();
-            sqLiteDatabase.close();
-            dbHelper.close();
+        if (foodName != null && foodName.length() > 0) {
+            SHtemp.put("tempName", foodName);
+            SHtemp.put("User_id", getId);
+            FSH.put("SH_food_name", foodName);
+            FSH.put("User_id", getId);
+            try {
+                sqLiteDatabase.insertOrThrow("FoodSH", null, FSH);
+                sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
+            } catch (SQLiteConstraintException e) {
+                sqLiteDatabase.delete("tempSH", "tempName=?", new String[]{foodName});
+                sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
+            } finally {
+                FSH.clear();
+                SHtemp.clear();
+                sqLiteDatabase.close();
+                dbHelper.close();
+            }
         }
     }
 
-    private void transData_ls(String foodName){
+    private void transData_ls(String foodName) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ContentValues SHtemp = new ContentValues();
         ContentValues FSH = new ContentValues();
-        SHtemp.put("tempName", foodName);
-        SHtemp.put("User_id", getId);
-        FSH.put("SH_food_name", foodName);
-        FSH.put("User_id", getId);
-        try {
-            sqLiteDatabase.insertOrThrow("FoodSH", null, FSH);
-            sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
-        } catch (SQLiteConstraintException e) {
-            sqLiteDatabase.delete("tempSH", "tempName=?", new String[]{foodName});
-            sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
-        } finally {
-            FSH.clear();
-            SHtemp.clear();
-            sqLiteDatabase.close();
-            dbHelper.close();
+        if (foodName != null && foodName.length() > 0) {
+            SHtemp.put("tempName", foodName);
+            SHtemp.put("User_id", getId);
+            FSH.put("SH_food_name", foodName);
+            FSH.put("User_id", getId);
+            try {
+                sqLiteDatabase.insertOrThrow("FoodSH", null, FSH);
+                sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
+            } catch (SQLiteConstraintException e) {
+                sqLiteDatabase.delete("tempSH", "tempName=?", new String[]{foodName});
+                sqLiteDatabase.insertOrThrow("tempSH", null, SHtemp);
+            } finally {
+                FSH.clear();
+                SHtemp.clear();
+                sqLiteDatabase.close();
+                dbHelper.close();
+            }
         }
     }
 

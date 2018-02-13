@@ -2,6 +2,7 @@ package Adapter;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -51,6 +52,10 @@ public class UserfoodAdapter extends ArrayAdapter<UserFood> implements Filterabl
         }
         if (getItemViewType(position) == 3) {
             viewHolder.TopLine.setVisibility(View.INVISIBLE);
+            viewHolder.Foodintake.setTextColor(Color.BLACK);
+            viewHolder.Foodname.setTextColor(Color.BLACK);
+            viewHolder.Foodclass.setTextColor(Color.BLACK);
+            viewHolder.Foodtime.setTextColor(Color.RED);
         } else if (getItemViewType(position) == 4) {
             viewHolder.TopLine.setVisibility(View.VISIBLE);
         }
@@ -58,7 +63,8 @@ public class UserfoodAdapter extends ArrayAdapter<UserFood> implements Filterabl
         if (userFood != null) {
             viewHolder.Foodclass.setText(userFood.getFoodClass());
             viewHolder.Foodname.setText(userFood.getFoodName());
-            viewHolder.Foodintake.setText(userFood.getFoodIntake());
+            String intake = userFood.getFoodIntake() + "克";
+            viewHolder.Foodintake.setText(intake);
             viewHolder.Foodtime.setText(userFood.getFoodDate());
         }
         return view;

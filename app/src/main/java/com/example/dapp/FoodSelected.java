@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +41,7 @@ import Fragment_fs.Fragment_FS_titalinfo;
 import SearchDao.CareerDao;
 import SearchDao.FoodDao;
 import SearchDao.UserDao;
+import SearchDao.UserIntakeDao;
 import Util.Staticfinal_Value;
 
 
@@ -78,8 +81,15 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
     private EditText food_q;
     private TextView food_q_e;
+    private float fq;
+
+    private String[] NutArray;
+    private String[] Dao_energy;
+    private String[] from_result_ab;
+    private UserIntakeDao userIntakeDao;
 
     private NumberFormat nf;
+    private float percent;
 //    private Handler handler;弱引用
 
     @Override
@@ -252,16 +262,15 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         any_time_5 = add_view.findViewById(R.id.fo_anytime);
         fdClassicBtn();
 
-        final String[] initfood_q = {"100"};
+        String initfood_q = "100";
         food_q = add_view.findViewById(R.id.food_size);
         food_q_e = add_view.findViewById(R.id.food_size_energy);
-        food_q.setText(initfood_q[0]);
-        float fq;
-        fq = Float.parseFloat(food_q.getText().toString().trim());
-        float percent = fq / 100;
-        String nf_per = nf.format(percent);
+        food_q.setText(initfood_q);
+        fq = Float.parseFloat(food_q.getText().toString().trim().replace(",", ""));
+        percent = fq / 100;
+        String nf_per = nf.format(percent).replace(",", "");
         String g_energy = foodDao.find_energy(fruitName);
-        double energy = Float.valueOf(nf_per) * Float.valueOf(g_energy);
+        float energy = Float.valueOf(nf_per) * Float.valueOf(g_energy);
         String energy_result = "热量" + nf.format(energy) + "千卡";
         food_q_e.setText(energy_result);
 
@@ -275,13 +284,15 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 float fq;
                 try {
-                    fq = Float.parseFloat(food_q.getText().toString().trim());
-                    float percent = fq / 100;
-                    String nf_per = nf.format(percent);
-                    String g_energy = foodDao.find_energy(fruitName);
-                    double energy = Float.valueOf(nf_per) * Float.valueOf(g_energy);
-                    String energy_result = "热量" + nf.format(energy) + "千卡";
-                    food_q_e.setText(energy_result);
+                    if (food_q.getText().toString().trim().length() > 0) {
+                        fq = Float.parseFloat(food_q.getText().toString().trim().replace(",", ""));
+                        percent = fq / 100;
+                        String nf_per = nf.format(percent).replace(",", "");
+                        String g_energy = foodDao.find_energy(fruitName);
+                        double energy = Float.valueOf(nf_per) * Float.valueOf(g_energy);
+                        String energy_result = "热量" + nf.format(energy) + "千卡";
+                        food_q_e.setText(energy_result);
+                    } else food_q_e.setText("热量0千卡");
                 } catch (NumberFormatException nfe) {
                     nfe.printStackTrace();
                 }
@@ -314,6 +325,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     UF.put("Food_ingre_1", rec_id);
                     UF.put("intake_1", rec_size);
                     db.insert("UserFood", null, UF);
+                    calculateNutri();
                     UF.clear();
                     db.close();
                     Add_dialog.dismiss();
@@ -324,6 +336,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             }
         });
         Add_dialog.show();
+        //再点击 清空控件，加载dialog。
         add_view = null;
     }
 
@@ -519,6 +532,99 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     private void set_bg_null(TextView fo_class) {
         fo_class.setBackgroundColor(Color.TRANSPARENT);
     }
+
+    //要插入的23-2个营养元素求和值    记录值----要插入的基础值----倍数
+    public String[] result_ab(String[] nutrition, String[] f_nutrition, String nf_per) {
+        String[] result_str = new String[23];
+
+        for (int i = 0; i < 21; i++) {
+            if (nutrition[i] != null) {
+                float result_a = Float.valueOf(nutrition[i]);
+                if (f_nutrition[i] != null && !f_nutrition[i].equals("…") && !f_nutrition[i].equals("Tr") && f_nutrition[i].length() > 0 && !f_nutrition[i].equals("—") && !f_nutrition[i].equals("┄") && !f_nutrition[i].equals("─")) {
+
+                    float result_b = Float.valueOf(
+                            nf.format(Float.valueOf(nf_per) * Float.valueOf(f_nutrition[i])).replace(",", ""));
+                    result_str[i] = nf.format(result_a + result_b).replace(",", "");
+                }
+            } else if (f_nutrition[i] != null && !f_nutrition[i].equals("…") && !f_nutrition[i].equals("Tr") && f_nutrition[i].length() > 0 && !f_nutrition[i].equals("—") && !f_nutrition[i].equals("┄") && !f_nutrition[i].equals("─")) {
+                result_str[i] = nf.format(Float.valueOf(nf_per) * Float.valueOf(f_nutrition[i])).replace(",", "");
+            } else {
+                result_str[i] = null;
+            }
+        }
+        return result_str;
+    }
+
+    private void calculateNutri() {
+        //数据库的23-2个营养元素值
+        NutArray = new String[23];
+        NutArray[0] = foodDao.find_energy(fruitName);
+        NutArray[1] = foodDao.find_protein(fruitName);
+        NutArray[3] = foodDao.find_DF(fruitName);
+        NutArray[4] = foodDao.find_CH(fruitName);
+        NutArray[2] = foodDao.find_fat(fruitName);
+        NutArray[5] = foodDao.find_water(fruitName);
+        NutArray[15] = foodDao.find_CLS(fruitName);
+        NutArray[6] = foodDao.find_vA(fruitName);
+        NutArray[7] = foodDao.find_vB1(fruitName);
+        NutArray[8] = foodDao.find_vB2(fruitName);
+        NutArray[9] = foodDao.find_vB3(fruitName);
+        NutArray[10] = foodDao.find_vE(fruitName);
+        NutArray[11] = foodDao.find_vC(fruitName);
+        NutArray[12] = foodDao.find_Fe(fruitName);
+        NutArray[14] = foodDao.find_Na(fruitName);
+        NutArray[17] = foodDao.find_Mg(fruitName);
+        NutArray[18] = foodDao.find_Zn(fruitName);
+        NutArray[13] = foodDao.find_Ga(fruitName);
+        NutArray[16] = foodDao.find_K(fruitName);
+        NutArray[19] = foodDao.find_P(fruitName);
+        NutArray[20] = foodDao.find_purine(fruitName);
+
+        //23-2个列名
+        String[] NutName = {"UI_energy", "UI_protein", "UI_fat", "UI_DF", "UI_CH", "UI_water", "UI_VA", "UI_VB1",
+                "UI_VB2", "UI_VB3", "UI_VE", "UI_VC", "UI_Fe", "UI_Ga", "UI_Na", "UI_CLS", "UI_K", "UI_Mg",
+                "UI_Zn", "UI_P", "UI_purine"};
+
+        float fq = Float.parseFloat(food_q.getText().toString().trim());
+        percent = fq / 100;
+        String nf_per = nf.format(percent).replace(",", "");
+        String userId = bundle_from_FMA.getString("from_Login_User_id");
+        String UIdate = date_setup.getText().toString().trim();
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues userIntake = new ContentValues();
+
+
+        try {
+            userIntakeDao = new UserIntakeDao(this);
+            Dao_energy = userIntakeDao.getFromUserIntake(userId, fdClassic, UIdate);
+            from_result_ab = result_ab(Dao_energy, NutArray, nf_per);
+            userIntake.put("User_id", userId);
+            userIntake.put("UI_date", UIdate);
+            userIntake.put("UI_class", fdClassic);
+            for (int j = 0; j < 21; j++) {
+                userIntake.put(NutName[j], from_result_ab[j]);
+            }
+            db.insertOrThrow("UserIntake", null, userIntake);
+        } catch (SQLiteConstraintException ex) {
+//            userIntake.clear();
+//            userIntakeDao = new UserIntakeDao(this);
+//            //数据库中的23-2个营养元素值
+//            Dao_energy = userIntakeDao.getFromUserIntake(userId, fdClassic, UIdate);
+//            //要插入的23-2个营养元素求和值
+//            from_result_ab = result_ab(Dao_energy, NutArray, nf_per);
+//            //插入23-2个值
+//            for (int j = 0; j <= 21; j++) {
+//                userIntake.put(NutName[j], from_result_ab[j]);
+//            }
+            db.update("UserIntake", userIntake, "User_id = ? and UI_date=? and UI_class=?", new String[]{userId, UIdate, fdClassic});
+        } finally {
+            userIntake.clear();
+            db.close();
+            dbHelper.close();
+        }
+    }
+
 
 //弱引用
 //    private static class MyHandler extends Handler {

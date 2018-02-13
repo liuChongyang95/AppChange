@@ -20,9 +20,10 @@ public class FoodRecordDao {
     private String recordContent;
     private String recordIntake;
     private String recordClass;
-    private String recordId;
+    private String recordFoodId;
     private FoodDao foodDao;
     private String foodName;
+    private int item_id;
 
 
     public FoodRecordDao(Context context) {
@@ -39,18 +40,17 @@ public class FoodRecordDao {
         if (cursor != null && cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 recordDate = cursor.getString(cursor.getColumnIndex("Food_date"));
-                recordId = cursor.getString(cursor.getColumnIndex("Food_id"));
-                foodName = foodDao.find_Name(recordId);
+                recordFoodId = cursor.getString(cursor.getColumnIndex("Food_id"));
+                foodName = foodDao.find_Name(recordFoodId);
                 recordIntake = cursor.getString(cursor.getColumnIndex("Food_intake"));
                 recordClass = cursor.getString(cursor.getColumnIndex("Food_class"));
-                foodRecord.add(new UserFood(recordDate, recordClass, foodName, recordIntake));
+                item_id = cursor.getInt(cursor.getColumnIndex("_id"));
+                foodRecord.add(new UserFood(recordDate, recordClass, foodName, recordIntake, item_id));
             }
+            cursor.close();
         }
         dbHelper.close();
         sqlDB.close();
-        if (cursor != null) {
-            cursor.close();
-        }
         return foodRecord;
     }
 }
