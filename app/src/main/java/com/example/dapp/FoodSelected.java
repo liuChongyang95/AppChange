@@ -541,7 +541,6 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             if (nutrition[i] != null) {
                 float result_a = Float.valueOf(nutrition[i]);
                 if (f_nutrition[i] != null && !f_nutrition[i].equals("…") && !f_nutrition[i].equals("Tr") && f_nutrition[i].length() > 0 && !f_nutrition[i].equals("—") && !f_nutrition[i].equals("┄") && !f_nutrition[i].equals("─")) {
-
                     float result_b = Float.valueOf(
                             nf.format(Float.valueOf(nf_per) * Float.valueOf(f_nutrition[i])).replace(",", ""));
                     result_str[i] = nf.format(result_a + result_b).replace(",", "");
@@ -590,10 +589,8 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         String nf_per = nf.format(percent).replace(",", "");
         String userId = bundle_from_FMA.getString("from_Login_User_id");
         String UIdate = date_setup.getText().toString().trim();
-
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues userIntake = new ContentValues();
-
 
         try {
             userIntakeDao = new UserIntakeDao(this);
@@ -624,7 +621,6 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             dbHelper.close();
         }
     }
-
 
 //弱引用
 //    private static class MyHandler extends Handler {

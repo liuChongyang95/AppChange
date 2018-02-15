@@ -34,12 +34,11 @@
             android:background="#555555" />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/recordInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="8"
-        android:orientation="vertical"
         android:paddingBottom="6dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -49,6 +48,7 @@
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="1"
             android:textSize="20sp" />
 
         <TextView
@@ -56,19 +56,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTime"
+            android:text="2"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/foodName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/foodClass"
+            android:text="3"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/foodIntake"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTime"
+            android:layout_below="@id/foodName"
+            android:text="4"
             android:textSize="16sp" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/foodEnergy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tvTime"
+            android:text="5"
+            android:textSize="20sp" />
+    </RelativeLayout>
 </LinearLayout>

@@ -18,6 +18,7 @@ import java.util.List;
 
 import Database.DBHelper;
 import JavaBean.UserFood;
+import JavaBean.UserIntake;
 import SearchDao.FoodDao;
 import Util.DBUtil;
 
@@ -48,6 +49,7 @@ public class UserfoodAdapter extends ArrayAdapter<UserFood> implements Filterabl
             viewHolder.TopLine = view.findViewById(R.id.tvTopLine);
             viewHolder.Foodintake = view.findViewById(R.id.foodIntake);
             viewHolder.Foodname = view.findViewById(R.id.foodName);
+            viewHolder.Foodenergy = view.findViewById(R.id.foodEnergy);
             view.setTag(viewHolder);
         }
         if (getItemViewType(position) == 3) {
@@ -56,8 +58,14 @@ public class UserfoodAdapter extends ArrayAdapter<UserFood> implements Filterabl
             viewHolder.Foodname.setTextColor(Color.BLACK);
             viewHolder.Foodclass.setTextColor(Color.BLACK);
             viewHolder.Foodtime.setTextColor(Color.RED);
+            viewHolder.Foodenergy.setTextColor(Color.RED);
         } else if (getItemViewType(position) == 4) {
             viewHolder.TopLine.setVisibility(View.VISIBLE);
+            viewHolder.Foodintake.setTextColor(Color.BLACK);
+            viewHolder.Foodname.setTextColor(Color.BLACK);
+            viewHolder.Foodclass.setTextColor(Color.BLACK);
+            viewHolder.Foodtime.setTextColor(Color.BLACK);
+            viewHolder.Foodenergy.setTextColor(Color.BLACK);
         }
 
         if (userFood != null) {
@@ -66,6 +74,7 @@ public class UserfoodAdapter extends ArrayAdapter<UserFood> implements Filterabl
             String intake = userFood.getFoodIntake() + "克";
             viewHolder.Foodintake.setText(intake);
             viewHolder.Foodtime.setText(userFood.getFoodDate());
+            viewHolder.Foodenergy.setText(userFood.getFoodNutri());
         }
         return view;
     }
@@ -85,5 +94,6 @@ public class UserfoodAdapter extends ArrayAdapter<UserFood> implements Filterabl
         TextView Foodclass;
         TextView Foodintake;
         TextView Foodname;
+        TextView Foodenergy;
     }
 }

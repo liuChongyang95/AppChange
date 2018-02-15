@@ -19,13 +19,15 @@ public class UserFood {
     private String intake5;
 
     private String foodName;
+    private String foodNutri;
 
-    public UserFood(String foodDate, String foodClass, String foodName, String foodIntake, int item_Id) {
+    public UserFood(String foodDate, String foodClass, String foodName, String foodIntake, int item_Id, String foodNutri) {
         this.foodId = foodId;
         this.foodDate = foodDate;
         this.foodClass = foodClass;
         this.foodName = foodName;
         this.foodIntake = foodIntake;
+        this.foodNutri = foodNutri;
         this._id = item_Id;
     }
 
@@ -33,6 +35,13 @@ public class UserFood {
     public UserFood() {
     }
 
+    public String getFoodNutri() {
+        return foodNutri;
+    }
+
+    public void setFoodNutri(String foodNutri) {
+        this.foodNutri = foodNutri;
+    }
 
     public String getFoodName() {
         return foodName;

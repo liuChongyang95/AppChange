@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -38,7 +39,7 @@ public class FoodRecordListView extends AppCompatActivity {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.foodrecord_change);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         bundleFrom_FAF = intent.getExtras();
         if (bundleFrom_FAF != null) {
             userId = bundleFrom_FAF.getString("from_Login_User_id");
@@ -67,9 +68,16 @@ public class FoodRecordListView extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 UserFood userFood = foodList.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("User_id", userId);
+                bundle.putString("intake_date", userFood.getFoodDate());
+                bundle.putString("intake_class", userFood.getFoodClass());
+                bundle.putString("food_id", userFood.getFoodId());
+                bundle.putString("food_name", userFood.getFoodName());
+                bundle.putString("itemId", String.valueOf(userFood.get_id()));
+                bundle.putString("itemSize", userFood.getFoodIntake());
                 Intent intent2 = new Intent(FoodRecordListView.this, FoodRecordItem.class);
-                bundleFrom_FAF.putString("itemId", String.valueOf(userFood.get_id()));
-                intent2.putExtras(bundleFrom_FAF);
+                intent2.putExtras(bundle);
                 startActivity(intent2);
 
             }
@@ -80,7 +88,7 @@ public class FoodRecordListView extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        foodList=foodRecordDao.getFoodrecord(userId);
+        foodList = foodRecordDao.getFoodrecord(userId);
         adapter = new UserfoodAdapter(this, R.layout.foodrecord_item, foodList);
         listView.setAdapter(adapter);
     }
