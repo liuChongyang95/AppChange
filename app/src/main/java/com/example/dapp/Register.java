@@ -57,6 +57,7 @@ public class Register extends AppCompatActivity {
     private String register_birth_str;//出生日期
     private TextView register_birth_tv;
     private DBHelper dbHelper;
+    private Staticfinal_Value sfv;
     private String register_shape;
     private TextView register_career_tv;
     private String register_career_str;
@@ -82,17 +83,11 @@ public class Register extends AppCompatActivity {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.register_app);
-        Staticfinal_Value sfv = new Staticfinal_Value();
-        userDao = new UserDao(this);
-        dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
-
+        //获取身高体重控件
         mHeightValue = findViewById(R.id.tv_user_height_value);
         mWeightRulerView = findViewById(R.id.ruler_weight);
         mWeightValueTwo = findViewById(R.id.tv_user_weight_value_two);
         mHeightWheelView = findViewById(R.id.scaleWheelView_height);
-
-        init();
-
         Toolbar toolbar = findViewById(R.id.register_toolBar);
         register_name = findViewById(R.id.register_name);
         register_password = findViewById(R.id.register_password);
@@ -104,7 +99,7 @@ public class Register extends AppCompatActivity {
         register_birth_tv = findViewById(R.id.register_burn_tv);
         Button register_career = findViewById(R.id.register_career);
         register_career_tv = findViewById(R.id.register_career_tv);
-
+        //选择职业
         register_career.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,9 +108,6 @@ public class Register extends AppCompatActivity {
                 startActivityForResult(intent, 2);
             }
         });
-
-
-        selectedSex();
         setSupportActionBar(toolbar);
         toolbar.getBackground().setAlpha(0);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -124,45 +116,50 @@ public class Register extends AppCompatActivity {
                 Register.this.finish();
             }
         });
-
+        //设置出生日期
         register_birth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDialog(DATE_PICKER_ID);
             }
         });
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //版本号
+        sfv = new Staticfinal_Value();
+        userDao = new UserDao(this);
+        dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
+        //初始化身高体重控件
+        init();
+        //设置性别
+        selectedSex();
+    }
 
+    //菜单项确定键执行
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         Random random = new Random();
         int i = random.nextInt(100000);
         int b = i + random.nextInt(54321);
-
         switch (item.getItemId()) {
             case R.id.register_sure:
-
                 String register_name_str = register_name.getText().toString().trim();
                 String register_password_str = register_password.getText().toString().trim();
                 String register_password2_str = register_password2.getText().toString().trim();
                 sex = selectedSex();
                 register_birth_str = register_birth_tv.getText().toString().trim();
                 double register_weight_str = mWeight;
-
                 float register_tall_str = mHeight;
                 float register_weight_str_amb = mHeight - 105;
                 register_shape = getShape(register_weight_str, register_weight_str_amb);
                 String register_intensity_str = userDao.getIntensity(register_career_str);
-
-
                 if (register_password2_str.equals(register_password_str) && register_password2_str.length() > 0) {
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                     db.beginTransaction();
                     db.execSQL("PRAGMA foreign_keys=ON");
-
                     ContentValues values_User = new ContentValues();
                     ContentValues values_Login = new ContentValues();
                     values_User.put("User_id", i);
@@ -181,13 +178,9 @@ public class Register extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     values_User.put("User_Intensity", register_intensity_str);
-
-//                    values_User.put("Record_time", record_time.getTime());
-
                     values_Login.put("Username", register_name_str);//用户名
                     values_Login.put("password", register_password_str);
                     values_Login.put("User_id", i);
-
                     try {
                         db.insertOrThrow("User", null, values_User);
                         db.insertOrThrow("Login", null, values_Login);
@@ -208,14 +201,13 @@ public class Register extends AppCompatActivity {
         return true;
     }
 
+    //toolbar加载菜单项
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.register, menu);
         return true;
     }
 
-
     private void init() {
-
         mWeightValueTwo.setText(mWeight + "kg");
         mHeightValue.setText((int) mHeight + "cm");
         float mMinHeight = 100;
@@ -253,7 +245,6 @@ public class Register extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
         // 第一个参数指整个DatePicker，第二个参数是当前设置的年份，
         // 第三个参数是当前设置的月份，注意的是，获取设置的月份时需要加1，因为java中规定月份在0~11之间
-
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             // 通过Toast对话框输出当前设置的日期
             String zc_year = Integer.toString(year);
@@ -272,7 +263,6 @@ public class Register extends AppCompatActivity {
                 zc_day = "0" + zc_day;
             } else {
                 zc_day = Integer.toString(dayOfMonth);
-
             }
             register_birth_str = zc_year + "-" + zc_month + "-" + zc_day;
             register_birth_tv.setText(register_birth_str);
@@ -286,7 +276,6 @@ public class Register extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (radioButton_male.getId() == i) {
                     sex = "男";
-
                 }
                 if (radioButton_female.getId() == i) {
                     sex = "女";
@@ -296,9 +285,7 @@ public class Register extends AppCompatActivity {
         return sex;
     }
 
-
     public String getShape(double R_weight, double A_weight) {
-
         double rate = (R_weight - A_weight) / A_weight;
         if (rate <= -0.2) {
             register_shape = "消瘦";
@@ -312,31 +299,6 @@ public class Register extends AppCompatActivity {
             register_shape = "肥胖";
         }
         return register_shape;
-    }
-
-
-    public int getAge(Date birthDay) {
-        Calendar cal = Calendar.getInstance();
-        if (cal.before(birthDay)) {
-            throw new IllegalArgumentException("The birthDay is before Now.It 's unbelievable!");
-        }
-        int yearNow = cal.get(Calendar.YEAR);
-        int monthNow = cal.get(Calendar.MONTH);
-        int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);
-        cal.setTime(birthDay);
-        int yearBirth = cal.get(Calendar.YEAR);
-        int monthBirth = cal.get(Calendar.MONTH);
-        int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
-        int age = yearNow - yearBirth;
-        if (monthNow <= monthBirth) {
-            if (monthNow == monthBirth) {
-                if (dayOfMonthNow < dayOfMonthBirth)
-                    age--;
-            } else {
-                age--;
-            }
-        }
-        return age;
     }
 
     @Override

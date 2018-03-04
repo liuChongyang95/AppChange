@@ -34,7 +34,7 @@ import SearchDao.UserDao;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AllFunction extends AppCompatActivity implements View.OnClickListener {
-    private List<Map<String, Object>> data_list;
+    private List<Map<String, Object>> data_list=new ArrayList<>();
     private UserDao userDao;
     private String from_login_user_id;
     private TextView user_name;
@@ -46,7 +46,6 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
             R.drawable.blood, R.drawable.data, R.drawable.medical,
             R.drawable.question};
     private String[] iconName = {"饮食管理", "运动管理", "血糖管理", "数据上传", "医疗方案", "科普答疑"};
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -69,21 +68,15 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
         user_name = findViewById(R.id.user_info);
         Button user_change = findViewById(R.id.user_info_change);
         user_change.setOnClickListener(this);
-
-
         userDao = new UserDao(AllFunction.this);
         Intent intent = getIntent();
         bundle_id = intent.getExtras();
-        from_login_user_id = bundle_id.getString("from_Login_User_id");
-
-
-        user_name.setText(userDao.getUserName(from_login_user_id));
-        user_photo.setImageDrawable(userDao.getUser_Photo(from_login_user_id));
-
+        if (bundle_id != null) {
+            from_login_user_id = bundle_id.getString("from_Login_User_id");
+        }
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         toolbar.getBackground().setAlpha(0);
         setSupportActionBar(toolbar);
-        
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,8 +84,6 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
             }
         });
         final GridView gridView = findViewById(R.id.gridView);
-        //新建List
-        data_list = new ArrayList<>();
         //获取数据
         getData();
         //新建适配器
@@ -130,35 +121,16 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
                 }
             }
         });
-        //模糊图片
-//        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.black);
-//        Bitmap bitmap = bitmapDrawable.getBitmap();
-//        LinearLayout linearLayout = findViewById(R.id.main_all_LL);
-//        Drawable register_bg = setBlurBackground(bitmap);
-//        linearLayout.setBackground(register_bg);
     }
-
     @Override
     public void onClick(View view) {
-        Log.d("AllFunction", "onClick: ");
         switch (view.getId()) {
             case R.id.user_info_change:
                 Intent intent = new Intent();
                 intent.setClass(AllFunction.this, AllUserInfo.class);
                 intent.putExtras(bundle_id);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
         }
-    }
-
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//    private Drawable setBlurBackground(Bitmap bmp) {
-//        final Bitmap blurBmp = Fastblur.fastblur(AllFunction.this, bmp, 13);//0-25，表示模糊值
-//        return getDrawable(this, blurBmp);
-//    }
-//
-    //bitmap 转 drawable
-    public static Drawable getDrawable(Context context, Bitmap bm) {
-        return new BitmapDrawable(context.getResources(), bm);
     }
 
     public List<Map<String, Object>> getData() {
@@ -171,16 +143,6 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
         }
         return data_list;
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 1:
-                break;
-            default:
-        }
-    }
-
 
     @Override
     protected void onResume() {

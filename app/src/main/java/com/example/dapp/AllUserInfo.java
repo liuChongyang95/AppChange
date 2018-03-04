@@ -44,6 +44,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AllUserInfo extends AppCompatActivity implements View.OnClickListener {
     private String get_edit_ID;
+    private String get_edit_LoginName;
+    private TextView edit_user_ID;
+    private TextView edit_user_loginName;
     private TextView edit_user_nickname;
     private TextView edit_user_sex;
     private TextView edit_user_birth;
@@ -65,6 +68,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //任务栏适配，字体颜色，背景颜色
         if (Build.VERSION.SDK_INT >= 21) {
             View view = getWindow().getDecorView();
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
@@ -76,9 +80,9 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.user_info_edit);
         Toolbar toolbar = findViewById(R.id.user_info_edit_toolbar);
         edit_user_photo = findViewById(R.id.user_info_edit_photo);
-        TextView edit_user_ID = findViewById(R.id.user_info_medical_id);
+        edit_user_ID = findViewById(R.id.user_info_medical_id);
         edit_user_nickname = findViewById(R.id.user_info_edit_nickname);
-        TextView edit_user_loginName = findViewById(R.id.user_info_login_name);
+        edit_user_loginName = findViewById(R.id.user_info_login_name);
         edit_user_sex = findViewById(R.id.user_info_edit_sex);
         edit_user_birth = findViewById(R.id.user_info_edit_birth);
         edit_user_tall = findViewById(R.id.user_info_edit_tall);
@@ -88,8 +92,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         edit_user_shape = findViewById(R.id.user_info_shape);
         edit_user_weight_expect = findViewById(R.id.user_info_Expect_weight);
         edit_user_age = findViewById(R.id.user_info_age);
-
-
         setSupportActionBar(toolbar);
         toolbar.getBackground().setAlpha(0);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -98,15 +100,21 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 AllUserInfo.this.finish();
             }
         });
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UserDao userDao = new UserDao(this);
         Intent intent = getIntent();
         Bundle bundle_from_MA = intent.getExtras();
         get_edit_ID = bundle_from_MA.getString("from_Login_User_id");
-        String get_edit_LoginName = bundle_from_MA.getString("from_Login_User_Username");
-        UserDao userDao = new UserDao(this);
-        edit_user_photo.setImageDrawable(userDao.getUser_Photo(get_edit_ID));
+        get_edit_LoginName = bundle_from_MA.getString("from_Login_User_Username");
         edit_user_ID.setText(get_edit_ID);
-        edit_user_nickname.setText(userDao.getNickname(get_edit_ID));
         edit_user_loginName.setText(get_edit_LoginName);
+        edit_user_photo.setImageDrawable(userDao.getUser_Photo(get_edit_ID));
+        edit_user_nickname.setText(userDao.getNickname(get_edit_ID));
         edit_user_sex.setText(userDao.getSex(get_edit_ID));
         edit_user_birth.setText(userDao.getBirth(get_edit_ID));
         edit_user_tall.setText(userDao.getTall(get_edit_ID) + "cm");
@@ -118,8 +126,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         edit_birth_str_date = Date.valueOf(edit_user_birth.getText().toString());
         int a = getAge(edit_birth_str_date);
         edit_user_age.setText(String.valueOf(a));
-
-
     }
 
     @SuppressLint("RestrictedApi")
@@ -441,29 +447,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             crop(uri);
         }
-//        displayImage(imagePath);
     }
-
-   /* private void displayImage(String imagePath) {
-        if (imagePath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-        } else {
-            Toast.makeText(this, "获取图片失败", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private String getImagePath(Uri uri, String selection) {
-        String path = null;
-        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-            }
-            cursor.close();
-        }
-        return path;
-    }*/
-
 
     private void handleImageBeforeKitKat(Intent data) {
         Uri uri = data.getData();
@@ -551,25 +535,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
             }
         }
         return age;
-    }
-
-    @SuppressLint("SetTextI18n")
-    @Override
-    protected void onResume() {
-        super.onResume();
-        edit_user_photo.setImageDrawable(userDao.getUser_Photo(get_edit_ID));
-        edit_user_nickname.setText(userDao.getNickname(get_edit_ID));
-        edit_user_sex.setText(userDao.getSex(get_edit_ID));
-        edit_user_birth.setText(userDao.getBirth(get_edit_ID));
-        edit_user_tall.setText(userDao.getTall(get_edit_ID) + "cm");
-        edit_user_weight.setText(userDao.getWeight(get_edit_ID) + "kg");
-        edit_user_weight_expect.setText(userDao.getExpect_weight(get_edit_ID) + "kg");
-        edit_user_career.setText(userDao.getCareer(get_edit_ID));
-        edit_user_shape.setText(userDao.getShape(get_edit_ID));
-        edit_user_intensity.setText(userDao.getIntensity(userDao.getCareer(get_edit_ID)));
-        edit_birth_str_date = Date.valueOf(edit_user_birth.getText().toString());
-        int a = getAge(edit_birth_str_date);
-        edit_user_age.setText(String.valueOf(a));
     }
 
 
