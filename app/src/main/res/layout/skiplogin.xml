@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/LOGO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DiabetesMellitus,DM App"
+        android:textSize="30sp"
+        android:typeface="monospace" />
+
+    <TextView
+        android:layout_marginTop="50dp"
+        android:id="@+id/loginTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LOGO"
+        android:text="当前账号："
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/login_info_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginTitle"
+        android:layout_toEndOf="@id/loginTitle"
+        android:layout_toRightOf="@id/loginTitle"
+        android:text="用户名"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/login_info_userId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_info_name"
+        android:layout_toEndOf="@id/loginTitle"
+        android:layout_toRightOf="@id/loginTitle"
+        android:text="用户ID"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/backToApp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_info_userId"
+        android:text="返回"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/cancelUser"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/login_info_userId"
+        android:text="注销"
+        android:textSize="24sp" />
+</RelativeLayout>
