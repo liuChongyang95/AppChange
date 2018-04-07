@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,7 +26,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,10 +34,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.text.NumberFormat;
 import java.util.Calendar;
@@ -78,6 +76,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     private Staticfinal_Value sfv = new Staticfinal_Value();
     private DBHelper dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
 
+    //    alertDialog
     private LayoutInflater mInflater;
     private AlertDialog Add_dialog;
     private TextView date_setup;
@@ -85,18 +84,22 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
     private String fdClassic;
 
-    private TextView breakfast_0;
-    private TextView lunch_1;
-    private TextView dinner_2;
-    private TextView befor_lunch_3;
-    private TextView after_lunch_4;
-    private TextView any_time_5;
+    //    餐别按钮
+    private RadioGroup foClass;
+    private RadioButton breakfast_0;
+    private RadioButton lunch_1;
+    private RadioButton dinner_2;
+    private RadioButton befor_lunch_3;
+    private RadioButton after_lunch_4;
+    private RadioButton any_time_5;
     private LinearLayout dynamicUnit;
 
+    //    计算能量显示在alertDialog
     private EditText food_q;
     private TextView food_q_e;
     private float fq;
 
+    //    计算插入能量
     private String[] NutArray;
     private String[] Dao_energy;
     private String[] from_result_ab;
@@ -105,6 +108,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     private NumberFormat nf;
     private float percent;
 
+    //    动态生成单位按钮
     private int UNIT_BUTTON_KE = 1;
     private int UNIT_BUTTON_GE = 2;
 
@@ -122,32 +126,27 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.food_message);
+        Intent intent = getIntent();
+        bundle_from_FMA = intent.getExtras();
+        final String initUserid = bundle_from_FMA.getString("from_Login_User_id");
+        fruitName = bundle_from_FMA.getString("fruit_name");
         mInflater = LayoutInflater.from(this);
+//        Toolbar和图片设置
         Toolbar toolbar = findViewById(R.id.toolBar_fS);
         toolbar.getBackground().setAlpha(0);
         setSupportActionBar(toolbar);
-        drawerLayoutFS = findViewById(R.id.food_msg_DL);
-        NavigationView navFS = findViewById(R.id.navContent_FM);
-        View navHead = navFS.getHeaderView(0);
-        navFS.setItemTextColor(null);
-        navFS.setItemIconTintList(null);
-
-        Intent intent = getIntent();
-        bundle_from_FMA = intent.getExtras();
-        CircleImageView userPhoto = navHead.findViewById(R.id.nav_user);
-        TextView tv_userid = navHead.findViewById(R.id.nav_id);
-        TextView tv_userNN = navHead.findViewById(R.id.nav_nickname);
-        final String initUserid = bundle_from_FMA.getString("from_Login_User_id");
-        String initUserNN = "用户昵称: " + userDao.getUserName(initUserid);
-        userPhoto.setImageDrawable(userDao.getUser_Photo(initUserid));
-        String TVuserid = "用户ID: " + initUserid;
-        tv_userid.setText(TVuserid);
-        tv_userNN.setText(initUserNN);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.category);
         }
+//        侧边导航
+        drawerLayoutFS = findViewById(R.id.food_msg_DL);
+        NavigationView navFS = findViewById(R.id.navContent_FM);
+        View navHead = navFS.getHeaderView(0);
+        navFS.setItemTextColor(null);
+        navFS.setItemIconTintList(null);
+//        界面跳转-饮食记录
         navFS.setCheckedItem(R.id.nav_Record);
         navFS.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -165,24 +164,24 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                 return true;
             }
         });
-
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FoodSelected.this.finish();
-//            }
-//        });
-
-
-        fruitName = bundle_from_FMA.getString("fruit_name");
+//        导航栏头像和一些个人信息
+        CircleImageView userPhoto = navHead.findViewById(R.id.nav_user);
+        TextView tv_userid = navHead.findViewById(R.id.nav_id);
+        TextView tv_userNN = navHead.findViewById(R.id.nav_nickname);
+        String initUserNN = "用户昵称: " + userDao.getUserName(initUserid);
+        userPhoto.setImageDrawable(userDao.getUser_Photo(initUserid));
+        String TVuserid = "用户ID: " + initUserid;
+        tv_userid.setText(TVuserid);
+        tv_userNN.setText(initUserNN);
         TextView fruitNameText = findViewById(R.id.searchResult_title);
         fruitNameText.setText(fruitName);
-
         nf = NumberFormat.getNumberInstance();
         nf.setMaximumFractionDigits(2);
-
+//        头信息
         food_title();
+//        营养信息
         food_nutrition();
+//        糖分信息
         food_gi();
 
     }
@@ -233,15 +232,18 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+//            试算
             case R.id.VS_LL:
                 VS();
                 break;
+//                添加记录
             case R.id.Add_LL:
                 ADD_Rec();
                 break;
         }
     }
 
+    //试算
     private void VS() {
         final EditText VS_editText = new EditText(FoodSelected.this);
         VS_editText.setHint("点击输入(最高5位数)");
@@ -271,18 +273,24 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         VS_input.show();
     }
 
+    //添加记录
     private void ADD_Rec() {
         if (add_view == null) {
+//          view + layoutInflate
             add_view = mInflater.inflate(R.layout.dialog_record_add, null);
+            //显示日期textview
             date_setup = add_view.findViewById(R.id.date_record);
             date_setup.setText(initDate());
         }
         Add_dialog = new AlertDialog.Builder(this).create();
+//        alertdialog填充view
         Add_dialog.setView(add_view);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Objects.requireNonNull(Add_dialog.getWindow()).setContentView(R.layout.dialog_record_add);
         }
+//        可点击外部取消
         Add_dialog.setCancelable(true);
+//        点击取消按钮
         Button cancel = add_view.findViewById(R.id.add_concern);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,7 +298,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                 Add_dialog.dismiss();
             }
         });
-
+//设置日期为今日
         Button today = add_view.findViewById(R.id.date_today);
         today.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -300,6 +308,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                 handler.sendMessage(message);
             }
         });
+//        设置日期为手动
         Button date_select = add_view.findViewById(R.id.date_select);
         date_select.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,16 +318,19 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                 handler.sendMessage(message);
             }
         });
+//        餐别控件
         breakfast_0 = add_view.findViewById(R.id.fo_breakfast);
         lunch_1 = add_view.findViewById(R.id.fo_lunch);
         dinner_2 = add_view.findViewById(R.id.fo_dinner);
         befor_lunch_3 = add_view.findViewById(R.id.fo_beforeL);
         after_lunch_4 = add_view.findViewById(R.id.fo_afterL);
         any_time_5 = add_view.findViewById(R.id.fo_anytime);
+        foClass = add_view.findViewById(R.id.fo_group);
+//        动态生成单位组
         dynamicUnit = add_view.findViewById(R.id.dynamicButtonUnit);
-
-        fdClassicBtn();
-
+//初始化餐别和餐别设置
+        initFdClass();
+//默认餐量和餐量设置
         String initfood_q = "100";
         food_q = add_view.findViewById(R.id.food_size);
         food_q_e = add_view.findViewById(R.id.food_size_energy);
@@ -333,7 +345,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         float energy = Float.valueOf(nf_per) * Float.valueOf(g_energy);
         String energy_result = "热量" + nf.format(energy) + "千卡";
         food_q_e.setText(energy_result);
-
+//餐量动态提示能量
         food_q.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -420,107 +432,55 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         add_view = null;
     }
 
-    private void fdClassicBtn() {
+    private void initFdClass() {
+//        初始化
         Calendar calendar = Calendar.getInstance();
         int hours = calendar.get(Calendar.HOUR_OF_DAY);
         if (hours >= 6 && hours <= 8) {
             fdClassic = breakfast_0.getText().toString().trim();
-            set_bg(breakfast_0);
+            breakfast_0.setChecked(true);
         } else if (hours > 8 && hours <= 9) {
             fdClassic = befor_lunch_3.getText().toString().trim();
-            set_bg(befor_lunch_3);
+            befor_lunch_3.setChecked(true);
         } else if (hours >= 11 && hours <= 13) {
             fdClassic = lunch_1.getText().toString().trim();
-            set_bg(lunch_1);
+            lunch_1.setChecked(true);
         } else if (hours > 13 && hours <= 14) {
             fdClassic = after_lunch_4.getText().toString().trim();
-            set_bg(after_lunch_4);
+            after_lunch_4.setChecked(true);
         } else if (hours >= 18 && hours <= 21) {
             fdClassic = dinner_2.getText().toString().trim();
-            set_bg(dinner_2);
+            dinner_2.setChecked(true);
         } else {
             fdClassic = any_time_5.getText().toString().trim();
-            set_bg(any_time_5);
+            any_time_5.setChecked(true);
         }
-
-        breakfast_0.setOnClickListener(new View.OnClickListener() {
+        //餐别设置
+        foClass.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                fdClassic = breakfast_0.getText().toString().trim();
-                set_bg(breakfast_0);
-                set_bg_null(lunch_1);
-                set_bg_null(dinner_2);
-                set_bg_null(befor_lunch_3);
-                set_bg_null(after_lunch_4);
-                set_bg_null(any_time_5);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.fo_breakfast:
+                        fdClassic = breakfast_0.getText().toString().trim();
+                        break;
+                    case R.id.fo_lunch:
+                        fdClassic = lunch_1.getText().toString().trim();
+                        break;
+                    case R.id.fo_dinner:
+                        fdClassic = dinner_2.getText().toString().trim();
+                        break;
+                    case R.id.fo_beforeL:
+                        fdClassic = befor_lunch_3.getText().toString().trim();
+                        break;
+                    case R.id.fo_afterL:
+                        fdClassic = after_lunch_4.getText().toString().trim();
+                        break;
+                    case R.id.fo_anytime:
+                        fdClassic = any_time_5.getText().toString().trim();
+                        break;
+                }
             }
         });
-
-        lunch_1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fdClassic = lunch_1.getText().toString().trim();
-                set_bg(lunch_1);
-                set_bg_null(breakfast_0);
-                set_bg_null(dinner_2);
-                set_bg_null(befor_lunch_3);
-                set_bg_null(after_lunch_4);
-                set_bg_null(any_time_5);
-            }
-        });
-
-        dinner_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fdClassic = dinner_2.getText().toString().trim();
-                set_bg(dinner_2);
-                set_bg_null(breakfast_0);
-                set_bg_null(lunch_1);
-                set_bg_null(befor_lunch_3);
-                set_bg_null(after_lunch_4);
-                set_bg_null(any_time_5);
-            }
-        });
-
-        befor_lunch_3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fdClassic = befor_lunch_3.getText().toString().trim();
-                set_bg(befor_lunch_3);
-                set_bg_null(breakfast_0);
-                set_bg_null(lunch_1);
-                set_bg_null(dinner_2);
-                set_bg_null(after_lunch_4);
-                set_bg_null(any_time_5);
-            }
-        });
-
-        after_lunch_4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fdClassic = after_lunch_4.getText().toString().trim();
-                set_bg(after_lunch_4);
-                set_bg_null(breakfast_0);
-                set_bg_null(lunch_1);
-                set_bg_null(dinner_2);
-                set_bg_null(befor_lunch_3);
-                set_bg_null(any_time_5);
-            }
-        });
-
-        any_time_5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fdClassic = any_time_5.getText().toString().trim();
-                set_bg(any_time_5);
-                set_bg_null(breakfast_0);
-                set_bg_null(lunch_1);
-                set_bg_null(dinner_2);
-                set_bg_null(befor_lunch_3);
-                set_bg_null(after_lunch_4);
-            }
-        });
-
     }
 
     private Handler handler = new Handler(new Handler.Callback() {
@@ -534,6 +494,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(FoodSelected.this, initDate, Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
+//                    线程内显示日期dialog
                     showDialog(1);
                     break;
                 default:
@@ -586,6 +547,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    //    初始化日期用于textview
     public String initDate() {
         String date;
         Calendar calendar = Calendar.getInstance();
@@ -602,14 +564,6 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         } else zc_day = Integer.toString(day);
         date = year + "-" + zc_month + "-" + zc_day;
         return date;
-    }
-
-    private void set_bg(TextView fo_class) {
-        fo_class.setBackgroundResource(R.drawable.fo_class_btn);
-    }
-
-    private void set_bg_null(TextView fo_class) {
-        fo_class.setBackgroundColor(Color.TRANSPARENT);
     }
 
     //要插入的23-2个营养元素求和值    记录值----要插入的基础值----倍数

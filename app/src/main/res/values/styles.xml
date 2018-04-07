@@ -9,14 +9,13 @@
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
     </style>
 
-    <style name="BottomMenu" parent="Base.TextAppearance.AppCompat.Button">
+    <style name="foClass" parent="Base.TextAppearance.AppCompat.Button">
         <item name="android:button">@null</item>
         <item name="android:textColor">#000</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:layout_weight">1</item>
         <item name="android:padding">5dp</item>
-        <item name="android:textSize">17sp</item>
-        <item name="android:background">#FDF5E6</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/food_class_btn_select</item>
     </style>
 
 

@@ -527,7 +527,7 @@ public class FoodRecordItem extends AppCompatActivity {
     }
 
     private void set_bg(TextView fo_class) {
-        fo_class.setBackgroundResource(R.drawable.fo_class_btn);
+        fo_class.setBackgroundResource(R.drawable.classbtn);
     }
 
     private void set_bg_null(TextView fo_class) {
