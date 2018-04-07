@@ -13,9 +13,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="DApp"
         android:roundIcon="@mipmap/ic_launcher_round"
-
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label,android:theme">
         <provider
@@ -30,6 +28,7 @@
 
         <activity
             android:name=".Login"
+            android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,7 +38,8 @@
 
         <activity
             android:name=".AllFunction"
-            android:label="糖App" />
+            android:label="糖App"
+            android:launchMode="singleTask" />
         <activity
             android:name=".FoodMainActivity"
             android:label="食物搜索"
@@ -71,9 +71,7 @@
         <activity
             android:name=".FoodRecordListView"
             android:label="饮食记录" />
-        <activity
-            android:name=".FoodRecordItem"
-            />
+        <activity android:name=".FoodRecordItem" />
 
     </application>
 

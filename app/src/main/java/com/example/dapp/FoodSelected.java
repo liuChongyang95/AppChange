@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,14 +27,19 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.text.NumberFormat;
 import java.util.Calendar;
@@ -53,6 +59,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Administrator on 2017/12/28.
+ * 所有查询都是通过FoodID
  */
 
 public class FoodSelected extends AppCompatActivity implements View.OnClickListener {
@@ -84,6 +91,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     private TextView befor_lunch_3;
     private TextView after_lunch_4;
     private TextView any_time_5;
+    private LinearLayout dynamicUnit;
 
     private EditText food_q;
     private TextView food_q_e;
@@ -97,8 +105,10 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     private NumberFormat nf;
     private float percent;
 
+    private int UNIT_BUTTON_KE = 1;
+    private int UNIT_BUTTON_GE = 2;
+
     private DrawerLayout drawerLayoutFS;
-//    private Handler handler;弱引用
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -263,14 +273,14 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
     private void ADD_Rec() {
         if (add_view == null) {
-            add_view = mInflater.inflate(R.layout.record_add, null);
+            add_view = mInflater.inflate(R.layout.dialog_record_add, null);
             date_setup = add_view.findViewById(R.id.date_record);
             date_setup.setText(initDate());
         }
         Add_dialog = new AlertDialog.Builder(this).create();
         Add_dialog.setView(add_view);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Objects.requireNonNull(Add_dialog.getWindow()).setContentView(R.layout.record_add);
+            Objects.requireNonNull(Add_dialog.getWindow()).setContentView(R.layout.dialog_record_add);
         }
         Add_dialog.setCancelable(true);
         Button cancel = add_view.findViewById(R.id.add_concern);
@@ -285,7 +295,6 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         today.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                handler = new MyHandler(FoodSelected.this);弱引用
                 Message message = new Message();
                 message.what = 0;
                 handler.sendMessage(message);
@@ -306,6 +315,8 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         befor_lunch_3 = add_view.findViewById(R.id.fo_beforeL);
         after_lunch_4 = add_view.findViewById(R.id.fo_afterL);
         any_time_5 = add_view.findViewById(R.id.fo_anytime);
+        dynamicUnit = add_view.findViewById(R.id.dynamicButtonUnit);
+
         fdClassicBtn();
 
         String initfood_q = "100";
@@ -315,7 +326,10 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         fq = Float.parseFloat(food_q.getText().toString().trim().replace(",", ""));
         percent = fq / 100;
         String nf_per = nf.format(percent).replace(",", "");
+        //初始化计算能量提示值
         String g_energy = foodDao.find_energy(fruitName);
+        //初始化界面可选单位
+        String unitFood = foodDao.findUnit(fruitName);
         float energy = Float.valueOf(nf_per) * Float.valueOf(g_energy);
         String energy_result = "热量" + nf.format(energy) + "千卡";
         food_q_e.setText(energy_result);
@@ -349,7 +363,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-//添加记录表
+//添加到记录表的按钮
         Button sureAdd = add_view.findViewById(R.id.add_agree);
         sureAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -381,8 +395,28 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(FoodSelected.this, "您是不是没设置餐量?", Toast.LENGTH_SHORT).show();
             }
         });
+//        动态加载单位控件 unit[0]克 unit[1]个。
+        String[] units = unitFood.split("/");
+        for (String unit : units) {
+            TextView textView = new TextView(FoodSelected.this);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            switch (unit) {
+                case "克":
+                    textView.setId(UNIT_BUTTON_KE);
+                    textView.setText("克");
+                    textView.setPadding(10, 0, 10, 0);
+                    dynamicUnit.addView(textView);
+                    break;
+                case "个":
+                    textView.setId(UNIT_BUTTON_GE);
+                    textView.setText("个");
+                    textView.setPadding(10, 0, 10, 0);
+                    dynamicUnit.addView(textView);
+                    break;
+            }
+        }
         Add_dialog.show();
-        //再点击 清空控件，加载dialog。
+        //再点击 清空控件，加载dialog。为了可以重复加载alertDialog
         add_view = null;
     }
 
@@ -581,7 +615,6 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     //要插入的23-2个营养元素求和值    记录值----要插入的基础值----倍数
     public String[] result_ab(String[] nutrition, String[] f_nutrition, String nf_per) {
         String[] result_str = new String[23];
-
         for (int i = 0; i < 21; i++) {
             if (nutrition[i] != null) {
                 float result_a = Float.valueOf(nutrition[i]);
@@ -650,16 +683,6 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             }
             db.insertOrThrow("UserIntake", null, userIntake);
         } catch (SQLiteConstraintException ex) {
-//            userIntake.clear();
-//            userIntakeDao = new UserIntakeDao(this);
-//            //数据库中的23-2个营养元素值
-//            Dao_energy = userIntakeDao.getFromUserIntake(userId, fdClassic, UIdate);
-//            //要插入的23-2个营养元素求和值
-//            from_result_ab = result_ab(Dao_energy, NutArray, nf_per);
-//            //插入23-2个值
-//            for (int j = 0; j <= 21; j++) {
-//                userIntake.put(NutName[j], from_result_ab[j]);
-//            }
             db.update("UserIntake", userIntake, "User_id = ? and UI_date=? and UI_class=?", new String[]{userId, UIdate, fdClassic});
         } finally {
             userIntake.clear();
@@ -679,37 +702,6 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    //弱引用
-//    private static class MyHandler extends Handler {
-//        WeakReference<FoodSelected> fruitSelectWeakReference;
-//
-//        MyHandler(FoodSelected fruitSelect) {
-//            fruitSelectWeakReference = new WeakReference<>(fruitSelect);
-//        }
-//
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            FoodSelected fruitSelect = fruitSelectWeakReference.get();
-//            if (fruitSelect != null) {
-//                String date;
-//                switch (msg.what) {
-//                    case 0:
-//                        Calendar calendar = Calendar.getInstance();
-//                        int year = calendar.get(Calendar.YEAR);
-//                        int month = calendar.get(Calendar.MONTH) + 1;
-//                        int day = calendar.get(Calendar.DAY_OF_MONTH);
-//                        date = year + "-" + month + "-" + day;
-//                        fruitSelect.date_setup.setText(date);
-//                        break;
-//                    case 1:
-//
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        }
-//    }
+
 }
 

@@ -553,6 +553,26 @@ public class FoodDao {
         return info;
     }
 
+    public String findUnit(String foodName) {
+        SQLiteDatabase foodDB = dbUtil.openDatabase();
+        String Unit_info = null;
+        String sql = "select Food_dic_unit from Food_Dic where Food_dic_name=?";
+        try {
+            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
+            if (c != null && c.getCount() != 0) {
+                while (c.moveToNext()) {
+                    Unit_info = c.getString(c.getColumnIndex("Food_dic_unit"));
+                }
+                c.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        foodDB.close();
+        return Unit_info;
+    }
+
     public String[] findNutrition(String foodId) {
         SQLiteDatabase foodDB = dbUtil.openDatabase();
         String[] Nutri_info = new String[21];
@@ -573,5 +593,6 @@ public class FoodDao {
         foodDB.close();
         return Nutri_info;
     }
+
 
 }

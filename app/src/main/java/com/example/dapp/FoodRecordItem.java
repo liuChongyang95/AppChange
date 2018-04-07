@@ -218,7 +218,7 @@ public class FoodRecordItem extends AppCompatActivity {
         changeRecDialog = new AlertDialog.Builder(this).create();
         changeRecDialog.setView(view);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Objects.requireNonNull(changeRecDialog.getWindow()).setContentView(R.layout.record_add);
+            Objects.requireNonNull(changeRecDialog.getWindow()).setContentView(R.layout.dialog_record_add);
         }
         changeRecDialog.setCancelable(true);
         Button cancel = view.findViewById(R.id.change_concern);

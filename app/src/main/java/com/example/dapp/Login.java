@@ -75,6 +75,18 @@ public class Login extends AppCompatActivity {
                 nickName.setText(strNickname);
                 back2App = findViewById(R.id.backToApp);
                 cancelUser = findViewById(R.id.cancelUser);
+                back2App.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loginInApp();
+                    }
+                });
+                cancelUser.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getContentView();
+                    }
+                });
                 loginInApp();
             } else {
                 Toast.makeText(this, "密码已被更改", Toast.LENGTH_SHORT).show();
@@ -154,17 +166,8 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        back2App.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginInApp();
-            }
-        });
-        cancelUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getContentView();
-            }
-        });
+        back2App = findViewById(R.id.backToApp);
+        cancelUser = findViewById(R.id.cancelUser);
+
     }
 }
