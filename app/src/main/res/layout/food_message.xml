@@ -141,32 +141,6 @@
                     android:textSize="17sp" />
             </LinearLayout>
         </LinearLayout>
-        <!--<RadioGroup-->
-        <!--android:id="@+id/fs_bottomMenu"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:background="#FDF5E6"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<RadioButton-->
-        <!--android:id="@+id/fs_bottomVS"-->
-        <!--style="@style/BottomMenu"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:onClick="onClick"-->
-        <!--android:drawableTop="@drawable/compare"-->
-        <!--android:text="试算" />-->
-
-        <!--<RadioButton-->
-        <!--android:id="@+id/fs_bottomRec"-->
-        <!--style="@style/BottomMenu"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:drawableTop="@drawable/selected_gray"-->
-        <!--android:text="记录" />-->
-
-        <!--</RadioGroup>-->
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView

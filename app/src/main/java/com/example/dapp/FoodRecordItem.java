@@ -24,6 +24,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ import Util.Staticfinal_Value;
 public class FoodRecordItem extends AppCompatActivity {
     private DBHelper dbHelper;
     private NumberFormat numberFormat;
+//    基本食物信息
     private String item_id;
     private String userId;
     private String UIclass;
@@ -58,15 +61,17 @@ public class FoodRecordItem extends AppCompatActivity {
             "毫克"};
 
     private View view;
+//    修改记录
     private AlertDialog changeRecDialog;
     private LayoutInflater inflater;
     private TextView date_setup_c;
-    private TextView breakfast_0;
-    private TextView lunch_1;
-    private TextView dinner_2;
-    private TextView after_lunch_4;
-    private TextView befor_lunch_3;
-    private TextView any_time_5;
+    private RadioButton breakfast_0;
+    private RadioButton lunch_1;
+    private RadioButton dinner_2;
+    private RadioButton after_lunch_4;
+    private RadioButton befor_lunch_3;
+    private RadioButton any_time_5;
+    private RadioGroup foodClassgroup;
     private String fdClassic;
     private EditText intakeSize;
     private TextView intakeSize_str;
@@ -119,6 +124,7 @@ public class FoodRecordItem extends AppCompatActivity {
         TextView food_Zn = findViewById(R.id.FRI_Zn_size);
         TextView food_K = findViewById(R.id.FRI_K_size);
         TextView food_purine = findViewById(R.id.FRI_purine_size);
+//        获得传值
         Intent intent = getIntent();
         Bundle bundle_from_FRLV = intent.getExtras();
         if (bundle_from_FRLV != null) {
@@ -131,6 +137,7 @@ public class FoodRecordItem extends AppCompatActivity {
             foodEnergy = bundle_from_FRLV.getString("itemEnergy");
             foodId = bundle_from_FRLV.getString("food_id");
         }
+//        初始化界面
         numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setMaximumFractionDigits(2);
         date.setText(UIdate);
@@ -138,7 +145,6 @@ public class FoodRecordItem extends AppCompatActivity {
         String fz = foodName + foodSize + "克";
         food_size.setText(fz);
         food_nutrition.setText(foodEnergy);
-
         foodDao = new FoodDao(this);
         nutriArr = foodDao.findNutrition(foodId);
         percent = numberFormat.format(Float.valueOf(foodSize) / 100);
@@ -170,8 +176,6 @@ public class FoodRecordItem extends AppCompatActivity {
         food_P.setText(nutrition[18]);
         food_K.setText(nutrition[19]);
         food_purine.setText(nutrition[20]);
-
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,12 +256,12 @@ public class FoodRecordItem extends AppCompatActivity {
         befor_lunch_3 = view.findViewById(R.id.fo_beforeL_c);
         after_lunch_4 = view.findViewById(R.id.fo_afterL_c);
         any_time_5 = view.findViewById(R.id.fo_anytime_c);
-        fdClassicBtn(UIclass);
+        foodClassgroup=view.findViewById(R.id.fo_group_c);
+        fdClassicBtn();
         intakeSize = view.findViewById(R.id.food_size_c);
         intakeSize_str = view.findViewById(R.id.food_size_energy_c);
         intakeSize.setText(foodSize);
-        String[] egy_change;
-        egy_change = foodDao.findNutrition(foodId);
+        String[] egy_change= foodDao.findNutrition(foodId);
         //每100克能量
         unitEnergy = egy_change[0];
         String initEnergy = "热量" + numberFormat.format(Float.valueOf(foodSize) * Float.valueOf(unitEnergy) / 100).replace(",", "") + "千卡";
@@ -426,112 +430,55 @@ public class FoodRecordItem extends AppCompatActivity {
         values2.clear();
     }
 
-    private void fdClassicBtn(String recordClass) {
-        if (recordClass.equals(breakfast_0.getText().toString().trim())) {
+    private void fdClassicBtn() {
+        //        初始化类别按钮
+        Calendar calendar = Calendar.getInstance();
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+        if (hours >= 6 && hours <= 8) {
             fdClassic = breakfast_0.getText().toString().trim();
-            set_bg(breakfast_0);
-        } else if (recordClass.equals(befor_lunch_3.getText().toString().trim())) {
+            breakfast_0.setChecked(true);
+        } else if (hours > 8 && hours <= 9) {
             fdClassic = befor_lunch_3.getText().toString().trim();
-            set_bg(befor_lunch_3);
-        } else if (recordClass.equals(lunch_1.getText().toString().trim())) {
+            befor_lunch_3.setChecked(true);
+        } else if (hours >= 11 && hours <= 13) {
             fdClassic = lunch_1.getText().toString().trim();
-            set_bg(lunch_1);
-        } else if (recordClass.equals(after_lunch_4.getText().toString().trim())) {
+            lunch_1.setChecked(true);
+        } else if (hours > 13 && hours <= 14) {
             fdClassic = after_lunch_4.getText().toString().trim();
-            set_bg(after_lunch_4);
-        } else if (recordClass.equals(dinner_2.getText().toString().trim())) {
+            after_lunch_4.setChecked(true);
+        } else if (hours >= 18 && hours <= 21) {
             fdClassic = dinner_2.getText().toString().trim();
-            set_bg(dinner_2);
+            dinner_2.setChecked(true);
         } else {
             fdClassic = any_time_5.getText().toString().trim();
-            set_bg(any_time_5);
+            any_time_5.setChecked(true);
         }
-
-        breakfast_0.setOnClickListener(new View.OnClickListener() {
+        //餐别设置
+        foodClassgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                fdClassic = breakfast_0.getText().toString().trim();
-                set_bg(breakfast_0);
-                set_bg_null(lunch_1);
-                set_bg_null(dinner_2);
-                set_bg_null(befor_lunch_3);
-                set_bg_null(after_lunch_4);
-                set_bg_null(any_time_5);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.fo_breakfast:
+                        fdClassic = breakfast_0.getText().toString().trim();
+                        break;
+                    case R.id.fo_lunch:
+                        fdClassic = lunch_1.getText().toString().trim();
+                        break;
+                    case R.id.fo_dinner:
+                        fdClassic = dinner_2.getText().toString().trim();
+                        break;
+                    case R.id.fo_beforeL:
+                        fdClassic = befor_lunch_3.getText().toString().trim();
+                        break;
+                    case R.id.fo_afterL:
+                        fdClassic = after_lunch_4.getText().toString().trim();
+                        break;
+                    case R.id.fo_anytime:
+                        fdClassic = any_time_5.getText().toString().trim();
+                        break;
+                }
             }
         });
-
-        lunch_1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fdClassic = lunch_1.getText().toString().trim();
-                set_bg(lunch_1);
-                set_bg_null(breakfast_0);
-                set_bg_null(dinner_2);
-                set_bg_null(befor_lunch_3);
-                set_bg_null(after_lunch_4);
-                set_bg_null(any_time_5);
-            }
-        });
-
-        dinner_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fdClassic = dinner_2.getText().toString().trim();
-                set_bg(dinner_2);
-                set_bg_null(breakfast_0);
-                set_bg_null(lunch_1);
-                set_bg_null(befor_lunch_3);
-                set_bg_null(after_lunch_4);
-                set_bg_null(any_time_5);
-            }
-        });
-
-        befor_lunch_3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fdClassic = befor_lunch_3.getText().toString().trim();
-                set_bg(befor_lunch_3);
-                set_bg_null(breakfast_0);
-                set_bg_null(lunch_1);
-                set_bg_null(dinner_2);
-                set_bg_null(after_lunch_4);
-                set_bg_null(any_time_5);
-            }
-        });
-
-        after_lunch_4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fdClassic = after_lunch_4.getText().toString().trim();
-                set_bg(after_lunch_4);
-                set_bg_null(breakfast_0);
-                set_bg_null(lunch_1);
-                set_bg_null(dinner_2);
-                set_bg_null(befor_lunch_3);
-                set_bg_null(any_time_5);
-            }
-        });
-
-        any_time_5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fdClassic = any_time_5.getText().toString().trim();
-                set_bg(any_time_5);
-                set_bg_null(breakfast_0);
-                set_bg_null(lunch_1);
-                set_bg_null(dinner_2);
-                set_bg_null(befor_lunch_3);
-                set_bg_null(after_lunch_4);
-            }
-        });
-    }
-
-    private void set_bg(TextView fo_class) {
-        fo_class.setBackgroundResource(R.drawable.classbtn);
-    }
-
-    private void set_bg_null(TextView fo_class) {
-        fo_class.setBackgroundColor(Color.TRANSPARENT);
     }
 
     private String initDate() {
@@ -570,7 +517,6 @@ public class FoodRecordItem extends AppCompatActivity {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             String zc_year = Integer.toString(year);
-
             String zc_month;
             if (month < 9) {
                 month = month + 1;
@@ -586,7 +532,6 @@ public class FoodRecordItem extends AppCompatActivity {
                 zc_day = "0" + zc_day;
             } else {
                 zc_day = Integer.toString(dayOfMonth);
-
             }
             String food_rec = zc_year + "-" + zc_month + "-" + zc_day;
             date_setup_c.setText(food_rec);
@@ -613,9 +558,4 @@ public class FoodRecordItem extends AppCompatActivity {
         }
     });
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 }
