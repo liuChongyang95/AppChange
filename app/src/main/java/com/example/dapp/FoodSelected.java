@@ -34,7 +34,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -48,7 +47,6 @@ import Database.DBHelper;
 import Fragment_fs.Fragment_FS_GI;
 import Fragment_fs.Fragment_FS_nutritioninfo;
 import Fragment_fs.Fragment_FS_titalinfo;
-import SearchDao.CareerDao;
 import SearchDao.FoodDao;
 import SearchDao.UserDao;
 import SearchDao.UserIntakeDao;
@@ -59,6 +57,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by Administrator on 2017/12/28.
  * 所有查询都是通过FoodID
+ * 个 小中大 106.4 159.6 288.8
  */
 
 public class FoodSelected extends AppCompatActivity implements View.OnClickListener {
@@ -68,10 +67,9 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     private String Fat;
     private String DF;
     private String CH;
-    private String unitClass;
+
 
     private Bundle bundle_from_FMA;
-    private CareerDao careerDao = new CareerDao(this);
     private FoodDao foodDao = new FoodDao(this);
     private UserDao userDao = new UserDao(this);
 
@@ -92,24 +90,30 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     private RadioButton befor_lunch_3;
     private RadioButton after_lunch_4;
     private RadioButton any_time_5;
-    //    单位
-    private RadioGroup dynamicUnit;
+    //    单位印记
+    private int unitSign;
 
+    //    文本框旁边的单位
+    private TextView sizeUnitTV;
+    private String unitClass;
     //    计算能量显示在alertDialog
     private EditText food_q;
     private TextView food_q_e;
-    private float fq;
 
     //    计算插入能量
     private String[] NutArray;
     private String[] Dao_energy;
     private String[] from_result_ab;
+    private String[] units;
     private UserIntakeDao userIntakeDao;
     private NumberFormat nf;
-    private float percent;
+    private double percent;
+    private double divisor;
     //    动态生成单位按钮
     private int UNIT_BUTTON_KE = 1;
-    private int UNIT_BUTTON_GE = 2;
+    private int UNIT_BUTTON_GE_SMALL = 2;
+    private int UNIT_BUTTON_GE_MIDDLE = 3;
+    private int UNIT_BUTTON_GE_BIG = 4;
 
     private DrawerLayout drawerLayoutFS;
 
@@ -269,6 +273,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     UF.put("Food_ck", "未设置");
                     UF.put("Food_ingre_1", rec_id);
                     UF.put("intake_1", rec_size);
+                    UF.put("Food_unit", unitSign);
                     db.insert("UserFood", null, UF);
                     calculateNutri();
                     UF.clear();
@@ -347,25 +352,31 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         any_time_5 = add_view.findViewById(R.id.fo_anytime);
         foClass = add_view.findViewById(R.id.fo_group);
 //        动态生成单位组
-        dynamicUnit = add_view.findViewById(R.id.dynamicButtonUnit);
+        RadioGroup dynamicUnit = add_view.findViewById(R.id.dynamicButtonUnit);
+//        文本框旁提示单位
+        sizeUnitTV = add_view.findViewById(R.id.size_unit);
 //        初始化餐别和餐别设置
         initFdClass();
 //        默认餐量和餐量设置
         String initfood_q = "100";
         food_q = add_view.findViewById(R.id.food_size);
         food_q_e = add_view.findViewById(R.id.food_size_energy);
+//      ①food_q代表文本框内，用户输入的数值
         food_q.setText(initfood_q);
-        fq = Float.parseFloat(food_q.getText().toString().trim().replace(",", ""));
+        float fq = Float.parseFloat(food_q.getText().toString().trim().replace(",", ""));
+//      ②percent代表是100g的多少倍
         percent = fq / 100;
         String nf_per = nf.format(percent).replace(",", "");
-//        初始化计算能量提示值
+//      初始化计算能量提示值
         String g_energy = foodDao.find_energy(fruitName);
-//       初始化界面可选单位
+//      读取数据库可选单位集合
         String unitFood = foodDao.findUnit(fruitName);
+//      计算用于提示的能量数值 百分比乘100克
         float energy = Float.valueOf(nf_per) * Float.valueOf(g_energy);
         String energy_result = "热量" + nf.format(energy) + "千卡";
+//      用于提示的能量数值 TV
         food_q_e.setText(energy_result);
-//       餐量动态提示能量
+//      餐量动态提示能量 editText
         food_q.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -374,20 +385,22 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                float fq;
-                try {
-                    if (food_q.getText().toString().trim().length() > 0) {
-                        fq = Float.parseFloat(food_q.getText().toString().trim().replace(",", ""));
-                        percent = fq / 100;
-                        String nf_per = nf.format(percent).replace(",", "");
-                        String g_energy = foodDao.find_energy(fruitName);
-                        double energy = Float.valueOf(nf_per) * Float.valueOf(g_energy);
-                        String energy_result = "热量" + nf.format(energy) + "千卡";
-                        food_q_e.setText(energy_result);
-                    } else food_q_e.setText("热量0千卡");
-                } catch (NumberFormatException nfe) {
-                    nfe.printStackTrace();
-                }
+                if (unitClass != null)
+                    switch (unitClass) {
+                        case "克":
+                            //percent值也被改变 √
+                            setEnergyCue(food_q, food_q_e, divisor);
+                            break;
+                        case "个(小)":
+                            setEnergyCue(food_q, food_q_e, divisor);
+                            break;
+                        case "个(中)":
+                            setEnergyCue(food_q, food_q_e, divisor);
+                            break;
+                        case "个(大)":
+                            setEnergyCue(food_q, food_q_e, divisor);
+                            break;
+                    }
             }
 
             @Override
@@ -398,38 +411,62 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 //       添加到记录表的按钮
         Button sureAdd = add_view.findViewById(R.id.add_agree);
         sureAdd.setOnClickListener(this);
-//        动态加载单位控件 unit[0]克 unit[1]个。
-        String[] units = unitFood.split("/");
+//       初始化 动态加载单位控件 unit[0]克 unit[1],unit[2],unit[3]个。
+        if (unitFood != null)
+            units = unitFood.split("/");
+        else units = new String[]{"克"};
         for (String unit : units) {
-            RadioButton radioButton = new RadioButton(FoodSelected.this);
-            radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             switch (unit) {
                 case "克":
-                    radioButton.setId(UNIT_BUTTON_KE);
-                    radioButton.setText("克");
-                    radioButton.setPadding(20, 0, 20, 0);
-                    radioButton.setBackgroundResource(R.drawable.food_class_btn_select);
-                    dynamicUnit.addView(radioButton);
-                    radioButton.setChecked(true);
-                    //动态生成同时设置默认值
-                    unitClass = "克";
-                    radioButton.setButtonDrawable(getResources().getDrawable(android.R.color.transparent));
+//                  dynamicUnit中动态加载radioButton,rB和tV同时加载单位
+                    setUnit(dynamicUnit, unit);
                     break;
-                case "个":
-                    radioButton.setId(UNIT_BUTTON_GE);
-                    radioButton.setText("个");
-                    dynamicUnit.addView(radioButton);
-                    radioButton.setPadding(20, 0, 20, 0);
-                    radioButton.setBackgroundResource(R.drawable.food_class_btn_select);
-                    radioButton.setButtonDrawable(getResources().getDrawable(android.R.color.transparent));
+                case "个(小)":
+                    setUnit(dynamicUnit, unit);
+                    break;
+                case "个(中)":
+                    setUnit(dynamicUnit, unit);
+                    break;
+                case "个(大)":
+                    setUnit(dynamicUnit, unit);
                     break;
             }
         }
+//        单位按钮监听
         dynamicUnit.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton radioButton = group.findViewById(checkedId);
                 unitClass = radioButton.getText().toString().trim();
+//                根据单位监听
+                sizeUnitTV.setText(unitClass);
+                switch (unitClass) {
+                    case "克":
+                        String tempStr = "100";
+                        food_q.setText(tempStr);
+                        divisor = 1;
+                        setEnergyCue(food_q, food_q_e, divisor);
+                        unitSign = 0;
+                        break;
+                    case "个(小)":
+                        food_q.setText("1");
+                        divisor = 106.4;
+                        setEnergyCue(food_q, food_q_e, divisor);
+                        unitSign = 1;
+                        break;
+                    case "个(中)":
+                        food_q.setText("1");
+                        divisor = 159.6;
+                        setEnergyCue(food_q, food_q_e, divisor);
+                        unitSign = 2;
+                        break;
+                    case "个(大)":
+                        food_q.setText("1");
+                        divisor = 288.8;
+                        setEnergyCue(food_q, food_q_e, divisor);
+                        unitSign = 3;
+                        break;
+                }
             }
         });
 //        所有逻辑卸载show前面
@@ -589,7 +626,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         return result_str;
     }
 
-    //        添加到用户营养摄入
+    //        添加到用户营养摄入表
     private void calculateNutri() {
         //数据库的23-2个营养元素值
         NutArray = new String[23];
@@ -614,25 +651,22 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         NutArray[18] = foodDao.find_Zn(fruitName);
         NutArray[19] = foodDao.find_P(fruitName);
         NutArray[20] = foodDao.find_purine(fruitName);
-
         //23-2个列名
         String[] NutName = {"UI_energy", "UI_protein", "UI_fat", "UI_DF", "UI_CH", "UI_water", "UI_VA", "UI_VB1",
                 "UI_VB2", "UI_VB3", "UI_VE", "UI_VC", "UI_Fe", "UI_Ga", "UI_Na", "UI_CLS", "UI_K", "UI_Mg",
                 "UI_Zn", "UI_P", "UI_purine"};
-
-        float fq = Float.parseFloat(food_q.getText().toString().trim());
-        percent = fq / 100;
-        String nf_per = nf.format(percent).replace(",", "");
+        String nf_per;
+        nf_per = nf.format(percent).replace(",", "");
         String userId = bundle_from_FMA.getString("from_Login_User_id");
         String UIdate = date_setup.getText().toString().trim();
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues userIntake = new ContentValues();
-
         try {
             userIntakeDao = new UserIntakeDao(this);
             Dao_energy = userIntakeDao.getFromUserIntake(userId, fdClassic, UIdate);
             from_result_ab = result_ab(Dao_energy, NutArray, nf_per);
             userIntake.put("User_id", userId);
+//            UI=UserIntake
             userIntake.put("UI_date", UIdate);
             userIntake.put("UI_class", fdClassic);
             for (int j = 0; j < 21; j++) {
@@ -659,6 +693,48 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+    //    初始化单位按钮
+    private void setUnit(RadioGroup radioGroup, String unitStr) {
+        RadioButton radioButton = new RadioButton(FoodSelected.this);
+        radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        radioButton.setText(unitStr);
+        radioButton.setPadding(20, 0, 20, 0);
+        radioButton.setBackgroundResource(R.drawable.food_class_btn_select);
+        radioGroup.addView(radioButton);
+        switch (unitStr) {
+            case "克":
+                sizeUnitTV.setText("克");
+                radioButton.setId(UNIT_BUTTON_KE);
+                radioButton.setChecked(true);
+                break;
+            case "个(小)":
+                radioButton.setId(UNIT_BUTTON_GE_SMALL);
+                break;
+            case "个(中)":
+                radioButton.setId(UNIT_BUTTON_GE_MIDDLE);
+                break;
+            case "个(大)":
+                radioButton.setId(UNIT_BUTTON_GE_BIG);
+                break;
+        }
+        radioButton.setButtonDrawable(getResources().getDrawable(android.R.color.transparent));
+    }
 
+    //    能量testView提示
+    private void setEnergyCue(EditText food_q, TextView food_q_e, double divisor) {
+        if (food_q.getText().toString().trim().length() > 0) {
+            float fq = Float.parseFloat(food_q.getText().toString().trim().replace(",", ""));
+            percent = fq / 100 * divisor;
+//                        百分比
+            String nf_per = nf.format(percent).replace(",", "");
+//                        每百g能量
+            String g_energy = foodDao.find_energy(fruitName);
+//                        结果能量
+            double energy = Float.valueOf(nf_per) * Float.valueOf(g_energy);
+//                        显示语句
+            String energy_result = "热量" + nf.format(energy) + "千卡";
+            food_q_e.setText(energy_result);
+        } else food_q_e.setText("热量0千卡");
+    }
 }
 

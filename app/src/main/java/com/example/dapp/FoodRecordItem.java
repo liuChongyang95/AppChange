@@ -35,13 +35,14 @@ import java.util.Objects;
 
 import Database.DBHelper;
 import SearchDao.FoodDao;
+import SearchDao.FoodRecordDao;
 import SearchDao.UserIntakeDao;
 import Util.Staticfinal_Value;
 
-public class FoodRecordItem extends AppCompatActivity {
+public class FoodRecordItem extends AppCompatActivity implements View.OnClickListener {
     private DBHelper dbHelper;
     private NumberFormat numberFormat;
-//    基本食物信息
+    //    基本食物信息
     private String item_id;
     private String userId;
     private String UIclass;
@@ -50,7 +51,8 @@ public class FoodRecordItem extends AppCompatActivity {
     private String foodSize;
     private String foodEnergy;
     private String foodId;
-    private String percent;
+    private String unitStr;
+    private float percent;
     //暂时除去能量
     private String[] nutrition = new String[21];
     private String[] nutriArr = new String[21];
@@ -61,7 +63,7 @@ public class FoodRecordItem extends AppCompatActivity {
             "毫克"};
 
     private View view;
-//    修改记录
+    //    修改记录
     private AlertDialog changeRecDialog;
     private LayoutInflater inflater;
     private TextView date_setup_c;
@@ -78,6 +80,7 @@ public class FoodRecordItem extends AppCompatActivity {
     private String unitEnergy;
     private FoodDao foodDao;
     private UserIntakeDao userIntakeDao;
+    private FoodRecordDao foodRecordDao;
     private SQLiteDatabase sqLiteDatabase;
 
 
@@ -97,6 +100,7 @@ public class FoodRecordItem extends AppCompatActivity {
         Staticfinal_Value sfv = new Staticfinal_Value();
         dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
         userIntakeDao = new UserIntakeDao(this);
+        foodRecordDao = new FoodRecordDao(this);
         Toolbar toolbar = findViewById(R.id.FR_I_toolbar);
         setSupportActionBar(toolbar);
         TextView date = findViewById(R.id.FR_I_date);
@@ -142,15 +146,38 @@ public class FoodRecordItem extends AppCompatActivity {
         numberFormat.setMaximumFractionDigits(2);
         date.setText(UIdate);
         food_class.setText(UIclass);
-        String fz = foodName + foodSize + "克";
+        switch (foodRecordDao.getRecordUnit(item_id)) {
+            case 0:
+                percent = Float.parseFloat(numberFormat.format(Float.valueOf(foodSize) / 100));
+                unitStr = "克";
+                break;
+            case 1:
+                percent = Float.parseFloat(numberFormat.format(Float.valueOf(foodSize) / 100 * 106.4));
+                unitStr = "个(小)";
+                break;
+            case 2:
+                percent = Float.parseFloat(numberFormat.format(Float.valueOf(foodSize) / 100 * 159.6));
+                unitStr = "个(中)";
+                break;
+            case 3:
+                percent = Float.parseFloat(numberFormat.format(Float.valueOf(foodSize) / 100 * 288.8));
+                unitStr = "个(大)";
+                break;
+        }
+//      标题头 苹果XX个
+        String fz = foodName + foodSize + unitStr;
         food_size.setText(fz);
+//      标题头 XXX千焦能量
         food_nutrition.setText(foodEnergy);
+//      能量列表
         foodDao = new FoodDao(this);
+//      ①单品所有营养元素
         nutriArr = foodDao.findNutrition(foodId);
-        percent = numberFormat.format(Float.valueOf(foodSize) / 100);
         for (int i = 0; i < 21; i++) {
-            if (nutriArr[i] != null && !nutriArr[i].equals("…") && !nutriArr[i].equals("Tr") && nutriArr[i].length() > 0 && !nutriArr[i].equals("—") && !nutriArr[i].equals("┄") && !nutriArr[i].equals("─")) {
-                nutrition[i] = numberFormat.format(Float.valueOf(nutriArr[i]) * Float.valueOf(percent)) + unit[i];
+            if (nutriArr[i] != null && !nutriArr[i].equals("…") && !nutriArr[i].equals("Tr")
+                    && nutriArr[i].length() > 0 && !nutriArr[i].equals("—")
+                    && !nutriArr[i].equals("┄") && !nutriArr[i].equals("─")) {
+                nutrition[i] = numberFormat.format(Float.valueOf(nutriArr[i]) * percent) + unit[i];
             } else {
                 nutrition[i] = "—";
             }
@@ -216,9 +243,9 @@ public class FoodRecordItem extends AppCompatActivity {
     private void cRec() {
         if (view == null) {
             view = inflater.inflate(R.layout.record_change, null);
-            date_setup_c = view.findViewById(R.id.date_record_c);
-            date_setup_c.setText(initDate());
         }
+        date_setup_c = view.findViewById(R.id.date_record_c);
+        date_setup_c.setText(initDate());
         changeRecDialog = new AlertDialog.Builder(this).create();
         changeRecDialog.setView(view);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -226,45 +253,33 @@ public class FoodRecordItem extends AppCompatActivity {
         }
         changeRecDialog.setCancelable(true);
         Button cancel = view.findViewById(R.id.change_concern);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeRecDialog.dismiss();
-            }
-        });
+        cancel.setOnClickListener(this);
         Button today = view.findViewById(R.id.date_today_c);
-        today.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Message message = new Message();
-                message.what = 0;
-                handler.sendMessage(message);
-            }
-        });
+        today.setOnClickListener(this);
         Button dateChange_select = view.findViewById(R.id.date_select_c);
-        dateChange_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Message message = new Message();
-                message.what = 1;
-                handler.sendMessage(message);
-            }
-        });
+        dateChange_select.setOnClickListener(this);
         breakfast_0 = view.findViewById(R.id.fo_breakfast_c);
         lunch_1 = view.findViewById(R.id.fo_lunch_c);
         dinner_2 = view.findViewById(R.id.fo_dinner_c);
         befor_lunch_3 = view.findViewById(R.id.fo_beforeL_c);
         after_lunch_4 = view.findViewById(R.id.fo_afterL_c);
         any_time_5 = view.findViewById(R.id.fo_anytime_c);
-        foodClassgroup=view.findViewById(R.id.fo_group_c);
+        foodClassgroup = view.findViewById(R.id.fo_group_c);
+        TextView sizeUnitTV = view.findViewById(R.id.size_unit_c);
+//        文本框旁边的单位显示textView
+        sizeUnitTV.setText(unitStr);
         fdClassicBtn();
         intakeSize = view.findViewById(R.id.food_size_c);
         intakeSize_str = view.findViewById(R.id.food_size_energy_c);
+//        读取记录中的食物是多少克的 然后初始化editText
         intakeSize.setText(foodSize);
-        String[] egy_change= foodDao.findNutrition(foodId);
-        //每100克能量
+        String[] egy_change = foodDao.findNutrition(foodId);
+        //        每100克能量
         unitEnergy = egy_change[0];
-        String initEnergy = "热量" + numberFormat.format(Float.valueOf(foodSize) * Float.valueOf(unitEnergy) / 100).replace(",", "") + "千卡";
+        //        Edittext旁边的string
+        String initEnergy = "热量" + numberFormat
+                .format(Float.valueOf(unitEnergy) * percent)
+                .replace(",", "") + "千卡";
         intakeSize_str.setText(initEnergy);
         intakeSize.addTextChangedListener(new TextWatcher() {
             @Override
@@ -274,18 +289,29 @@ public class FoodRecordItem extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String intakeValue = intakeSize.getText().toString().trim().replace(",", "");
-                try {
-                    if (intakeSize.getText().toString().trim().length() > 0) {
-                        float fq = Float.valueOf(intakeValue);
-                        String nf_per = numberFormat.format(fq / 100);
-                        String energy = numberFormat.format(Float.valueOf(nf_per) * Float.valueOf(unitEnergy));
-                        String resultStr = "热量" + energy + "千卡";
-                        intakeSize_str.setText(resultStr);
-                    } else intakeSize_str.setText("热量0千卡");
-                } catch (NumberFormatException nfe) {
-                    nfe.printStackTrace();
-                }
+                if (intakeSize.getText().toString().trim().length() > 0) {
+                    String intakeValue = intakeSize.getText().toString().trim().replace(",", "");
+                    float fq = Float.valueOf(intakeValue);
+                    String nf_per = null;
+                    switch (unitStr) {
+                        case "克":
+                            nf_per = numberFormat.format(fq / 100);
+                            break;
+                        case "个(小)":
+                            nf_per = numberFormat.format(fq / 100 * 106.4);
+                            break;
+                        case "个(中)":
+                            nf_per = numberFormat.format(fq / 100 * 159.6);
+                            break;
+                        case "个(大)":
+                            nf_per = numberFormat.format(fq / 100 * 288.8);
+                            break;
+                    }
+                    String energy = numberFormat.format(Float.valueOf(nf_per) * Float.valueOf(unitEnergy));
+                    String resultStr = "热量" + energy + "千卡";
+                    intakeSize_str.setText(resultStr);
+                } else intakeSize_str.setText("热量0千卡");
+
             }
 
             @Override
@@ -317,8 +343,11 @@ public class FoodRecordItem extends AppCompatActivity {
                     String percent = numberFormat.format(Float.valueOf(changeSize) / 100);
                     //每一项要更改的值
                     for (int i = 0; i < 21; i++) {
-                        if (changeNutri[i] != null && !changeNutri[i].equals("…") && !changeNutri[i].equals("Tr") && changeNutri[i].length() > 0 && !changeNutri[i].equals("—") && !changeNutri[i].equals("┄") && !changeNutri[i].equals("─"))
-                            changeNutri[i] = numberFormat.format(Float.valueOf(changeNutri[i]) * Float.valueOf(percent)).replace(",","");
+                        if (changeNutri[i] != null && !changeNutri[i].equals("…")
+                                && !changeNutri[i].equals("Tr") && changeNutri[i].length() > 0
+                                && !changeNutri[i].equals("—") && !changeNutri[i].equals("┄")
+                                && !changeNutri[i].equals("─"))
+                            changeNutri[i] = numberFormat.format(Float.valueOf(changeNutri[i]) * Float.valueOf(percent)).replace(",", "");
                         else
                             changeNutri[i] = null;
                     }
@@ -353,7 +382,6 @@ public class FoodRecordItem extends AppCompatActivity {
                             }
                             values.put(NutName[i], userIntakedNutri[i]);
                         }
-                        //可能是这错了
                         sqLiteDatabase.update("UserIntake", values,
                                 "User_id=? and UI_date=? and UI_class=?",
                                 new String[]{userId, changedate, changeclass});
@@ -418,7 +446,7 @@ public class FoodRecordItem extends AppCompatActivity {
         for (int i = 0; i < 21; i++) {
             if (nutArray[i] != null && !nutArray[i].equals("…") && !nutArray[i].equals("Tr") && nutArray[i].length() > 0 && !nutArray[i].equals("—") && !nutArray[i].equals("┄") && !nutArray[i].equals("─")) {
                 nutArray[i] = numberFormat.format(Float.valueOf(nutArray[i]) * f_percent).replace(",", "");
-                result_ab = numberFormat.format(Float.valueOf(intakeNutri[i]) - Float.valueOf(nutArray[i])).replace(",","");
+                result_ab = numberFormat.format(Float.valueOf(intakeNutri[i]) - Float.valueOf(nutArray[i])).replace(",", "");
                 values2.put(NutName[i], result_ab);
             }
         }
@@ -558,4 +586,22 @@ public class FoodRecordItem extends AppCompatActivity {
         }
     });
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.change_concern:
+                changeRecDialog.dismiss();
+                break;
+            case R.id.date_today_c:
+                Message message = new Message();
+                message.what = 0;
+                handler.sendMessage(message);
+                break;
+            case R.id.date_select_c:
+                Message message1 = new Message();
+                message1.what = 1;
+                handler.sendMessage(message1);
+                break;
+        }
+    }
 }
