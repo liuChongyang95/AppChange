@@ -63,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "constraint Career_PK primary key(Career,Shape))";
 
     private static final String CREATE_UserFood = "create table UserFood(_id integer primary key autoincrement,User_id char(16),Food_date date," +
-            "Food_class char(14),Food_id char(16) ,Food_ck char(10) not null,Food_intake char(6) not null," +
+            "Food_class char(14),Food_id char(16) ,Food_ck char(10) not null,Food_unit char(4),Food_intake char(6) not null," +
             "Food_ingre_1 char(16) not null,Intake_1 char(6) not null,Food_ingre_2 char(16),Intake_2 char(6)," +
             "Food_ingre_3 char(16),Intake_3 char(6),Food_ingre_4 char(16),Intake_4 char(6),Food_ingre_5 char(16)," +
             "Intake_5 char(6),foreign key (User_id) references User(User_id) on update cascade)";

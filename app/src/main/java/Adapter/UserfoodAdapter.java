@@ -24,6 +24,7 @@ import Util.DBUtil;
 
 public class UserfoodAdapter extends ArrayAdapter<UserFood> implements Filterable {
     private int resId;
+    private String foodUnit;
 
     public UserfoodAdapter(Context context, int TVresId, List<UserFood> objects) {
         super(context, TVresId, objects);
@@ -71,7 +72,22 @@ public class UserfoodAdapter extends ArrayAdapter<UserFood> implements Filterabl
         if (userFood != null) {
             viewHolder.Foodclass.setText(userFood.getFoodClass());
             viewHolder.Foodname.setText(userFood.getFoodName());
-            String intake = userFood.getFoodIntake() + "克";
+
+            switch (userFood.getFoodUnit()) {
+                case 0:
+                    foodUnit = "克";
+                    break;
+                case 1:
+                    foodUnit = "个(小)";
+                    break;
+                case 2:
+                    foodUnit = "个(中)";
+                    break;
+                case 3:
+                    foodUnit = "个(大)";
+                    break;
+            }
+            String intake = userFood.getFoodIntake() + foodUnit;
             viewHolder.Foodintake.setText(intake);
             viewHolder.Foodtime.setText(userFood.getFoodDate());
             viewHolder.Foodenergy.setText(userFood.getFoodNutri());

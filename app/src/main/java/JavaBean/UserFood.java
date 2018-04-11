@@ -17,11 +17,12 @@ public class UserFood {
     private String intake4;
     private String foodIngre5;
     private String intake5;
+    private int foodUnit;
 
     private String foodName;
     private String foodNutri;
 
-    public UserFood(String foodDate, String foodClass, String foodName, String foodIntake, int item_Id, String foodNutri, String foodId) {
+    public UserFood(String foodDate, String foodClass, String foodName, String foodIntake, int item_Id, String foodNutri, String foodId, int foodUnit) {
         this.foodId = foodId;
         this.foodDate = foodDate;
         this.foodClass = foodClass;
@@ -29,10 +30,18 @@ public class UserFood {
         this.foodIntake = foodIntake;
         this.foodNutri = foodNutri;
         this._id = item_Id;
+        this.foodUnit = foodUnit;
     }
 
-
     public UserFood() {
+    }
+
+    public void setFoodUnit(int foodUnit) {
+        this.foodUnit = foodUnit;
+    }
+
+    public int getFoodUnit() {
+        return foodUnit;
     }
 
     public String getFoodNutri() {

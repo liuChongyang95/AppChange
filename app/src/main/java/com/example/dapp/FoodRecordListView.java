@@ -77,10 +77,8 @@ public class FoodRecordListView extends AppCompatActivity {
                 Intent intent2 = new Intent(FoodRecordListView.this, FoodRecordItem.class);
                 intent2.putExtras(bundle);
                 startActivity(intent2);
-
             }
         });
-
     }
 
     @Override
