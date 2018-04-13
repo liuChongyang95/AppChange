@@ -58,6 +58,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Administrator on 2017/12/28.
  * 所有查询都是通过FoodID
  * 个 小中大 106.4 159.6 288.8
+ *
  */
 
 public class FoodSelected extends AppCompatActivity implements View.OnClickListener {
@@ -95,7 +96,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
     //    文本框旁边的单位
     private TextView sizeUnitTV;
-    private String unitClass;
+    private String unitClass="克";
     //    计算能量显示在alertDialog
     private EditText food_q;
     private TextView food_q_e;
@@ -108,7 +109,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     private UserIntakeDao userIntakeDao;
     private NumberFormat nf;
     private double percent;
-    private double divisor;
+    private double divisor=1;
     //    动态生成单位按钮
     private int UNIT_BUTTON_KE = 1;
     private int UNIT_BUTTON_GE_SMALL = 2;
@@ -703,7 +704,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         radioGroup.addView(radioButton);
         switch (unitStr) {
             case "克":
-                sizeUnitTV.setText("克");
+                sizeUnitTV.setText(unitStr);
                 radioButton.setId(UNIT_BUTTON_KE);
                 radioButton.setChecked(true);
                 break;

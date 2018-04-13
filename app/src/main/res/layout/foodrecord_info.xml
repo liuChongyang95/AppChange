@@ -33,7 +33,6 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="间点"
                 android:textSize="22sp" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
