@@ -44,9 +44,6 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String picture = "User_Photo";
     }
 
-    // 水果模拟
-    private static final String CREATE_FRUIT = "create table Fruit (Ri_Food_name varchar(20) primary key ,Ri_Food_id char(20) not null," +
-            "Ri_Food_ep_id varchar(20)," + PicColumns.picture + " blob not null)";
     //           患者信息
     // name昵称
     private static final String CREATE_USER = "create table User (User_id char(16) ,User_Nickname " +
@@ -90,7 +87,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(CREATE_FRUIT);
         sqLiteDatabase.execSQL(CREATE_USER);
         sqLiteDatabase.execSQL(CREATE_LOGIN);
         sqLiteDatabase.execSQL(CREATE_CAREER);
@@ -98,33 +94,14 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_FoodSH);
         sqLiteDatabase.execSQL(CREATE_SH_temp);
         sqLiteDatabase.execSQL(CREATE_UserIntake);
-        try {
-            initDataBase_Food(sqLiteDatabase, mContext);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         initDataBase_Career(sqLiteDatabase, mContext);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        String sql_Fruit = " DROP TABLE IF EXISTS Fruit";
         String sql_User = " DROP TABLE IF EXISTS User";
-        String sql_Login = "DROP TABLE IF EXISTS Login";
-        String sql_Career = "DROP TABLE IF EXISTS Career";
-        String sql_UserFood = "DROP TABLE IF EXISTS UserFood";
-        String sql_FoodSH = "DROP TABLE IF EXISTS FoodSH";
-        String sql_SH_temp = "DROP TABLE IF EXISTS SHtemp";
-        String sql_UserIntake = "DROP TABLE IF EXISTS UserIntake";
-        sqLiteDatabase.execSQL(sql_UserIntake);
-        sqLiteDatabase.execSQL(sql_FoodSH);
-        sqLiteDatabase.execSQL(sql_SH_temp);
-        sqLiteDatabase.execSQL(sql_Fruit);
-        sqLiteDatabase.execSQL(sql_Career);
         sqLiteDatabase.execSQL(sql_User);
-        sqLiteDatabase.execSQL(sql_Login);
-        sqLiteDatabase.execSQL(sql_UserFood);
         onCreate(sqLiteDatabase);
     }
 
@@ -139,60 +116,6 @@ public class DBHelper extends SQLiteOpenHelper {
         byte[] ba = os.toByteArray();
         os.close();
         return ba;
-    }
-
-    private void initDataBase_Food(SQLiteDatabase sqLiteDatabase, Context mContext) throws IOException {
-        Drawable apple = mContext.getResources().getDrawable(R.drawable.apple);
-        Drawable pear = mContext.getResources().getDrawable(R.drawable.pear);
-        Drawable orange = mContext.getResources().getDrawable(R.drawable.orange);
-        Drawable apple_1 = mContext.getResources().getDrawable(R.drawable.apple_1);
-        Drawable apple_2 = mContext.getResources().getDrawable(R.drawable.apple_2);
-        Drawable apple_3 = mContext.getResources().getDrawable(R.drawable.apple_3);
-        ContentValues values = new ContentValues();
-        values.put("Ri_Food_name", "青苹果");
-        values.put("Ri_Food_id", "000010");
-        values.put("Ri_Food_photo", getPicture(apple_1));
-        values.put("Ri_Food_ep_id", "00005 00006");
-        sqLiteDatabase.insert("Fruit", null, values);
-        values.clear();
-        values.put("Ri_Food_name", "橘子");
-        values.put("Ri_Food_id", "00003");
-        values.put("Ri_Food_photo", getPicture(orange));
-        sqLiteDatabase.insert("Fruit", null, values);
-        values.clear();
-        values.put("Ri_Food_name", "apple");
-        values.put("Ri_Food_id", "00001");
-        values.put("Ri_Food_photo", getPicture(apple_1));
-        values.put("Ri_Food_ep_id", "00005 00006");
-        sqLiteDatabase.insert("Fruit", null, values);
-        values.clear();
-        values.put("Ri_Food_name", "果酱(apple)");
-        values.put("Ri_Food_id", "00005");
-        values.put("Ri_Food_photo", getPicture(apple_2));
-        sqLiteDatabase.insert("Fruit", null, values);
-        values.clear();
-        values.put("Ri_Food_name", "梨");
-        values.put("Ri_Food_photo", getPicture(pear));
-        values.put("Ri_Food_id", "00002");
-        values.put("Ri_Food_ep_id", "00006 00007");
-        sqLiteDatabase.insert("Fruit", null, values);
-        values.clear();
-        values.put("Ri_Food_name", "苹果");
-        values.put("Ri_Food_photo", getPicture(apple));
-        values.put("Ri_Food_id", "00001");
-        values.put("Ri_Food_ep_id", "00005 00006");
-        sqLiteDatabase.insert("Fruit", null, values);
-        values.clear();
-        values.put("Ri_Food_name", "沙拉");
-        values.put("Ri_Food_id", "00006");
-        values.put("Ri_Food_photo", getPicture(apple_3));
-        sqLiteDatabase.insert("Fruit", null, values);
-        values.clear();
-        values.put("Ri_Food_name", "果酱(pear)");
-        values.put("Ri_Food_id", "00007");
-        values.put("Ri_Food_photo", getPicture(apple_2));
-        sqLiteDatabase.insert("Fruit", null, values);
-        values.clear();
     }
 
     private void initDataBase_Career(SQLiteDatabase sqLiteDatabase, Context mContext) {
@@ -547,10 +470,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("Career_energy_max", "15");
         sqLiteDatabase.insert("Career", null, values);
         values.clear();
-
-
     }
-
-
 //
 }

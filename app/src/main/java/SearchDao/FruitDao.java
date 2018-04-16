@@ -50,6 +50,7 @@ public class FruitDao {
     public List<Fruit> getFruitList() {
         List<Fruit> fruitList = new ArrayList<>();
         fruitsDb = fruitDBHelper.getReadableDatabase();
+//        第一层筛选准确的食物
         String sql = "select * from Fruit";
         Cursor cursor = fruitsDb.rawQuery(sql, null);
         if (cursor != null && cursor.getCount() != 0) {
@@ -60,7 +61,6 @@ public class FruitDao {
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
                 Drawable drawable = bitmapDrawable;
                 fruitName = cursor.getString(cursor.getColumnIndex("Ri_Food_name"));
-//                fruitNutrition = cursor.getString(cursor.getColumnIndex("nutrition"));
                 fruit = new Fruit(fruitName, drawable, null, null);
                 fruitList.add(fruit);
             }
@@ -84,7 +84,7 @@ public class FruitDao {
         List<String> searchList = new ArrayList<>();
         List<Fruit> resultList = new ArrayList<>();
         fruitsDb = fruitDBHelper.getReadableDatabase();
-        //全词
+        //全词搜索ID
         String sql = "select Ri_Food_id from Fruit where Ri_Food_name Like '%" + searchFruitText_all + "%'";
         cursor_name_all = fruitsDb.rawQuery(sql, null);
         if (cursor_name_all != null && cursor_name_all.getCount() != 0) {
@@ -101,7 +101,6 @@ public class FruitDao {
         for (int a = 0; a < searchFruitText_all.length(); a++) {
             aSearchFruitText = String.valueOf(searchFruitText_all.charAt(a));
             sql_searchFruit = "select * from Fruit where Ri_Food_name Like '%" + aSearchFruitText + "%'";
-//          Log.d(TAG, sql_searchFruit);
             cursor_search = fruitsDb.rawQuery(sql_searchFruit, null);
             if (cursor_search != null && cursor_search.getCount() != 0) {
                 while (cursor_search.moveToNext()) {

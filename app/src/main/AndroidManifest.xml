@@ -45,7 +45,6 @@
             android:label="食物搜索"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".FoodSelected" />
-        <activity android:name=".FoodSearch" />
         <activity android:name=".FoodSearchNull" />
         <activity
             android:name=".Register"
@@ -54,7 +53,6 @@
         <activity
             android:name=".FoodAllFunction"
             android:label="饮食管理" />
-
         <activity
             android:name=".CareerList"
             android:label="职业选择" />

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import Database.DBHelper;
 import JavaBean.Food;
@@ -16,8 +17,7 @@ public class FoodDao {
     private String info;
     private String[] nutri = {"Food_dic_energy", "Food_dic_protein", "Food_dic_fat", "Food_dic_DF", "Food_dic_CH",
             "Food_dic_water", "Food_dic_vA", "Food_dic_vB1", "Food_dic_vB2", "Food_dic_vB3",
-            "Food_dic_vE", "Food_dic_vC", "Food_dic_Fe", "Food_dic_Ga", "Food_dic_Na", "Food_dic_CLS", "Food_dic_K", "Food_dic_Mg", "Food_dic_Zn",
-            "Food_dic_P", "Food_dic_purine"};
+            "Food_dic_vE", "Food_dic_vC", "Food_dic_Fe", "Food_dic_Ga", "Food_dic_Na", "Food_dic_CLS", "Food_dic_K", "Food_dic_Mg", "Food_dic_Zn", "Food_dic_P", "Food_dic_purine"};
 
     public FoodDao(Context context) {
         dbUtil = new DBUtil(context);
@@ -26,23 +26,18 @@ public class FoodDao {
     public List<Food> findAllSeason(String foodName) {
         List<Food> foods = new ArrayList<>();
         SQLiteDatabase myDateBase = dbUtil.openDatabase();
+//        第一层全词模糊搜索
         String sql = "select * from Food_Dic where Food_dic_name Like '%" + foodName + "%'";
-        try {
-            Cursor c = myDateBase.rawQuery(sql, null);
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    Food food = new Food();
-                    food.setEnergy(c.getString(c.getColumnIndex("Food_dic_energy")));
-                    food.setName(c.getString(c.getColumnIndex("Food_dic_name")));
-                    food.setId(c.getString(c.getColumnIndex("Food_dic_id")));
-                    foods.add(food);
-                    c.moveToNext();
-                }
-                c.close();
+        Cursor c = myDateBase.rawQuery(sql, null);
+        if (c != null && c.getCount() != 0) {
+            while (c.moveToNext()) {
+                Food food = new Food();
+                food.setEnergy(c.getString(c.getColumnIndex("Food_dic_energy")));
+                food.setName(c.getString(c.getColumnIndex("Food_dic_name")));
+                food.setId(c.getString(c.getColumnIndex("Food_dic_id")));
+                foods.add(food);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            c.close();
         }
         myDateBase.close();
         return foods;
