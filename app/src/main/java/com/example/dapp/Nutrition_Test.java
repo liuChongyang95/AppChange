@@ -209,7 +209,7 @@ public class Nutrition_Test extends AppCompatActivity {
         if (VS_max_energy != VS_min_energy)
             rec_energy = VS_min_energy + "—" + VS_max_energy + "千卡";
         else if (VS_min_energy <= 0 || VS_max_energy == VS_min_energy)
-            rec_energy = VS_max_energy + "千卡";
+            rec_energy = nf.format(VS_max_energy) + "千卡";
         r_energy.setText(rec_energy);
         if (fo_energy <= VS_max_energy)
             ps_energy.setText("合理");

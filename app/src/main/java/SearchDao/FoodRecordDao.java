@@ -57,25 +57,25 @@ public class FoodRecordDao {
                     case 0:
                         foodEnergy = numberFormat.format(Float.valueOf(
                                 numberFormat.format(Float.valueOf(
-                                        recordIntake) / 100)) * Float.valueOf(itemEnergy)) + " 千卡";
+                                        recordIntake) / 100).replace(",", "")) * Float.valueOf(itemEnergy)).replace(",", "") + " 千卡";
                         break;
 //                        小
                     case 1:
                         foodEnergy = numberFormat.format(Float.valueOf(
                                 numberFormat.format(Float.valueOf(
-                                        recordIntake) / 100 * 106.4)) * Float.valueOf(itemEnergy)) + " 千卡";
+                                        recordIntake) / 100 * 106.4).replace(",", "")) * Float.valueOf(itemEnergy)).replace(",", "") + " 千卡";
                         break;
 //                        中
                     case 2:
                         foodEnergy = numberFormat.format(Float.valueOf(
                                 numberFormat.format(Float.valueOf(
-                                        recordIntake) / 100 * 159.6)) * Float.valueOf(itemEnergy)) + " 千卡";
+                                        recordIntake) / 100 * 159.6).replace(",", "")) * Float.valueOf(itemEnergy)).replace(",", "") + " 千卡";
                         break;
 //                        大
                     case 3:
                         foodEnergy = numberFormat.format(Float.valueOf(
                                 numberFormat.format(Float.valueOf(
-                                        recordIntake) / 100 * 288.8)) * Float.valueOf(itemEnergy)) + " 千卡";
+                                        recordIntake) / 100 * 288.8).replace(",", "")) * Float.valueOf(itemEnergy)).replace(",", "") + " 千卡";
                         break;
                 }
                 recordClass = cursor.getString(cursor.getColumnIndex("Food_class"));

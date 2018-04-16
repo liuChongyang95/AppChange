@@ -72,7 +72,6 @@ public class UserfoodAdapter extends ArrayAdapter<UserFood> implements Filterabl
         if (userFood != null) {
             viewHolder.Foodclass.setText(userFood.getFoodClass());
             viewHolder.Foodname.setText(userFood.getFoodName());
-
             switch (userFood.getFoodUnit()) {
                 case 0:
                     foodUnit = "克";
