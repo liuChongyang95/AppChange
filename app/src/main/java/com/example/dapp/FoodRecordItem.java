@@ -53,7 +53,7 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
     private String foodEnergy;
     private String foodId;
     private String unitStr;
-    private String nf_per;
+    private String nf_per=null;
     private float percent;
     //暂时除去能量
     private String[] nutrition = new String[21];
@@ -305,7 +305,6 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
                 if (intakeSize.getText().toString().trim().length() > 0) {
                     String intakeValue = intakeSize.getText().toString().trim().replace(",", "");
                     float fq = Float.valueOf(intakeValue);
-                    nf_per = null;
                     switch (unitStr) {
                         case "克":
 //                            更改记录时的percent
@@ -343,6 +342,21 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
                     String changedate = date_setup_c.getText().toString().trim();
 //                    更改数量
                     String changeSize = intakeSize.getText().toString().trim();
+                    switch (unitStr) {
+                        case "克":
+//                            更改记录时的percent
+                            nf_per = numberFormat.format(Float.valueOf(changeSize) / 100).replace(",", "");
+                            break;
+                        case "个(小)":
+                            nf_per = numberFormat.format(Float.valueOf(changeSize) / 100 * 106.4).replace(",", "");
+                            break;
+                        case "个(中)":
+                            nf_per = numberFormat.format(Float.valueOf(changeSize) / 100 * 159.6).replace(",", "");
+                            break;
+                        case "个(大)":
+                            nf_per = numberFormat.format(Float.valueOf(changeSize) / 100 * 288.8).replace(",", "");
+                            break;
+                    }
                     sqLiteDatabase = dbHelper.getWritableDatabase();
                     ContentValues UF_value = new ContentValues();
                     //更改用户饮食记录的信息
@@ -360,9 +374,9 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
                         if (changeNutri[i] != null && !changeNutri[i].equals("…")
                                 && !changeNutri[i].equals("Tr") && changeNutri[i].length() > 0
                                 && !changeNutri[i].equals("—") && !changeNutri[i].equals("┄")
-                                && !changeNutri[i].equals("─"))
+                                && !changeNutri[i].equals("─")) {
                             changeNutri[i] = numberFormat.format(Float.valueOf(changeNutri[i]) * Float.valueOf(nf_per)).replace(",", "");
-                        else
+                        }else
                             changeNutri[i] = null;
                     }
                     //食物字典表对应顺序
@@ -584,7 +598,6 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 return new DatePickerDialog(this, dateChangeDialog, year, month, day);
-
         }
         return null;
     }
