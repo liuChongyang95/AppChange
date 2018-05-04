@@ -38,7 +38,7 @@ public class FoodRecordListView extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
-        setContentView(R.layout.foodrecordlistview);
+        setContentView(R.layout.listview_foodrecord);
         Intent intent = getIntent();
         bundleFrom_FAF = intent.getExtras();
         if (bundleFrom_FAF != null) {
@@ -57,7 +57,7 @@ public class FoodRecordListView extends AppCompatActivity {
         foodRecordDao = new FoodRecordDao(this);
         foodList = foodRecordDao.getFoodrecord(userId);
         if (foodList.size() != 0) {
-            adapter = new UserfoodAdapter(this, R.layout.foodrecord_item, foodList);
+            adapter = new UserfoodAdapter(this, R.layout.item_foodrecord, foodList);
             listView.setAdapter(adapter);
         }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,7 +85,7 @@ public class FoodRecordListView extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         foodList = foodRecordDao.getFoodrecord(userId);
-        adapter = new UserfoodAdapter(this, R.layout.foodrecord_item, foodList);
+        adapter = new UserfoodAdapter(this, R.layout.item_foodrecord, foodList);
         listView.setAdapter(adapter);
     }
 }

@@ -70,6 +70,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
 
     private Bundle bundle_from_FMA;
+    private Bundle bundle_for_nav;
     private FoodDao foodDao = new FoodDao(this);
     private UserDao userDao = new UserDao(this);
 
@@ -90,7 +91,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     private RadioButton befor_lunch_3;
     private RadioButton after_lunch_4;
     private RadioButton any_time_5;
-    //    单位印记
+    //    单位印记 需要清零 在289/331行左右
     private int unitSign;
 
     //    文本框旁边的单位
@@ -131,8 +132,10 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.food_message);
         Intent intent = getIntent();
         bundle_from_FMA = intent.getExtras();
-        final String initUserid = bundle_from_FMA.getString("from_Login_User_id");
+        bundle_for_nav=new Bundle();
+        String initUserid = bundle_from_FMA.getString("from_Login_User_id");
         fruitName = bundle_from_FMA.getString("fruit_name");
+        bundle_for_nav.putString("from_Login_User_id",initUserid);
         mInflater = LayoutInflater.from(this);
 //        Toolbar和图片设置
         Toolbar toolbar = findViewById(R.id.toolBar_fS);
@@ -158,10 +161,14 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     case R.id.nav_Record:
                         drawerLayoutFS.closeDrawer(GravityCompat.START);
                         Intent intent1 = new Intent(FoodSelected.this, FoodRecordListView.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("from_Login_User_id", initUserid);
-                        intent1.putExtras(bundle);
+                        intent1.putExtras(bundle_for_nav);
                         startActivity(intent1);
+                        break;
+                    case R.id.nav_Dietary:
+                        drawerLayoutFS.closeDrawer(GravityCompat.START);
+                        Intent intent2=new Intent(FoodSelected.this,DietaryStatus.class);
+                        intent2.putExtras(bundle_for_nav);
+                        startActivity(intent2);
                         break;
                 }
                 return true;
@@ -278,6 +285,8 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     calculateNutri();
                     UF.clear();
                     db.close();
+//                    单位全局清零
+                    unitSign=0;
                     Add_dialog.dismiss();
                     dbHelper.close();
                     Toast.makeText(FoodSelected.this, "添加成功", Toast.LENGTH_SHORT).show();
@@ -301,7 +310,6 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                 dialog.dismiss();
             }
         });
-
         VS_input.setPositiveButton("试算", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -319,6 +327,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
     //    添加记录
     private void ADD_Rec() {
+        unitSign=0;
         if (add_view == null) {
 //        view + layoutInflate
             add_view = mInflater.inflate(R.layout.dialog_record_add, null);

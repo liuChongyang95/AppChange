@@ -83,6 +83,7 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
     private FoodDao foodDao;
     private UserIntakeDao userIntakeDao;
     private FoodRecordDao foodRecordDao;
+    private FoodSelected foodSelected;
     private SQLiteDatabase sqLiteDatabase;
 
 
@@ -103,6 +104,7 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
         dbHelper = new DBHelper(this, "DApp.db", null, sfv.staticVersion());
         userIntakeDao = new UserIntakeDao(this);
         foodRecordDao = new FoodRecordDao(this);
+        foodSelected=new FoodSelected();
         Toolbar toolbar = findViewById(R.id.FR_I_toolbar);
         setSupportActionBar(toolbar);
         TextView date = findViewById(R.id.FR_I_date);
@@ -571,24 +573,6 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
         });
     }
 
-    private String initDate() {
-        String date;
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        String zc_month;
-        if (month <= 9) {
-            zc_month = 0 + Integer.toString(month);
-        } else zc_month = Integer.toString(month);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        String zc_day;
-        if (day <= 9) {
-            zc_day = 0 + Integer.toString(day);
-        } else zc_day = Integer.toString(day);
-        date = year + "-" + zc_month + "-" + zc_day;
-        return date;
-    }
-
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -633,7 +617,7 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    String initDate = initDate();
+                    String initDate = foodSelected.initDate();
                     date_setup_c.setText(initDate);
                     Toast.makeText(FoodRecordItem.this, initDate, Toast.LENGTH_SHORT).show();
                     break;

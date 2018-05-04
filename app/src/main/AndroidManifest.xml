@@ -70,7 +70,9 @@
             android:name=".FoodRecordListView"
             android:label="饮食记录" />
         <activity android:name=".FoodRecordItem" />
-
+        <activity
+            android:name=".DietaryStatus"
+            android:label="饮食情况" />
     </application>
 
 </manifest>

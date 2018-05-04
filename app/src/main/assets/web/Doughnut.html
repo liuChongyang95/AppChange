@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Doughnut Chart</title>
+    <script src="ChartBundle.js"></script>
+    <script src="utils.js"></script>
+    <meta charset="UTF-8" http-equiv="content-type">
+    <style>
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+    </style>
+</head>
+<body>
+<div id="canvas-holder">
+    <canvas id="chart-area"></canvas>
+</div>
+<script>
+var initArr;
+    function changeArr(arrValue) {
+		initArr=arrValue;
+	};
+	var config = {
+		type: 'doughnut',
+		data: {
+			datasets: [
+				{
+					data: [],
+					backgroundColor: [],
+					label: 'Dataset 1'
+				}
+			],
+			labels: []
+		},
+		options: {
+			responsive: true,
+			legend: {
+				position: 'top',
+			},
+			title: {
+				display: true,
+				text: '近7天饮食构成'
+			},
+			animation: {
+				animateScale: true,
+				animateRotate: true
+			}
+		}
+	};
+	window.onload = function () {
+		var ctx = document.getElementById('chart-area').getContext('2d');
+		window.myDoughnut = new Chart(ctx, config);
+	};
+	var colorNames = Object.keys(window.chartColors);
+	if (initArr.length > 0) {
+		for (var i = 0; i < initArr.length; i++) {
+			config.data.labels.push(initArr.indexOf(initArr[i]));
+
+			// 颜色名字
+			var colorName = colorNames[config.data.datasets[0].data.length % colorNames.length];
+			// 对应名字生成的颜色
+			var newColor = window.chartColors[colorName];
+
+			config.data.datasets.forEach(function (dataset) {
+				dataset.data.push(initArr[i]);
+				dataset.backgroundColor.push(newColor);
+			});
+		}
+		window.myDoughnut.update();
+	}
+    </script>
+</body>
+</html>
