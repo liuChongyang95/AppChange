@@ -39,7 +39,7 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
     private String from_login_user_id;
     private TextView user_name;
     private CircleImageView user_photo;
-    private Bundle bundle_id;//全局bundle
+    private Bundle bundle_id;
 
     // 图片封装为一个数组
     private int[] icon = {R.drawable.food, R.drawable.sport,
@@ -59,10 +59,6 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
-//        作者：王业
-//        链接：https://www.zhihu.com/question/31994153/answer/100408273
-//        来源：知乎
-//        著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
         setContentView(R.layout.main_all);
         user_photo = findViewById(R.id.user_info_pic);
         user_name = findViewById(R.id.user_info);

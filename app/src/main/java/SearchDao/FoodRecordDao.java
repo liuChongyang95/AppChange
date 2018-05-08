@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.gson.Gson;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +105,28 @@ public class FoodRecordDao {
         dbHelper.close();
         sqlDB.close();
         return recordUnit;
+    }
+
+    public String dayRecord(String userId, String foodDate) {
+        Gson gson = new Gson();
+        List<UserFood> userFoodList=new ArrayList<>();
+        sqlDB = dbHelper.getReadableDatabase();
+        String sql = "select * from UserFood where User_id=? and Food_date=?";
+        Cursor cursor = sqlDB.rawQuery(sql, new String[]{userId, foodDate});
+        if (cursor != null && cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                UserFood userFood=new UserFood();
+//                json里面默认含有int类型的_id和food_unit，值都为0
+                userFood.setFoodId(cursor.getString(cursor.getColumnIndex("Food_id")));
+                userFoodList.add(userFood);
+            }
+            cursor.close();
+        }
+        String data=gson.toJson(userFoodList);
+        userFoodList.clear();
+        dbHelper.close();
+        sqlDB.close();
+        return data;
     }
 }
 

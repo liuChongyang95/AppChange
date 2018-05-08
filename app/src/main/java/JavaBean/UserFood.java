@@ -22,6 +22,10 @@ public class UserFood {
     private String foodName;
     private String foodNutri;
 
+    public UserFood() {
+    }
+
+
     public UserFood(String foodDate, String foodClass, String foodName, String foodIntake, int item_Id, String foodNutri, String foodId, int foodUnit) {
         this.foodId = foodId;
         this.foodDate = foodDate;
@@ -31,9 +35,6 @@ public class UserFood {
         this.foodNutri = foodNutri;
         this._id = item_Id;
         this.foodUnit = foodUnit;
-    }
-
-    public UserFood() {
     }
 
     public void setFoodUnit(int foodUnit) {

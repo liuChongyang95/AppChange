@@ -1,4 +1,8 @@
 package com.example.dapp;
+/*
+bundle里面有ID和用户名
+
+*/
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -26,7 +30,7 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
     private GridView gridView;
     private SimpleAdapter sim_adapter;
     private LinearLayout add_food_LL;
-    private Bundle bundle_from_MA;
+    private Bundle bundle_from_FMA;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,17 +62,21 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
                     case 1:
                         Intent intent = new Intent();
                         intent.setClass(FoodAllFunction.this, FoodRecordListView.class);
-                        intent.putExtras(bundle_from_MA);
+                        intent.putExtras(bundle_from_FMA);
                         startActivity(intent);
                         break;
                     case 2:
+                        Intent intent1 = new Intent();
+                        intent1.setClass(FoodAllFunction.this, DietaryStatus.class);
+                        intent1.putExtras(bundle_from_FMA);
+                        startActivity(intent1);
                         break;
                 }
             }
         });
 
         Intent intent = getIntent();
-        bundle_from_MA = intent.getExtras();
+        bundle_from_FMA = intent.getExtras();
 
         setSupportActionBar(toolbar);
         toolbar.getBackground().setAlpha(0);
@@ -97,7 +105,7 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.add_food_record_LL:
                 Intent intent1 = new Intent(FoodAllFunction.this, FoodSearchToAdd.class);
-                intent1.putExtras(bundle_from_MA);
+                intent1.putExtras(bundle_from_FMA);
                 startActivity(intent1);
                 break;
         }

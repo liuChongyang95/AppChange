@@ -3,19 +3,20 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_Record"
-            android:icon="@drawable/viewlist"
             android:checkable="false"
             android:checked="false"
+            android:icon="@drawable/viewlist"
             android:title="食物记录" />
         <item
-            android:icon="@drawable/viewlist"
-            android:checked="false"
+            android:id="@+id/nav_Dietary"
             android:checkable="false"
-            android:title="食物记录" />
+            android:checked="false"
+            android:icon="@drawable/dietary"
+            android:title="饮食情况" />
         <item
-            android:icon="@drawable/viewlist"
-            android:checked="false"
             android:checkable="false"
+            android:checked="false"
+            android:icon="@drawable/viewlist"
             android:title="食物记录" />
     </group>
 </menu>

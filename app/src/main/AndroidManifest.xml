@@ -6,8 +6,9 @@
     package="com.example.dapp">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -70,7 +71,9 @@
             android:name=".FoodRecordListView"
             android:label="饮食记录" />
         <activity android:name=".FoodRecordItem" />
-
+        <activity
+            android:name=".DietaryStatus"
+            android:label="饮食情况" />
     </application>
 
 </manifest>

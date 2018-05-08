@@ -68,7 +68,6 @@ public class Food {
     public Food() {
 
     }
-
     public void setId(String id) {
         this.id = id;
     }
