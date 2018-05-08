@@ -8,16 +8,25 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.view.View;
 
-import java.sql.Array;
-import java.util.Arrays;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.HashMap;
+import java.util.List;
+
+import JavaBean.Dietary;
+import SearchDao.FoodDao;
 import SearchDao.FoodRecordDao;
+
+
+/*
+ * String StringBuilder StringBuffer用不好，需要练习*/
 
 public class DietaryStatus extends AppCompatActivity {
 
@@ -26,9 +35,14 @@ public class DietaryStatus extends AppCompatActivity {
     private String nowDay;
     private FoodSelected foodSelected;
     private FoodRecordDao foodRecordDao;
-    private String dataJson;
+    private String dataJson2JS;
+    private static final String TAG = "DietaryStatus";
+    private String foodName;
+    private WebView webView;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
+    @JavascriptInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 21) {
@@ -48,37 +62,59 @@ public class DietaryStatus extends AppCompatActivity {
                 DietaryStatus.this.finish();
             }
         });
-        WebView webView = findViewById(R.id.dietrayDoughnut);
-        ShowWebView(webView);
-        Intent intent=getIntent();
-        Bundle bundleFromFAF=intent.getExtras();
+        Intent intent = getIntent();
+        Bundle bundleFromFAF = intent.getExtras();
         if (bundleFromFAF != null) {
 //          用户id
-            userId=bundleFromFAF.getString("from_Login_User_id");
+            userId = bundleFromFAF.getString("from_Login_User_id");
         }
 //        调用存在的方法，获取当前日期。
-        foodSelected=new FoodSelected();
+        foodSelected = new FoodSelected();
 //        当前日期
-        nowDay=foodSelected.initDate();
-        foodRecordDao=new FoodRecordDao(DietaryStatus.this);
-        dataJson=foodRecordDao.dayRecord(userId,nowDay);
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    @JavascriptInterface
-    public void ShowWebView(final WebView webView) {
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        webView.loadUrl("file:///android_asset/web/Doughnut.html");
-        if (version < 19) {
-            webView.loadUrl("javascript:changeArr('"+ dataJson +"')");
-        } else {
-            webView.evaluateJavascript("javascript:changeArr('"+ dataJson +"')", new ValueCallback<String>() {
-                @Override
-                public void onReceiveValue(String value) {
+        nowDay = foodSelected.initDate();
+        foodRecordDao = new FoodRecordDao(DietaryStatus.this);
+        String dataJson = foodRecordDao.dayRecord(userId, nowDay);
+        Gson gson = new Gson();
+        List<Dietary> dietaryList = gson.fromJson(dataJson, new TypeToken<List<Dietary>>() {
+        }.getType());
+        FoodDao foodDao = new FoodDao(this);
+//        关于String和StringBuilder返回值的问题，会有资源开销
+        int dLength = dietaryList.size();
+        HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
+        int initItem = 1;
+        for (int a = 0; a < dLength; a++) {
+            Dietary dietaryA = dietaryList.get(a);
+            if (dietaryA.getFoodId() != null) {
+                foodName = foodDao.find_Name(dietaryA.getFoodId());
+                if (a == dLength - 1) {
+//                    foodName值被改变
+                    stringIntegerHashMap.put(foodName, initItem);
+                    initItem = 1;
+                } else {
+                    for (int b = a + 1; b < dLength; b++) {
+                        Dietary dietaryB = dietaryList.get(b);
+                        if (dietaryA.getFoodId().equals(dietaryB.getFoodId())) {
+                            initItem = initItem + 1;
+                            dietaryB.setFoodId(null);
+                        }
+                    }
+                    stringIntegerHashMap.put(foodName, initItem);
+                    initItem = 1;
                 }
-            });
+            }
         }
+        dataJson2JS = gson.toJson(stringIntegerHashMap);
+        webView = findViewById(R.id.dietrayDoughnut);
+        WebSettings s=webView.getSettings();
+        s.setJavaScriptEnabled(true);
+        webView.loadUrl("file:///android_asset/web/Doughnut.html");
+        webView.loadUrl("javascript:abc()");
+
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                view.loadUrl("javascript:abc()");
+            }
+        });
     }
 }
