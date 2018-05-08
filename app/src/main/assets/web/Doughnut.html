@@ -6,116 +6,108 @@
     <script src="ChartBundle.js"></script>
     <script src="utils.js"></script>
     <meta charset="UTF-8" http-equiv="content-type">
-    <script language="JavaScript" type="text/javascript">
-	var initArr = [];
-	var labelName=[];
-
-	// var j={"伏苹果":3,"苹果":1,"旱苹果":1,"国光苹果":1};
-	// for(var key in j){
-	// 	labelName.push(key);
-	// 	initArr.push(j[key]);
-	// }
-
-	// var dataArr = [{"foodId": "10101"}, {"foodId": "10102"}, {"foodId": "10103"}, {"foodId": "10104"}, {"foodId": "10104"}];
-	// function trans(value) {
-	// 	var initItem = 1;
-	// 	for (var a = 0; a < dataArr.length; a++) {
-	// 		if (a === dataArr.length - 1&&value[a].foodId!==null) {
-	// 			initArr.push(initItem);
-	// 			initItem = 1;
-	// 		} else {
-	// 			if (value[a].foodId !== null) {
-	// 				for (var b = a + 1; b < dataArr.length; b++) {
-	// 					if (dataArr[a].foodId === dataArr[b].foodId) {
-	// 						initItem = initItem + 1;
-	// 						value[b].foodId = null;
-	// 					}
-	// 				}
-	// 				initArr.push(initItem);
-	// 				initItem = 1;
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	var config = {
-		type: 'doughnut',
-		data: {
-			datasets: [
-				{
-					data: [],
-					backgroundColor: [],
-					label: 'Dataset 1'
-				}
-			],
-			labels: []
-		},
-		options: {
-			responsive: true,
-			legend: {
-				position: 'top',
-			},
-			title: {
-				display: true,
-				text: '近7天饮食构成'
-			},
-			animation: {
-				animateScale: true,
-				animateRotate: true
-			}
-		}
-	};
-    function transjson(valueJS) {
-		for (var key in valueJS){
-			labelName.push(key);
-			initArr.push(valueJS[key]);
-		}
-	};
-
-function abc(){
-initArr=[1,2,2,3,5];
-}
-	window.onload = function () {
-		var ctx = document.getElementById('chart-area').getContext('2d');
-		window.myDoughnut = new Chart(ctx, config);
-
-	};
-
-	var colorNames = Object.keys(window.chartColors);
-
-	if (initArr.length > 0) {
-		for (var i = 0; i < initArr.length; i++) {
-			config.data.labels.push(labelName[i]);
-
-			// 颜色名字
-			var colorName = colorNames[config.data.datasets[0].data.length % colorNames.length];
-			// 对应名字生成的颜色
-			var newColor = window.chartColors[colorName];
-
-			config.data.datasets.forEach(function (dataset) {
-				dataset.data.push(initArr[i]);
-				dataset.backgroundColor.push(newColor);
-			});
-		}
-		// window.myDoughnut.update();
-	}
-
-</script>
-
 </head>
-<body >
+<body>
 <div id="canvas-holder">
     <canvas id="chart-area"></canvas>
 </div>
 </body>
 <style>
-	canvas {
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select: none;
-	}
-
-
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
 </style>
+<script language="JavaScript" >
+    var initArr = [];
+    var labelName = [];
 
+    <!--// var j={"伏苹果":3,"苹果":1,"旱苹果":1,"国光苹果":1};-->
+    <!--// for(var key in j){-->
+    <!--// 	labelName.push(key);-->
+    <!--// 	initArr.push(j[key]);-->
+    <!--// }-->
+
+    <!--// var dataArr = [{"foodId": "10101"}, {"foodId": "10102"}, {"foodId": "10103"}, {"foodId": "10104"}, {"foodId": "10104"}];-->
+    <!--// function trans(value) {-->
+    <!--// 	var initItem = 1;-->
+    <!--// 	for (var a = 0; a < dataArr.length; a++) {-->
+    <!--// 		if (a === dataArr.length - 1&&value[a].foodId!==null) {-->
+    <!--// 			initArr.push(initItem);-->
+    <!--// 			initItem = 1;-->
+    <!--// 		} else {-->
+    <!--// 			if (value[a].foodId !== null) {-->
+    <!--// 				for (var b = a + 1; b < dataArr.length; b++) {-->
+    <!--// 					if (dataArr[a].foodId === dataArr[b].foodId) {-->
+    <!--// 						initItem = initItem + 1;-->
+    <!--// 						value[b].foodId = null;-->
+    <!--// 					}-->
+    <!--// 				}-->
+    <!--// 				initArr.push(initItem);-->
+    <!--// 				initItem = 1;-->
+    <!--// 			}-->
+    <!--// 		}-->
+    <!--// 	}-->
+    <!--// }-->
+
+    var config = {
+        type: 'doughnut',
+        data: {
+            datasets: [
+                {
+                    data: [],
+                    backgroundColor: [],
+                    label: 'Dataset 1'
+                }
+            ],
+            labels: []
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: '当天饮食构成'
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        }
+    };
+
+    function endEXE(val) {
+      function transjson(valueJS) {
+      <!--var obj=eval("("+valueJS+")")-->
+      var obj=JSON.parse(valueJS);
+          for (var key in obj) {
+                labelName.push(key);
+                initArr.push(obj[key]);
+            }
+        }
+        transjson(val);
+        var colorNames = Object.keys(window.chartColors);
+        if (initArr.length > 0) {
+            for (var i = 0; i < initArr.length; i++) {
+                config.data.labels.push(labelName[i]);
+
+                // 颜色名字
+                var colorName = colorNames[config.data.datasets[0].data.length % colorNames.length];
+                // 对应名字生成的颜色
+                var newColor = window.chartColors[colorName];
+
+                config.data.datasets.forEach(function (dataset) {
+                    dataset.data.push(initArr[i]);
+                    dataset.backgroundColor.push(newColor);
+                });
+            }
+             <!--window.myDoughnut.update();-->
+        }
+        var ctx = document.getElementById('chart-area').getContext('2d');
+        window.myDoughnut = new Chart(ctx, config);
+    }
+</script>
 </html>

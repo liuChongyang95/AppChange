@@ -42,7 +42,6 @@ public class DietaryStatus extends AppCompatActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    @JavascriptInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 21) {
@@ -105,15 +104,15 @@ public class DietaryStatus extends AppCompatActivity {
         }
         dataJson2JS = gson.toJson(stringIntegerHashMap);
         webView = findViewById(R.id.dietrayDoughnut);
-        WebSettings s=webView.getSettings();
-        s.setJavaScriptEnabled(true);
+        WebSettings webSettings=webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setDefaultTextEncodingName("UTF-8");
         webView.loadUrl("file:///android_asset/web/Doughnut.html");
-        webView.loadUrl("javascript:abc()");
-
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
-                view.loadUrl("javascript:abc()");
+                view.loadUrl("javascript: endEXE('"+dataJson2JS+"')");
             }
         });
     }
