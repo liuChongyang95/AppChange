@@ -240,10 +240,10 @@ public class UserDao {
         UserdbHelper.close();
     }
 
-    public void changeUser_Photo(String userId, Drawable userPhoto) throws IOException {
+    public void changeUser_Photo(String userId,byte[] userPhoto){
         SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("User_Photo", getPicture(userPhoto));
+        values.put("User_Photo", userPhoto);
         UserDb.update("User", values, "User_id=?", new String[]{userId});
         UserDb.close();
         UserdbHelper.close();
@@ -330,6 +330,7 @@ public class UserDao {
         UserdbHelper.close();
     }
 
+//    存图时候的转换 Drawable到byte
     private byte[] getPicture(Drawable drawable) throws IOException {
         if (drawable == null) {
             return null;
