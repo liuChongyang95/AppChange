@@ -2,27 +2,22 @@ package com.example.dapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,8 +28,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Date;
 import java.util.Calendar;
 
@@ -61,10 +57,13 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     private Date edit_birth_str_date;
     private float edit_expect_weight;
     private UserDao userDao = new UserDao(this);
+    private String mExtStorDir;
+    private static final int CODE_GALLERY_REQUEST = 0xa0;
+    private static final int CODE_RESULT_REQUEST = 0xa2;
+    private static final int REQUEST_PERMISSION=7;
+    private static final String CROP_IMAGE_FILE_NAME = "cropPhoto.jpg";
+    private Uri mUriPath;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +77,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.user_info_edit);
+        mExtStorDir = Environment.getExternalStorageDirectory().toString();
         Toolbar toolbar = findViewById(R.id.user_info_edit_toolbar);
         edit_user_photo = findViewById(R.id.user_info_edit_photo);
         edit_user_ID = findViewById(R.id.user_info_medical_id);
@@ -128,7 +128,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         edit_user_age.setText(String.valueOf(a));
     }
 
-    @SuppressLint("RestrictedApi")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -163,11 +162,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 break;
             //头像
             case R.id.user_info_LL_photo:
-                if (ContextCompat.checkSelfPermission(AllUserInfo.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AllUserInfo.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                } else {
-                    openAlbum();
-                }
+                checkReadPermission();
                 break;
             //性别
             case R.id.user_info_LL_sex:
@@ -213,7 +208,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
             case R.id.user_info_LL_birth:
                 showDialog(4);
                 break;
-
             case R.id.user_info_LL_tall:
                 final String[] edit_result_tall = {null};
                 AlertDialog.Builder tallDialog =
@@ -273,7 +267,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 AlertDialog.Builder weightDialog =
                         new AlertDialog.Builder(AllUserInfo.this);
                 final View[] dialogView_weight = {LayoutInflater.from(AllUserInfo.this)
-                        .inflate(R.layout.dialog_weight, null)};
+                        .inflate(R.layout.dialog_weight,null)};
                 final EditText big_weight = dialogView_weight[0].findViewById(R.id.bignumber_weight);
                 final EditText small_weight = dialogView_weight[0].findViewById(R.id.smallnumber_weight);
                 weightDialog.setTitle("输入体重");
@@ -351,51 +345,58 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    private void openAlbum() {
-        Intent intent = new Intent("android.intent.action.GET_CONTENT");
-        intent.setType("image/*");
-        startActivityForResult(intent, 2);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openAlbum();
-                } else {
-                    Toast.makeText(this, "请求失败", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
+    private void checkReadPermission() {
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (permission == PackageManager.PERMISSION_DENIED) {
+            String[] permissions;
+            permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSION);
+        } else {
+            choseHeadImageFromGallery();
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case 2:
-                if (resultCode == RESULT_OK) {
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        //4.4以上系统
-                        handleImageOnKitKat(data);
-                    } else {
-                        //4.4以下系统
-                        handleImageBeforeKitKat(data);
-                    }
+            case REQUEST_PERMISSION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    choseHeadImageFromGallery();
                 }
                 break;
-            case 3:
-                if (data != null) {
-                    Bitmap bitmap = data.getParcelableExtra("data");
-                    Drawable photo;
-                    photo = new BitmapDrawable(bitmap);
-                    try {
-                        userDao.changeUser_Photo(get_edit_ID, photo);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        }
+    }
+    // 从本地相册选取图片作为头像
+    private void choseHeadImageFromGallery() {
+        // 设置文件类型    （在华为手机中不能获取图片，要替换代码）
+        /*Intent intentFromGallery = new Intent();
+        intentFromGallery.setType("image*//*");
+        intentFromGallery.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intentFromGallery, CODE_GALLERY_REQUEST);*/
+        Intent intentFromGallery = new Intent(Intent.ACTION_PICK, null);
+        intentFromGallery.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(intentFromGallery, CODE_GALLERY_REQUEST);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_CANCELED) {
+            Toast.makeText(getApplication(), "取消", Toast.LENGTH_LONG).show();
+            return;
+        }
+        switch (requestCode) {
+            case CODE_GALLERY_REQUEST:
+                cropRawPhoto(data.getData());
+                break;
+            case CODE_RESULT_REQUEST:
+                /*if (intent != null) {
+                    setImageToHeadView(intent);    //此代码在小米有异常，换以下代码
+                }*/
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mUriPath));
+                    setImageToHeadView(data, bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
                 break;
             case 5:
@@ -412,46 +413,64 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    private void crop(Uri uri) {
-        // 裁剪图片意图
+    public void cropRawPhoto(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
+        // 设置裁剪
         intent.putExtra("crop", "true");
-        // 裁剪框的比例，1：1
+        // aspectX , aspectY :宽高的比例
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        // 裁剪后输出图片的尺寸大小
-        intent.putExtra("outputX", 250);
-        intent.putExtra("outputY", 250);
-        intent.putExtra("outputFormat", "jpg");// 图片格式
-        intent.putExtra("noFaceDetection", true);// 取消人脸识别
+        // outputX , outputY : 裁剪图片宽高
+        intent.putExtra("outputX", 240);
+        intent.putExtra("outputY", 240);
         intent.putExtra("return-data", true);
-        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
-        startActivityForResult(intent, 3);
+        //startActivityForResult(intent, CODE_RESULT_REQUEST); //直接调用此代码在小米手机有异常，换以下代码
+        String mLinshi = System.currentTimeMillis() + CROP_IMAGE_FILE_NAME;
+        File mFile = new File(mExtStorDir, mLinshi);
+//        mHeadCachePath = mHeadCacheFile.getAbsolutePath();
+        mUriPath = Uri.parse("file://" + mFile.getAbsolutePath());
+        //将裁剪好的图输出到所建文件中
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mUriPath);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        //注意：此处应设置return-data为false，如果设置为true，是直接返回bitmap格式的数据，耗费内存。设置为false，然后，设置裁剪完之后保存的路径，即：intent.putExtra(MediaStore.EXTRA_OUTPUT, uriPath);
+//        intent.putExtra("return-data", true);
+        intent.putExtra("return-data", false);
+//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivityForResult(intent, CODE_RESULT_REQUEST);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void handleImageOnKitKat(Intent data) {
-        Uri uri = data.getData();
-        String imagePath = null;
-        if (DocumentsContract.isDocumentUri(this, uri)) {
-            String docId = DocumentsContract.getDocumentId(uri);
-            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
-                crop(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
-                crop(contentUri);
+    private void setImageToHeadView(Intent intent, Bitmap b) {
+        /*Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Bitmap photo = extras.getParcelable("data");
+            headImage.setImageBitmap(photo);
+        }*/
+        try {
+            if (intent != null) {
+//                Bitmap bitmap = imageZoom(b);//看个人需求，可以不压缩
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                b.compress(Bitmap.CompressFormat.PNG, 100, os);
+                byte[] ba = os.toByteArray();
+                userDao.changeUser_Photo(get_edit_ID, ba);
+//                long millis = System.currentTimeMillis();
+                /*File file = FileUtil.saveFile(mExtStorDir, millis+CROP_IMAGE_FILE_NAME, bitmap);
+                if (file!=null){
+                    //传递新的头像信息给我的界面
+                    Intent ii = new Intent();
+                    setResult(new_icon,ii);
+                    Glide.with(this).load(file).apply(RequestOptions.circleCropTransform())
+//                                .apply(RequestOptions.fitCenterTransform())
+                            .apply(RequestOptions.placeholderOf(R.mipmap.user_logo)).apply(RequestOptions.errorOf(R.mipmap.user_logo))
+                            .into(mIvTouxiangPersonal);
+//                uploadImg(mExtStorDir,millis+CROP_IMAGE_FILE_NAME);
+                    uploadImg(mExtStorDir,millis+CROP_IMAGE_FILE_NAME);
+                }*/
+
             }
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            crop(uri);
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            crop(uri);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-
-    private void handleImageBeforeKitKat(Intent data) {
-        Uri uri = data.getData();
-        crop(uri);
     }
 
     protected Dialog onCreateDialog(int id) {
