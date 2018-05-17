@@ -285,13 +285,13 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                                             userDao.changeWeight(get_edit_ID, edit_result_weight[0]);
                                             String editShape = getShape(userDao.getWeight(get_edit_ID), userDao.getExpect_weight(get_edit_ID));
                                             userDao.changeShape(get_edit_ID, editShape);
-                                            Toast.makeText(AllUserInfo.this, edit_result_weight[0] + "cm", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(AllUserInfo.this, edit_result_weight[0] + "kg", Toast.LENGTH_SHORT).show();
                                         } else {
                                             edit_result_weight[0] = big_weight.getText().toString() + "." + small_weight.getText().toString();
                                             userDao.changeWeight(get_edit_ID, edit_result_weight[0]);
                                             String editShape = getShape(userDao.getWeight(get_edit_ID), userDao.getExpect_weight(get_edit_ID));
                                             userDao.changeShape(get_edit_ID, editShape);
-                                            Toast.makeText(AllUserInfo.this, edit_result_weight[0] + "cm", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(AllUserInfo.this, edit_result_weight[0] + "kg", Toast.LENGTH_SHORT).show();
                                         }
                                     } else {
                                         dialog.dismiss();

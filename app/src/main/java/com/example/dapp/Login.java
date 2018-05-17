@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.http.HttpResponseCache;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,11 +15,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
 import SearchDao.UserDao;
+import Util.HttpUtil;
 import Util.Staticfinal_Value;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/1/2.
@@ -30,7 +44,7 @@ public class Login extends AppCompatActivity {
     private EditText password;
     private String username_str;
     private String password_str;
-    private TextView register;
+    private Button register;
     private Button login;
     private UserDao userDao;
     private SharedPreferences pref;
@@ -40,6 +54,7 @@ public class Login extends AppCompatActivity {
     private Boolean flag;
     private Button back2App;
     private Button cancelUser;
+    private ImageView loginBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +63,6 @@ public class Login extends AppCompatActivity {
             View view = getWindow().getDecorView();
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         //保存基本信息，SharedPreferences键值方式保存信息
         pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -63,6 +75,9 @@ public class Login extends AppCompatActivity {
             flag = userDao.login(username_str, password_str);
             intent_Userid = userDao.getUserId(username_str);
             if (flag) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
                 setContentView(R.layout.skiplogin);
                 TextView userName = findViewById(R.id.login_info_username);//登录账户
                 TextView nickName = findViewById(R.id.login_info_nickname);//昵称
@@ -104,9 +119,6 @@ public class Login extends AppCompatActivity {
         password = findViewById(R.id.user_password);
         register = findViewById(R.id.register_button);
         login = findViewById(R.id.login_button);
-        register.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        register.setTextColor(Color.RED);
-        register.setClickable(true);
         username_str = pref.getString("username_pref", "");
         username.setText(username_str);
         login.setOnClickListener(new View.OnClickListener() {
@@ -137,9 +149,10 @@ public class Login extends AppCompatActivity {
                     intent.putExtras(bundle);
                     startActivity(intent);
                 } else {
-                    //弹出正确错误信息的方式
+                    //弹出正确/错误信息的方式
                     String flag_cause = userDao.failedCause(username_str, password_str);
-                    Toast.makeText(Login.this, flag_cause, Toast.LENGTH_SHORT).show();
+                    if (!"".equals(flag_cause))
+                        Toast.makeText(Login.this, flag_cause, Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -58,23 +58,35 @@ public class UserDao {
 
     public String failedCause(String username, String password) {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
-        String sql_1 = "select * from Login where Username=?";
-        String failed_cause;
+        String sql_1 = "select Username from Login where Username=?";
+        String failed_cause=null;
         Cursor cursor = UsersDb.rawQuery(sql_1, new String[]{username});
         if (cursor.moveToFirst()) {
             cursor.close();
-            String sql_2 = "select * from Login where password=? and Username =?";
-            Cursor cursor1 = UsersDb.rawQuery(sql_2, new String[]{username, password});
-            if (!cursor1.moveToFirst()) {
+            String sql_2 = "select password from Login where Username =?";
+            Cursor cursor1 = UsersDb.rawQuery(sql_2, new String[]{username});
+            if (cursor1.moveToFirst()&&!cursor1.getString(cursor1.getColumnIndex("password")).equals(password)) {
                 cursor1.close();
                 failed_cause = "密码错误";
-            } else
-                failed_cause = null;
+            }
         } else
             failed_cause = "没有该用户";
         UserdbHelper.close();
         UsersDb.close();
         return failed_cause;
+    }
+
+    public String checkInfo(String userId) {
+        SQLiteDatabase usersDB = UserdbHelper.getReadableDatabase();
+        String sql = "select * from User where User_id=?";
+        Cursor cursor = usersDB.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst()) {
+            userInfo = cursor.getString(cursor.getColumnIndex("Career"));
+        }
+        UserdbHelper.close();
+        usersDB.close();
+        cursor.close();
+        return userInfo;
     }
 
     public String getUserName(String userId) {
@@ -123,12 +135,18 @@ public class UserDao {
     public String getIntensity(String careerName) {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql = "select Intensity from Career where Career=?";
-        Cursor cursor = UsersDb.rawQuery(sql, new String[]{careerName});
-        if (cursor.moveToFirst()) {
-            userInfo = cursor.getString(cursor.getColumnIndex("Intensity"));
-        }
+        Cursor cursor = null;
+        if (careerName != null) {
+            cursor = UsersDb.rawQuery(sql, new String[]{careerName});
+            if (cursor.moveToFirst()) {
+                userInfo = cursor.getString(cursor.getColumnIndex("Intensity"));
+            }
+        } else
+            userInfo = "信息不全,无法生成劳动强度";
         UserdbHelper.close();
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
         UsersDb.close();
         return userInfo;
     }
@@ -240,7 +258,7 @@ public class UserDao {
         UserdbHelper.close();
     }
 
-    public void changeUser_Photo(String userId,byte[] userPhoto){
+    public void changeUser_Photo(String userId, byte[] userPhoto) {
         SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("User_Photo", userPhoto);
@@ -330,7 +348,7 @@ public class UserDao {
         UserdbHelper.close();
     }
 
-//    存图时候的转换 Drawable到byte
+    //    存图时候的转换 Drawable到byte
     private byte[] getPicture(Drawable drawable) throws IOException {
         if (drawable == null) {
             return null;
