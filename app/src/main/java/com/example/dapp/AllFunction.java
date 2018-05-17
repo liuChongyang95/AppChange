@@ -29,12 +29,13 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import SearchDao.UserDao;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AllFunction extends AppCompatActivity implements View.OnClickListener {
-    private List<Map<String, Object>> data_list=new ArrayList<>();
+    private List<Map<String, Object>> data_list = new ArrayList<>();
     private UserDao userDao;
     private String from_login_user_id;
     private TextView user_name;
@@ -46,6 +47,7 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
             R.drawable.blood, R.drawable.data, R.drawable.medical,
             R.drawable.question};
     private String[] iconName = {"饮食管理", "运动管理", "血糖管理", "数据上传", "医疗方案", "科普答疑"};
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -57,7 +59,7 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.main_all);
         user_photo = findViewById(R.id.user_info_pic);
@@ -79,6 +81,7 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
                 AllFunction.this.finish();
             }
         });
+
         final GridView gridView = findViewById(R.id.gridView);
         //获取数据
         getData();
@@ -94,9 +97,13 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
                 switch (position) {
                     //饮食管理
                     case 0:
-                        Intent intent = new Intent(AllFunction.this, FoodAllFunction.class);
-                        intent.putExtras(bundle_id);
-                        startActivity(intent);
+                        if (userDao.checkInfo(from_login_user_id).equals("未设置")) {
+                            Toast.makeText(AllFunction.this, "请完善个人信息", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(AllFunction.this, FoodAllFunction.class);
+                            intent.putExtras(bundle_id);
+                            startActivity(intent);
+                        }
                         break;
                     case 1:
 
@@ -118,6 +125,7 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
             }
         });
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

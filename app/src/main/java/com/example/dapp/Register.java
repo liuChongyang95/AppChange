@@ -99,7 +99,7 @@ public class Register extends AppCompatActivity {
         register_birth_tv = findViewById(R.id.register_burn_tv);
         Button register_career = findViewById(R.id.register_career);
         register_career_tv = findViewById(R.id.register_career_tv);
-        //选择职业
+        //8选择职业
         register_career.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,56 +146,71 @@ public class Register extends AppCompatActivity {
         int b = i + random.nextInt(54321);
         switch (item.getItemId()) {
             case R.id.register_sure:
+//              注册基本信息8条
+//                1用户名
                 String register_name_str = register_name.getText().toString().trim();
+//                2密码
                 String register_password_str = register_password.getText().toString().trim();
+//                3confirm
                 String register_password2_str = register_password2.getText().toString().trim();
+//                4性别
                 sex = selectedSex();
+//                5出生日期
                 register_birth_str = register_birth_tv.getText().toString().trim();
+//                6体重
                 double register_weight_str = mWeight;
+//                7身高
                 float register_tall_str = mHeight;
+//                理想体重
                 float register_weight_str_amb = mHeight - 105;
+//                体型
                 register_shape = getShape(register_weight_str, register_weight_str_amb);
+//               劳动强度---8职业，来自onActivityResult
                 String register_intensity_str = userDao.getIntensity(register_career_str);
-                if (register_password2_str.equals(register_password_str) && register_password2_str.length() > 0) {
-                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-                    db.beginTransaction();
-                    db.execSQL("PRAGMA foreign_keys=ON");
-                    ContentValues values_User = new ContentValues();
-                    ContentValues values_Login = new ContentValues();
-                    values_User.put("User_id", i);
-                    values_User.put("User_Nickname", "用户" + b);//昵称
-                    values_User.put("User_Birth", register_birth_str);
-                    values_User.put("User_Sex", sex);
-                    values_User.put("User_Tall", register_tall_str);
-                    values_User.put("User_Real_weight", register_weight_str);
-                    values_User.put("User_Expect_weight", register_weight_str_amb);
-                    values_User.put("Career", register_career_str);
-                    values_User.put("User_Shape", register_shape);
-                    Drawable apple = this.getResources().getDrawable(R.drawable.apple);
-                    try {
-                        values_User.put("User_Photo", dbHelper.getPicture(apple));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+
+                if (!"".equals(register_name_str) && !"".equals(register_password_str) && !"".equals(sex)&& !"".equals(register_birth_str)&& !"".equals(register_career_str)) {
+                    if (register_password2_str.equals(register_password_str)) {
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+                        db.beginTransaction();
+                        db.execSQL("PRAGMA foreign_keys=ON");
+                        ContentValues values_User = new ContentValues();
+                        ContentValues values_Login = new ContentValues();
+                        values_User.put("User_id", i);
+                        values_User.put("User_Nickname", "用户" + b);//昵称
+                        values_User.put("User_Birth", register_birth_str);
+                        values_User.put("User_Sex", sex);
+                        values_User.put("User_Tall", register_tall_str);
+                        values_User.put("User_Real_weight", register_weight_str);
+                        values_User.put("User_Expect_weight", register_weight_str_amb);
+                        values_User.put("Career", register_career_str);
+                        values_User.put("User_Shape", register_shape);
+                        Drawable apple = this.getResources().getDrawable(R.drawable.apple);
+                        try {
+                            values_User.put("User_Photo", dbHelper.getPicture(apple));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        values_User.put("User_Intensity", register_intensity_str);
+                        values_Login.put("Username", register_name_str);//用户名
+                        values_Login.put("password", register_password_str);
+                        values_Login.put("User_id", i);
+                        try {
+                            db.insertOrThrow("User", null, values_User);
+                            db.insertOrThrow("Login", null, values_Login);
+                            db.setTransactionSuccessful();
+                            Toast.makeText(Register.this, "注册成功", Toast.LENGTH_SHORT).show();
+                            db.endTransaction();
+                            db.close();
+                            finish();
+                        } catch (SQLiteConstraintException ex) {
+                            db.endTransaction();
+                            Toast.makeText(this, "用户名重复,注册失败", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(this, "密码确认失败或密码不符合规范", Toast.LENGTH_SHORT).show();
                     }
-                    values_User.put("User_Intensity", register_intensity_str);
-                    values_Login.put("Username", register_name_str);//用户名
-                    values_Login.put("password", register_password_str);
-                    values_Login.put("User_id", i);
-                    try {
-                        db.insertOrThrow("User", null, values_User);
-                        db.insertOrThrow("Login", null, values_Login);
-                        db.setTransactionSuccessful();
-                        Toast.makeText(Register.this, "注册成功", Toast.LENGTH_SHORT).show();
-                        db.endTransaction();
-                        db.close();
-                        finish();
-                    } catch (SQLiteConstraintException ex) {
-                        db.endTransaction();
-                        Toast.makeText(this, "用户名重复,注册失败", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Toast.makeText(this, "密码确认失败或密码不符合规范", Toast.LENGTH_LONG).show();
-                }
+                } else
+                    Toast.makeText(this, "信息不全", Toast.LENGTH_SHORT).show();
                 break;
         }
         return true;
@@ -207,6 +222,7 @@ public class Register extends AppCompatActivity {
         return true;
     }
 
+    //    初始化身高体重
     private void init() {
         mWeightValueTwo.setText(mWeight + "kg");
         mHeightValue.setText((int) mHeight + "cm");
@@ -270,6 +286,7 @@ public class Register extends AppCompatActivity {
         }
     };
 
+    //    checkSex
     private String selectedSex() {
         radioGroup_sex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -285,7 +302,8 @@ public class Register extends AppCompatActivity {
         return sex;
     }
 
-    public String getShape(double R_weight, double A_weight) {
+    //    根据体重计算体型
+    private String getShape(double R_weight, double A_weight) {
         double rate = (R_weight - A_weight) / A_weight;
         if (rate <= -0.2) {
             register_shape = "消瘦";
@@ -313,5 +331,4 @@ public class Register extends AppCompatActivity {
             default:
         }
     }
-
 }
