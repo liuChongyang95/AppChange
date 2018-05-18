@@ -4,7 +4,7 @@
     android:id="@+id/relative_all_edit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDF5E6"
+    android:background="@drawable/userinfo"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:padding="10dp">
@@ -46,7 +46,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="头像:"
-
                     android:textSize="17sp" />
 
                 <de.hdodenhof.circleimageview.CircleImageView

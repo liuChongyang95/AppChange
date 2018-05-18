@@ -143,7 +143,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.category);
+            actionBar.setHomeAsUpIndicator(R.drawable.category_b);
         }
 //        侧边导航
         drawerLayoutFS = findViewById(R.id.food_msg_DL);

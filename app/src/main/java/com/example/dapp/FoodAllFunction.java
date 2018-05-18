@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class FoodAllFunction extends AppCompatActivity implements View.OnClickListener {
     private String[] record_item = {"分析报告", "记录修改", "饮食情况"};
-    private int[] record_pic = {R.drawable.analysis_a, R.drawable.viewlist, R.drawable.report};
+    private int[] record_pic = {R.drawable.analysis, R.drawable.list, R.drawable.data_usage};
     private List<Map<String, Object>> record_list;
     private Toolbar toolbar;
     private GridView gridView;
@@ -40,9 +40,10 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
+//        背景色
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        }
         setContentView(R.layout.food_all_function);
         toolbar = findViewById(R.id.food_record_all_toolbar);
         gridView = findViewById(R.id.foodRecord_gridView);

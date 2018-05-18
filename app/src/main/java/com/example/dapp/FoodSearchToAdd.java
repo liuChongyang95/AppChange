@@ -92,8 +92,7 @@ public class FoodSearchToAdd extends AppCompatActivity implements View.OnClickLi
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP:
                         int pad = (int) motionEvent.getX();
-                        if (pad > view.getWidth() - 100 && pad < view.getWidth() - 25 && !TextUtils.isEmpty(foodSearch
-                                .getText())) {
+                        if (pad > view.getWidth() - 100 && pad < view.getWidth() - 25 && !TextUtils.isEmpty(foodSearch.getText())) {
                             foodSearch.setText("");
                             int cacheInputType = foodSearch.getInputType();
                             foodSearch.setInputType(InputType.TYPE_NULL);

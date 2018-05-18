@@ -12,19 +12,20 @@
         android:src="@drawable/testback" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_alignBottom="@id/user_name"
         android:layout_alignLeft="@id/user_name"
-        android:layout_marginBottom="9dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/user" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_alignBottom="@id/user_password"
         android:layout_alignLeft="@id/user_password"
-        android:layout_marginBottom="9dp"
+        android:layout_marginBottom="7dp"
         android:src="@drawable/password" />
 
     <ImageView
@@ -32,8 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:src="@mipmap/logo" />
+        android:layout_marginTop="50dp"
+        android:src="@drawable/logo" />
 
     <EditText
         android:id="@+id/user_name"
@@ -42,7 +43,7 @@
         android:layout_below="@id/logoText"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="50dp"
         android:backgroundTint="#fff"
         android:hint="账号"
         android:inputType="text"

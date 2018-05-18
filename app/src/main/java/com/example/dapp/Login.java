@@ -57,9 +57,9 @@ public class Login extends AppCompatActivity {
             flag = userDao.login(username_str, password_str);
             intent_Userid = userDao.getUserId(username_str);
             if (flag) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                }
                 setContentView(R.layout.skiplogin);
                 TextView userName = findViewById(R.id.login_info_username);//登录账户
                 TextView nickName = findViewById(R.id.login_info_nickname);//昵称

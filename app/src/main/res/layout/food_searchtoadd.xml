@@ -18,15 +18,15 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/myEditText"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:background="@drawable/roundedrectangle"
                 android:hint="请输入食物"
                 android:imeOptions="actionSearch"
@@ -37,16 +37,16 @@
                 android:id="@+id/search_to_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:background="@drawable/query"
+                android:background="@drawable/search"
                 android:onClick="onClick" />
+
         </LinearLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
         android:background="#FFC1C1" />
 
     <RelativeLayout
