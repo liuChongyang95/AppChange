@@ -8,7 +8,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/changeRecord"
-        android:icon="@drawable/edit32gray"
+        android:icon="@drawable/editrec"
         android:title="修改记录"
         app:showAsAction="ifRoom" />
 </menu>

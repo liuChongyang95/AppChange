@@ -2,21 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+
+            android:checkable="false"
+            android:checked="false"
+            android:icon="@drawable/analysis64"
+            android:title="分析报告" />
+        <item
             android:id="@+id/nav_Record"
             android:checkable="false"
             android:checked="false"
-            android:icon="@drawable/viewlist"
-            android:title="食物记录" />
+android:icon="@drawable/list64"
+            android:title="记录修改" />
         <item
             android:id="@+id/nav_Dietary"
             android:checkable="false"
             android:checked="false"
-            android:icon="@drawable/dietary"
+            android:icon="@drawable/data64"
             android:title="饮食情况" />
-        <item
-            android:checkable="false"
-            android:checked="false"
-            android:icon="@drawable/viewlist"
-            android:title="食物记录" />
     </group>
 </menu>

@@ -3,36 +3,19 @@ package com.example.dapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.net.http.HttpResponseCache;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-
 import SearchDao.UserDao;
-import Util.HttpUtil;
-import Util.Staticfinal_Value;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+
 
 /**
  * Created by Administrator on 2018/1/2.
@@ -54,7 +37,6 @@ public class Login extends AppCompatActivity {
     private Boolean flag;
     private Button back2App;
     private Button cancelUser;
-    private ImageView loginBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +57,9 @@ public class Login extends AppCompatActivity {
             flag = userDao.login(username_str, password_str);
             intent_Userid = userDao.getUserId(username_str);
             if (flag) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                }
                 setContentView(R.layout.skiplogin);
                 TextView userName = findViewById(R.id.login_info_username);//登录账户
                 TextView nickName = findViewById(R.id.login_info_nickname);//昵称
@@ -181,6 +163,7 @@ public class Login extends AppCompatActivity {
         super.onResume();
         back2App = findViewById(R.id.backToApp);
         cancelUser = findViewById(R.id.cancelUser);
-
     }
+
+
 }

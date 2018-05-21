@@ -18,6 +18,8 @@ import java.util.List;
 import Adapter.FoodAdapter;
 import JavaBean.Food;
 import SearchDao.FoodDao;
+import Util.SlideLayout;
+
 
 public class FoodMainActivity extends AppCompatActivity {
 
@@ -42,6 +44,7 @@ public class FoodMainActivity extends AppCompatActivity {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.food_main);
+        new SlideLayout(this).bind();
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         toolbar.getBackground().setAlpha(255);
