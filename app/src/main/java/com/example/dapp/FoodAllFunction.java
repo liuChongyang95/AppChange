@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import Util.SlideLayout;
 
 public class FoodAllFunction extends AppCompatActivity implements View.OnClickListener {
     private String[] record_item = {"分析报告", "记录修改", "饮食情况"};
@@ -45,6 +48,7 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
 //            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 //        }
         setContentView(R.layout.food_all_function);
+        new SlideLayout(this).bind();
         toolbar = findViewById(R.id.food_record_all_toolbar);
         gridView = findViewById(R.id.foodRecord_gridView);
         add_food_LL = findViewById(R.id.add_food_record_LL);
@@ -110,5 +114,11 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent1);
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("FAF", "onDestroy: ");
     }
 }

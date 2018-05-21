@@ -49,6 +49,7 @@ import Fragment_fs.Fragment_FS_titalinfo;
 import SearchDao.FoodDao;
 import SearchDao.UserDao;
 import SearchDao.UserIntakeDao;
+import Util.SlideLayout;
 import Util.Staticfinal_Value;
 import de.hdodenhof.circleimageview.CircleImageView;
 
