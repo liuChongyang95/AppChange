@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:background="#FAF0E6"
             android:theme="@style/ThemeOverlay.AppCompat.Light"
-            app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <LinearLayout
@@ -149,7 +148,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        app:insetForeground="@android:color/transparent"
         app:headerLayout="@layout/nav_header"
+        app:itemIconTint="#767676"
         app:menu="@menu/nav_menu" />
 
 </android.support.v4.widget.DrawerLayout>

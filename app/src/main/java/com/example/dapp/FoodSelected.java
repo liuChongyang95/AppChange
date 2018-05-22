@@ -1,6 +1,7 @@
 package com.example.dapp;
 
 
+import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -8,17 +9,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +35,7 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -49,6 +56,7 @@ import Fragment_fs.Fragment_FS_titalinfo;
 import SearchDao.FoodDao;
 import SearchDao.UserDao;
 import SearchDao.UserIntakeDao;
+import Util.BlurUtil;
 import Util.SlideLayout;
 import Util.Staticfinal_Value;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -100,7 +108,10 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     //    计算能量显示在alertDialog
     private EditText food_q;
     private TextView food_q_e;
-
+    //    用户昵称Nav
+    private TextView tv_userNN;
+    private String initUserNN;
+    private String initUserid;
     //    计算插入能量
     private String[] NutArray;
     private String[] Dao_energy;
@@ -118,6 +129,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
     private DrawerLayout drawerLayoutFS;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,10 +144,10 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.food_message);
         Intent intent = getIntent();
         bundle_from_FMA = intent.getExtras();
-        bundle_for_nav=new Bundle();
-        String initUserid = bundle_from_FMA.getString("from_Login_User_id");
+        bundle_for_nav = new Bundle();
+        initUserid = bundle_from_FMA.getString("from_Login_User_id");
         fruitName = bundle_from_FMA.getString("fruit_name");
-        bundle_for_nav.putString("from_Login_User_id",initUserid);
+        bundle_for_nav.putString("from_Login_User_id", initUserid);
         mInflater = LayoutInflater.from(this);
 //        Toolbar和图片设置
         Toolbar toolbar = findViewById(R.id.toolBar_fS);
@@ -144,14 +156,16 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.category_b);
+//            actionBar.setHomeAsUpIndicator(R.drawable.category_b);
         }
 //        侧边导航
         drawerLayoutFS = findViewById(R.id.food_msg_DL);
         NavigationView navFS = findViewById(R.id.navContent_FM);
         View navHead = navFS.getHeaderView(0);
-        navFS.setItemTextColor(null);
-        navFS.setItemIconTintList(null);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayoutFS,
+                toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayoutFS.setDrawerListener(toggle);
+        toggle.syncState();
 //        界面跳转-饮食记录
         navFS.setCheckedItem(R.id.nav_Record);
         navFS.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -166,7 +180,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                         break;
                     case R.id.nav_Dietary:
                         drawerLayoutFS.closeDrawer(GravityCompat.START);
-                        Intent intent2=new Intent(FoodSelected.this,DietaryStatus.class);
+                        Intent intent2 = new Intent(FoodSelected.this, DietaryStatus.class);
                         intent2.putExtras(bundle_for_nav);
                         startActivity(intent2);
                         break;
@@ -177,12 +191,28 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 //        导航栏头像和一些个人信息
         CircleImageView userPhoto = navHead.findViewById(R.id.nav_user);
         TextView tv_userid = navHead.findViewById(R.id.nav_id);
-        TextView tv_userNN = navHead.findViewById(R.id.nav_nickname);
-        String initUserNN = "用户昵称: " + userDao.getUserName(initUserid);
+        tv_userNN = navHead.findViewById(R.id.nav_nickname);
+//        导航栏跳转
+        navHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent3 = new Intent(FoodSelected.this, AllUserInfo.class);
+                intent3.putExtras(bundle_for_nav);
+                startActivity(intent3);
+            }
+        });
+        //        navHead模糊
+        Drawable drawable = userDao.getUser_Photo(initUserid);
+        Bitmap navBgd = BlurUtil.rsBlur(this, ((BitmapDrawable) drawable).getBitmap(), 25);
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(navBgd);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            navHead.setBackground(bitmapDrawable);
+        }
+        //        无法改变的个人信息onCreate展示
+//        可以改变的在onResume中
         userPhoto.setImageDrawable(userDao.getUser_Photo(initUserid));
         String TVuserid = "用户ID: " + initUserid;
         tv_userid.setText(TVuserid);
-        tv_userNN.setText(initUserNN);
         TextView fruitNameText = findViewById(R.id.searchResult_title);
         fruitNameText.setText(fruitName);
         nf = NumberFormat.getNumberInstance();
@@ -193,7 +223,6 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         food_nutrition();
 //        糖分信息
         food_gi();
-
     }
 
     private void food_title() {
@@ -286,7 +315,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     UF.clear();
                     db.close();
 //                    单位全局清零
-                    unitSign=0;
+                    unitSign = 0;
                     Add_dialog.dismiss();
                     dbHelper.close();
                     Toast.makeText(FoodSelected.this, "添加成功", Toast.LENGTH_SHORT).show();
@@ -327,7 +356,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
     //    添加记录
     private void ADD_Rec() {
-        unitSign=0;
+        unitSign = 0;
         if (add_view == null) {
 //        view + layoutInflate
             add_view = mInflater.inflate(R.layout.dialog_record_add, null);
@@ -744,6 +773,13 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             String energy_result = "热量" + nf.format(energy) + "千卡";
             food_q_e.setText(energy_result);
         } else food_q_e.setText("热量0千卡");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initUserNN = "用户昵称: " + userDao.getUserName(initUserid);
+        tv_userNN.setText(initUserNN);
     }
 }
 

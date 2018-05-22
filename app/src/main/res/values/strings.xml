@@ -7,4 +7,6 @@
     <string name="user_info_change_img">\u263A我的资料</string>
     <string name="edit_weight">\u2022</string>
     <string name="delete">删除记录</string>
+    <string name="navigation_drawer_open">弹出</string>
+    <string name="navigation_drawer_close">关闭</string>
 </resources>
