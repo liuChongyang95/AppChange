@@ -108,10 +108,12 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     //    计算能量显示在alertDialog
     private EditText food_q;
     private TextView food_q_e;
-    //    用户昵称Nav
+    //    用户昵称Nav 部分需要onResume刷新
     private TextView tv_userNN;
     private String initUserNN;
     private String initUserid;
+    private CircleImageView userPhoto;
+    private View navHead;
     //    计算插入能量
     private String[] NutArray;
     private String[] Dao_energy;
@@ -161,7 +163,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 //        侧边导航
         drawerLayoutFS = findViewById(R.id.food_msg_DL);
         NavigationView navFS = findViewById(R.id.navContent_FM);
-        View navHead = navFS.getHeaderView(0);
+        navHead = navFS.getHeaderView(0);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayoutFS,
                 toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayoutFS.setDrawerListener(toggle);
@@ -189,7 +191,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             }
         });
 //        导航栏头像和一些个人信息
-        CircleImageView userPhoto = navHead.findViewById(R.id.nav_user);
+        userPhoto = navHead.findViewById(R.id.nav_user);
         TextView tv_userid = navHead.findViewById(R.id.nav_id);
         tv_userNN = navHead.findViewById(R.id.nav_nickname);
 //        导航栏跳转
@@ -201,16 +203,8 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent3);
             }
         });
-        //        navHead模糊
-        Drawable drawable = userDao.getUser_Photo(initUserid);
-        Bitmap navBgd = BlurUtil.rsBlur(this, ((BitmapDrawable) drawable).getBitmap(), 25);
-        BitmapDrawable bitmapDrawable = new BitmapDrawable(navBgd);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            navHead.setBackground(bitmapDrawable);
-        }
         //        无法改变的个人信息onCreate展示
 //        可以改变的在onResume中
-        userPhoto.setImageDrawable(userDao.getUser_Photo(initUserid));
         String TVuserid = "用户ID: " + initUserid;
         tv_userid.setText(TVuserid);
         TextView fruitNameText = findViewById(R.id.searchResult_title);
@@ -780,6 +774,14 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         initUserNN = "用户昵称: " + userDao.getUserName(initUserid);
         tv_userNN.setText(initUserNN);
+        userPhoto.setImageDrawable(userDao.getUser_Photo(initUserid));
+        //        navHead模糊
+        Drawable drawable = userDao.getUser_Photo(initUserid);
+        Bitmap navBgd = BlurUtil.rsBlur(this, ((BitmapDrawable) drawable).getBitmap(), 25);
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(navBgd);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            navHead.setBackground(bitmapDrawable);
+        }
     }
 }
 
