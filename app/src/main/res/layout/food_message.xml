@@ -1,156 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/food_msg_DL"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <RelativeLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar_fS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FDF5E6"
-        android:fitsSystemWindows="true">
+        android:background="#FAF0E6"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolBar_fS"
+        <LinearLayout
+            android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FAF0E6"
-            android:theme="@style/ThemeOverlay.AppCompat.Light"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/searchResult_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="标题"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/food_msg_DL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/bottomRG_view"
+                android:background="#FDF5E6">
+
+                <LinearLayout
+                    android:id="@+id/fm_ll_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#FFC1C1" />
+
+                    <fragment
+                        android:id="@+id/title_fragment"
+                        android:name="Fragment_fs.Fragment_FS_titalinfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <fragment
+                        android:id="@+id/nutrition_fragment"
+                        android:name="Fragment_fs.Fragment_FS_nutritioninfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:background="#FFC1C1" />
+
+                    <fragment
+                        android:id="@+id/gi_fragment"
+                        android:name="Fragment_fs.Fragment_FS_GI"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:text="空位"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:text="空位"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:text="空位"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:text="空位"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:text="空位"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:text="空位"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:text="空位"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:text="空位"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:text="空位"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:text="空位"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <View
+                android:id="@+id/bottomRG_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@id/fs_bottomMenu"
+                android:background="#FFC1C1" />
 
             <LinearLayout
-                android:id="@+id/search_bar"
+                android:id="@+id/fs_bottomMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#FAF0E6"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/searchResult_title"
+                <LinearLayout
+                    android:id="@+id/VS_LL"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="标题"
-                    android:textSize="24sp" />
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_horizontal"
+                    android:onClick="onClick"
+                    android:orientation="vertical">
 
-            </LinearLayout>
-        </android.support.v7.widget.Toolbar>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/compare" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/bottomRG_view"
-            android:layout_below="@id/toolBar_fS">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="试算"
+                        android:textSize="17sp" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/fm_ll_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#FFC1C1" />
-
-                <fragment
-                    android:id="@+id/title_fragment"
-                    android:name="Fragment_fs.Fragment_FS_titalinfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <fragment
-                    android:id="@+id/nutrition_fragment"
-                    android:name="Fragment_fs.Fragment_FS_nutritioninfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:background="#FFC1C1" />
-
-                <fragment
-                    android:id="@+id/gi_fragment"
-                    android:name="Fragment_fs.Fragment_FS_GI"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-        </ScrollView>
-
-        <View
-            android:id="@+id/bottomRG_view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_above="@id/fs_bottomMenu"
-            android:background="#FFC1C1" />
-
-        <LinearLayout
-            android:id="@+id/fs_bottomMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/VS_LL"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_horizontal"
-                android:onClick="onClick"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/Add_LL"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/compare" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_horizontal"
+                    android:onClick="onClick"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="试算"
-                    android:textSize="17sp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/add_rec" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="记录"
+                        android:textSize="17sp" />
+                </LinearLayout>
             </LinearLayout>
+        </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/Add_LL"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_horizontal"
-                android:onClick="onClick"
-                android:orientation="vertical">
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navContent_FM"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header"
+            app:insetForeground="@android:color/transparent"
+            app:itemIconTint="#767676"
+            app:menu="@menu/nav_menu" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/add_rec" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="记录"
-                    android:textSize="17sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navContent_FM"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:insetForeground="@android:color/transparent"
-        app:headerLayout="@layout/nav_header"
-        app:itemIconTint="#767676"
-        app:menu="@menu/nav_menu" />
-
-</android.support.v4.widget.DrawerLayout>
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>
