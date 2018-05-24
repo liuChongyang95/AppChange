@@ -104,7 +104,8 @@ public class DietaryStatus extends AppCompatActivity {
         webView = findViewById(R.id.dietrayDoughnut);
         WebSettings webSettings=webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setDomStorageEnabled(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.getBuiltInZoomControls();
         webSettings.setDefaultTextEncodingName("UTF-8");
         webView.loadUrl("file:///android_asset/web/Doughnut.html");
         webView.setWebViewClient(new WebViewClient(){

@@ -21,6 +21,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -53,6 +54,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     private TextView edit_user_shape;
     private TextView edit_user_weight_expect;
     private TextView edit_user_age;
+    private TextView edit_user_position;
     private CircleImageView edit_user_photo;
     private Date edit_birth_str_date;
     private float edit_expect_weight;
@@ -60,7 +62,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     private String mExtStorDir;
     private static final int CODE_GALLERY_REQUEST = 0xa0;
     private static final int CODE_RESULT_REQUEST = 0xa2;
-    private static final int REQUEST_PERMISSION=7;
+    private static final int REQUEST_PERMISSION = 7;
     private static final String CROP_IMAGE_FILE_NAME = "cropPhoto.jpg";
     private Uri mUriPath;
 
@@ -92,6 +94,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         edit_user_shape = findViewById(R.id.user_info_shape);
         edit_user_weight_expect = findViewById(R.id.user_info_Expect_weight);
         edit_user_age = findViewById(R.id.user_info_age);
+        edit_user_position = findViewById(R.id.user_info_edit_position);
         setSupportActionBar(toolbar);
         toolbar.getBackground().setAlpha(0);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -124,6 +127,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         edit_user_shape.setText(userDao.getShape(get_edit_ID));
         edit_user_intensity.setText(userDao.getIntensity(userDao.getCareer(get_edit_ID)));
         edit_birth_str_date = Date.valueOf(edit_user_birth.getText().toString());
+        edit_user_position.setText(userDao.getPosition(get_edit_ID));
         int a = getAge(edit_birth_str_date);
         edit_user_age.setText(String.valueOf(a));
     }
@@ -135,6 +139,8 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
             case R.id.user_info_LL_nickname:
                 final EditText editText = new EditText(AllUserInfo.this);
                 editText.setHint("点击输入");
+                editText.setMaxLines(1);
+                editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
                 final AlertDialog.Builder inputDialog =
                         new AlertDialog.Builder(this);
                 inputDialog.setTitle("修改昵称").setView(editText);
@@ -267,7 +273,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 AlertDialog.Builder weightDialog =
                         new AlertDialog.Builder(AllUserInfo.this);
                 final View[] dialogView_weight = {LayoutInflater.from(AllUserInfo.this)
-                        .inflate(R.layout.dialog_weight,null)};
+                        .inflate(R.layout.dialog_weight, null)};
                 final EditText big_weight = dialogView_weight[0].findViewById(R.id.bignumber_weight);
                 final EditText small_weight = dialogView_weight[0].findViewById(R.id.smallnumber_weight);
                 weightDialog.setTitle("输入体重");
@@ -342,6 +348,8 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                         });
                 passwordDialog.show();
                 break;
+            case R.id.user_info_LL_position:
+                break;
         }
     }
 
@@ -367,6 +375,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 break;
         }
     }
+
     // 从本地相册选取图片作为头像
     private void choseHeadImageFromGallery() {
         // 设置文件类型    （在华为手机中不能获取图片，要替换代码）
@@ -378,6 +387,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         intentFromGallery.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(intentFromGallery, CODE_GALLERY_REQUEST);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_CANCELED) {

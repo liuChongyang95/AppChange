@@ -1,14 +1,37 @@
 'use strict';
 
-window.chartColors = {
-	red: 'rgb(255, 99, 132)',
-	orange: 'rgb(255, 159, 64)',
-	yellow: 'rgb(255, 205, 86)',
-	green: 'rgb(75, 192, 192)',
-	blue: 'rgb(54, 162, 235)',
-	purple: 'rgb(153, 102, 255)',
-	grey: 'rgb(201, 203, 207)',
-};
+   window.chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(201, 203, 207)',
+            LavenderBlush: 'rgb(255,240,245)',
+            DeepPink: 'rgb(255,20,147)',
+            Thistle: 'rgb(216,191,216)',
+            Magenta: 'rgb(255,0,255)',
+            RoyalBlue: 'rgb(65,105,225)',
+            Crimson: 'rgb(220,20,60)',
+            DarkSlateGray: 'rgb(47,79,79)',
+            DarkBlue:'rgb(	0,0,139)',
+            DoderBlue:'rgb(30,144,255)',
+            PowDerBlue:'rgb(176,224,230)',
+            PaleGreen:'rgb(152,251,152)',
+            Lime:'rgb(	0,255,0)',
+            Beige:'rgb(	107,142,35)',
+            Yellow:'rgb(255,255,0)',
+            Wheat:'rgb(	245,222,179)',
+            NavajoWhite:'rgb(255,222,173)',
+            Black:'rgb(0,0,0)',
+            Silver:'rgb(192,192,192)',
+            Salmon:'rgb(	250,128,114)',
+            Linen:'rgb(250,240,230)',
+            Gold:'rgb(	255,215,0)',
+            GreenYellow:'rgb(	173,255,47)',
+            DeepSkyBlue:'rgb(	0,191,255)'
+        };
 
 (function(global) {
 	var Months = [

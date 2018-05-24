@@ -348,6 +348,18 @@ public class UserDao {
         UserdbHelper.close();
     }
 
+    public String getPosition(String userId){
+        SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
+        String sql = "select User_Position from User where User_id=?";
+        Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst())
+            userInfo = cursor.getString(cursor.getColumnIndex("User_Position"));
+        UserdbHelper.close();
+        cursor.close();
+        UserDb.close();
+        return userInfo;
+    }
+
     //    存图时候的转换 Drawable到byte
     private byte[] getPicture(Drawable drawable) throws IOException {
         if (drawable == null) {

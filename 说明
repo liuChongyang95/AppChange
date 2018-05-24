@@ -2,3 +2,5 @@
 2.除了“克”的单位计算是准确的，其他个(大)等等计算都有0.5%左右的偏差，能量偏差，微量元素可能不明显，可忽略。
 3.更改图标bug，程序无法使用
 4.dimens是关于navigationView的设定
+5.运行时异常runtimeException nullPointerException 可以处理可以不处理
+  IOException、FileNotFoundExcetion 和SQLException 非运行时异常必须处理

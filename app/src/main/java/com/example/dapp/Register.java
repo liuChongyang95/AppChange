@@ -1,17 +1,24 @@
 package com.example.dapp;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -26,9 +33,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import Database.DBHelper;
@@ -61,14 +73,18 @@ public class Register extends AppCompatActivity {
     private String register_shape;
     private TextView register_career_tv;
     private String register_career_str;
+    private StringBuilder currentPosition;
+    private String register_postion_str;
 
-    ScaleRulerView mHeightWheelView;
-    TextView mHeightValue;
-    DecimalScaleRulerView mWeightRulerView;
-    TextView mWeightValueTwo;
+    private ScaleRulerView mHeightWheelView;
+    private TextView mHeightValue;
+    private DecimalScaleRulerView mWeightRulerView;
+    private TextView mWeightValueTwo;
     private float mHeight = 170;
     private float mWeight = 60;
 
+    public LocationClient locationClient;
+    private MybdLocationListener myListener = new MybdLocationListener();
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -83,6 +99,7 @@ public class Register extends AppCompatActivity {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.register_app);
+        getPosition();
         //获取身高体重控件
         mHeightValue = findViewById(R.id.tv_user_height_value);
         mWeightRulerView = findViewById(R.id.ruler_weight);
@@ -167,44 +184,50 @@ public class Register extends AppCompatActivity {
                 register_shape = getShape(register_weight_str, register_weight_str_amb);
 //               劳动强度---8职业，来自onActivityResult
                 String register_intensity_str = userDao.getIntensity(register_career_str);
-
-                if (!"".equals(register_name_str) && !"".equals(register_password_str) && !"".equals(sex)&& !"".equals(register_birth_str)&& !"".equals(register_career_str)) {
+//地理位置
+                register_postion_str = String.valueOf(currentPosition);
+                if (!"".equals(register_name_str) && !"".equals(register_password_str) && !"".equals(sex) && !"".equals(register_birth_str) && !"".equals(register_career_str)) {
                     if (register_password2_str.equals(register_password_str)) {
-                        SQLiteDatabase db = dbHelper.getWritableDatabase();
-                        db.beginTransaction();
-                        db.execSQL("PRAGMA foreign_keys=ON");
-                        ContentValues values_User = new ContentValues();
-                        ContentValues values_Login = new ContentValues();
-                        values_User.put("User_id", i);
-                        values_User.put("User_Nickname", "用户" + b);//昵称
-                        values_User.put("User_Birth", register_birth_str);
-                        values_User.put("User_Sex", sex);
-                        values_User.put("User_Tall", register_tall_str);
-                        values_User.put("User_Real_weight", register_weight_str);
-                        values_User.put("User_Expect_weight", register_weight_str_amb);
-                        values_User.put("Career", register_career_str);
-                        values_User.put("User_Shape", register_shape);
-                        Drawable apple = this.getResources().getDrawable(R.drawable.apple);
-                        try {
-                            values_User.put("User_Photo", dbHelper.getPicture(apple));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        values_User.put("User_Intensity", register_intensity_str);
-                        values_Login.put("Username", register_name_str);//用户名
-                        values_Login.put("password", register_password_str);
-                        values_Login.put("User_id", i);
-                        try {
-                            db.insertOrThrow("User", null, values_User);
-                            db.insertOrThrow("Login", null, values_Login);
-                            db.setTransactionSuccessful();
-                            Toast.makeText(Register.this, "注册成功", Toast.LENGTH_SHORT).show();
-                            db.endTransaction();
-                            db.close();
-                            finish();
-                        } catch (SQLiteConstraintException ex) {
-                            db.endTransaction();
-                            Toast.makeText(this, "用户名重复,注册失败", Toast.LENGTH_SHORT).show();
+                        if ("".equals(register_postion_str))
+                            Toast.makeText(this, "请等待定位成功", Toast.LENGTH_SHORT).show();
+                        else {
+                            SQLiteDatabase db = dbHelper.getWritableDatabase();
+                            db.beginTransaction();
+                            db.execSQL("PRAGMA foreign_keys=ON");
+                            ContentValues values_User = new ContentValues();
+                            ContentValues values_Login = new ContentValues();
+                            values_User.put("User_id", i);
+                            values_User.put("User_Nickname", "用户" + b);//昵称
+                            values_User.put("User_Birth", register_birth_str);
+                            values_User.put("User_Sex", sex);
+                            values_User.put("User_Tall", register_tall_str);
+                            values_User.put("User_Real_weight", register_weight_str);
+                            values_User.put("User_Expect_weight", register_weight_str_amb);
+                            values_User.put("Career", register_career_str);
+                            values_User.put("User_Shape", register_shape);
+                            values_User.put("User_Position", register_postion_str);
+                            Drawable apple = this.getResources().getDrawable(R.drawable.apple);
+                            try {
+                                values_User.put("User_Photo", dbHelper.getPicture(apple));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            values_User.put("User_Intensity", register_intensity_str);
+                            values_Login.put("Username", register_name_str);//用户名
+                            values_Login.put("password", register_password_str);
+                            values_Login.put("User_id", i);
+                            try {
+                                db.insertOrThrow("User", null, values_User);
+                                db.insertOrThrow("Login", null, values_Login);
+                                db.setTransactionSuccessful();
+                                Toast.makeText(Register.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                db.endTransaction();
+                                db.close();
+                                finish();
+                            } catch (SQLiteConstraintException ex) {
+                                db.endTransaction();
+                                Toast.makeText(this, "用户名重复,注册失败", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     } else {
                         Toast.makeText(this, "密码确认失败或密码不符合规范", Toast.LENGTH_SHORT).show();
@@ -330,5 +353,79 @@ public class Register extends AppCompatActivity {
                 break;
             default:
         }
+    }
+
+    private void getPosition() {
+//        注册locationclient
+        locationClient = new LocationClient(getApplicationContext());
+        locationClient.registerLocationListener(myListener);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager != null && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Toast.makeText(this, "未打开GPS开关，数据可能有出入。", Toast.LENGTH_SHORT).show();
+        }
+        List<String> permissionList = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!permissionList.isEmpty()) {
+            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
+            ActivityCompat.requestPermissions(this, permissions, 1);
+        } else {
+
+//            实时刷新扫描时间
+            LocationClientOption option = new LocationClientOption();
+            option.setScanSpan(5000);
+            option.setIsNeedAddress(true);
+//            强制GPS定位
+            option.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);
+            locationClient.setLocOption(option);
+            locationClient.start();
+        }
+
+    }
+
+    public class MybdLocationListener implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation bdLocation) {
+            currentPosition = new StringBuilder();
+//        省份/城市/区县
+            currentPosition.append(bdLocation.getProvince()).append('/').append(bdLocation.getCity()).append('/').append(bdLocation.getDistrict());
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0) {
+                    for (int result : grantResults) {
+                        if (result != PackageManager.PERMISSION_GRANTED) {
+                            Toast.makeText(this, "权限不通过.", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
+                        }
+                    }
+                } else {
+                    Toast.makeText(this, "未知错误.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
+            default:
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        locationClient.stop();
     }
 }

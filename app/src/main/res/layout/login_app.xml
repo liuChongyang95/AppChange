@@ -47,6 +47,7 @@
         android:backgroundTint="#fff"
         android:hint="账号"
         android:inputType="text"
+        android:maxLength="20"
         android:maxLines="1"
         android:paddingLeft="40dp"
         android:textColor="#fff"

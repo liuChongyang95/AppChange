@@ -16,6 +16,7 @@ public class User {
     private String real_weight;
     private String expect_weight;
     private String career;
+    private String postion;
 
     public int getId() {
         return _id;
@@ -89,4 +90,11 @@ public class User {
         this.career = career;
     }
 
+    public void setPostion(String postion) {
+        this.postion = postion;
+    }
+
+    public String getPostion() {
+        return postion;
+    }
 }

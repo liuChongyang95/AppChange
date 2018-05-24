@@ -52,7 +52,6 @@
         android:layout_toRightOf="@id/loginTitle"
         android:text="患者ID"
         android:textSize="24sp" />
-
     <Button
         android:id="@+id/backToApp"
         style="@style/Widget.AppCompat.Button.Colored"

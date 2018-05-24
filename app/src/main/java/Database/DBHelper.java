@@ -31,6 +31,7 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by Administrator on 2017/12/29.
+ * login username登录名 不是ID
  */
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -50,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "varchar(20) not null ," + "  User_Birth date not null, User_Sex char(6) not null, User_Tall varchar(6) not null," +
             "User_Real_weight varchar(6) not null, User_Expect_weight varchar(6),Record_time TimeStamp DEFAULT(date('now', 'localtime')),Career varchar(16)," +
             PicColumns_user.picture + " blob not null ,User_Shape char(6), " +
-            "User_Intensity varchar(10) not null,constraint User_PK primary key (User_id,Record_time) ) ";
+            "User_Intensity varchar(10) not null,User_Position varchar(16) not null,constraint User_PK primary key (User_id,Record_time) ) ";
     //           用户登录
     // name用户名
     private static final String CREATE_LOGIN = "create table Login(Username varchar(16) primary key ,password varchar(30), User_id char(16) ," +
