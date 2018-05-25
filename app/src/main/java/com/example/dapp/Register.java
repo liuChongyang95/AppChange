@@ -1,24 +1,17 @@
 package com.example.dapp;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -39,8 +32,6 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import Database.DBHelper;
@@ -99,6 +90,7 @@ public class Register extends AppCompatActivity {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.register_app);
+//        获取地理位置信息
         getPosition();
         //获取身高体重控件
         mHeightValue = findViewById(R.id.tv_user_height_value);
@@ -359,25 +351,6 @@ public class Register extends AppCompatActivity {
 //        注册locationclient
         locationClient = new LocationClient(getApplicationContext());
         locationClient.registerLocationListener(myListener);
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager != null && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Toast.makeText(this, "未打开GPS开关，数据可能有出入。", Toast.LENGTH_SHORT).show();
-        }
-        List<String> permissionList = new ArrayList<>();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.READ_PHONE_STATE);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (!permissionList.isEmpty()) {
-            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(this, permissions, 1);
-        } else {
-
 //            实时刷新扫描时间
             LocationClientOption option = new LocationClientOption();
             option.setScanSpan(5000);
@@ -386,8 +359,6 @@ public class Register extends AppCompatActivity {
             option.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);
             locationClient.setLocOption(option);
             locationClient.start();
-        }
-
     }
 
     public class MybdLocationListener implements BDLocationListener {
@@ -399,28 +370,6 @@ public class Register extends AppCompatActivity {
             currentPosition.append(bdLocation.getProvince()).append('/').append(bdLocation.getCity()).append('/').append(bdLocation.getDistrict());
         }
 
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0) {
-                    for (int result : grantResults) {
-                        if (result != PackageManager.PERMISSION_GRANTED) {
-                            Toast.makeText(this, "权限不通过.", Toast.LENGTH_SHORT).show();
-                            finish();
-                            return;
-                        }
-                    }
-                } else {
-                    Toast.makeText(this, "未知错误.", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                break;
-            default:
-        }
     }
 
     @Override

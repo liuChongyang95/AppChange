@@ -1,11 +1,18 @@
 package com.example.dapp;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +21,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.LocationClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import SearchDao.UserDao;
 
@@ -48,6 +57,7 @@ public class Login extends AppCompatActivity {
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+        getLocationPermission();
         //保存基本信息，SharedPreferences键值方式保存信息
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         //取之前的值，是否勾选
@@ -93,6 +103,49 @@ public class Login extends AppCompatActivity {
             }
         } else {
             getContentView();
+        }
+    }
+
+    private void getLocationPermission() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager != null && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Toast.makeText(this, "未打开GPS开关，数据可能有出入。", Toast.LENGTH_SHORT).show();
+        }
+        List<String> permissionList = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!permissionList.isEmpty()) {
+            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
+            ActivityCompat.requestPermissions(this, permissions, 1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0) {
+                    for (int result : grantResults) {
+                        if (result != PackageManager.PERMISSION_GRANTED) {
+                            Toast.makeText(this, "权限不通过.", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
+                        }
+                    }
+                } else {
+                    Toast.makeText(this, "未知错误.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
+            default:
         }
     }
 

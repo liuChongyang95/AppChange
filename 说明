@@ -4,3 +4,5 @@
 4.dimens是关于navigationView的设定
 5.运行时异常runtimeException nullPointerException 可以处理可以不处理
   IOException、FileNotFoundExcetion 和SQLException 非运行时异常必须处理
+6.实体类必须继承datasupport类 province-city-county httpUtil && Utility
+7.guolin百度地图 权限提前获取，否则初次使用Stringbuilder为null

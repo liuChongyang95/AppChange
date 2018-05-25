@@ -1,0 +1,9 @@
+<litepal>
+    <dbname value="UserPosition" />
+    <version value="1" />
+    <list>
+        <mapping class="com.example.dapp.Database.Province" />
+        <mapping class="com.example.dapp.Database.City" />
+        <mapping class="com.example.dapp.Database.County" />
+    </list>
+</litepal>

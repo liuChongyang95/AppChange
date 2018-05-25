@@ -30,6 +30,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
+        android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/dappicon_copy"
         android:label="DApp"
@@ -40,7 +41,10 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="KUEbUbD1eV2VLHXgCNg5TVq0idAwdEsj" />
-        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"/>
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.dapp.fileprovider"
@@ -102,6 +106,7 @@
         <activity
             android:name=".DietaryStatus"
             android:label="饮食情况" />
+        <activity android:name=".UserPosition" />
     </application>
 
 </manifest>

@@ -64,6 +64,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     private static final int CODE_RESULT_REQUEST = 0xa2;
     private static final int REQUEST_PERMISSION = 7;
     private static final String CROP_IMAGE_FILE_NAME = "cropPhoto.jpg";
+    private static final int USER_POSITION = 6;
     private Uri mUriPath;
 
     @Override
@@ -349,6 +350,8 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 passwordDialog.show();
                 break;
             case R.id.user_info_LL_position:
+                Intent intent1 = new Intent(this, UserPosition.class);
+                startActivityForResult(intent1, USER_POSITION);
                 break;
         }
     }
@@ -416,6 +419,11 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                     String editIntensity = userDao.getIntensity(editCareer);
                     userDao.changeIntensity(get_edit_ID, editIntensity);
                     onResume();
+                }
+                break;
+            case USER_POSITION:
+                if (resultCode==RESULT_OK){
+
                 }
                 break;
             default:
