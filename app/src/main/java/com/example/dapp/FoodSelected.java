@@ -1,7 +1,7 @@
 package com.example.dapp;
 
 
-import android.annotation.TargetApi;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -19,7 +19,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -35,7 +34,6 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -57,7 +55,6 @@ import SearchDao.FoodDao;
 import SearchDao.UserDao;
 import SearchDao.UserIntakeDao;
 import Util.BlurUtil;
-import Util.SlideLayout;
 import Util.Staticfinal_Value;
 import de.hdodenhof.circleimageview.CircleImageView;
 

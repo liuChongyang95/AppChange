@@ -6,16 +6,17 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary">
+        android:background="#00000000">
 
         <TextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="#fff"
+            android:textColor="#000"
             android:textSize="20sp" />
 
         <Button
@@ -28,10 +29,14 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:background="?attr/homeAsUpIndicator" />
-
-        <ListView
-            android:id="@+id/list_view"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="1dp"
+            android:layout_below="@id/title_text"
+            android:background="#000"/>
     </RelativeLayout>
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
