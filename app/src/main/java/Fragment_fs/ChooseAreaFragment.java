@@ -1,12 +1,12 @@
 package Fragment_fs;
 
+
 import android.app.ProgressDialog;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +28,7 @@ import java.util.List;
 import Database.City;
 import Database.County;
 import Database.Province;
+import SearchDao.UserDao;
 import Util.HttpUtil;
 import Util.Utility;
 import okhttp3.Call;
@@ -50,8 +51,16 @@ public class ChooseAreaFragment extends Fragment {
     private List<City> cityList;
     private List<County> countyList;
     private Province selectedProvince;
+    private String provinceName;
     private City selectedCity;
+    private String cityName;
+    private County selectedCounty;
+    private String countyName;
+    private StringBuffer selectedPosition;
     private int currentLevel;
+    private final static String CAF = "CAF";
+    private UserDao userDao;
+    private String userId;
 
     @Nullable
     @Override
@@ -68,15 +77,27 @@ public class ChooseAreaFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        userDao = new UserDao(getContext());
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (currentLevel == LEVEL_PROVINCE) {
                     selectedProvince = provinceList.get(position);
+                    provinceName = selectedProvince.getProvinceName();
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
+                    cityName = selectedCity.getCityName();
+                    Log.d(CAF, String.valueOf(selectedCity));
                     queryCounties();
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    selectedCounty = countyList.get(position);
+                    countyName = selectedCounty.getCountyName();
+                    selectedPosition = new StringBuffer();
+                    selectedPosition.append(provinceName).append('/').append(cityName).append('/').append(countyName);
+                    userId = getArguments().getString("from_Login_User_id");
+                    userDao.changePosition(userId, String.valueOf(selectedPosition));
+                    getActivity().finish();
                 }
             }
         });
@@ -136,10 +157,12 @@ public class ChooseAreaFragment extends Fragment {
         countyList = DataSupport.where("cityid=?", String.valueOf(selectedCity.getId())).find(County.class);
         if (countyList.size() > 0) {
             dataList.clear();
-            for (County county : countyList) {
-                dataList.add(county.getCountyName());
+            for (int i = 0; i < countyList.size(); i++) {
+                County county = countyList.get(i);
+                if (county != null) {
+                    dataList.add(county.getCountyName());
+                }
             }
-            dataList.remove(0);
 //            适配器内容发生改变，提醒刷新
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
@@ -212,3 +235,5 @@ public class ChooseAreaFragment extends Fragment {
     }
 
 }
+
+

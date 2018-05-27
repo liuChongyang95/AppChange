@@ -64,8 +64,8 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     private static final int CODE_RESULT_REQUEST = 0xa2;
     private static final int REQUEST_PERMISSION = 7;
     private static final String CROP_IMAGE_FILE_NAME = "cropPhoto.jpg";
-    private static final int USER_POSITION = 6;
     private Uri mUriPath;
+    private Bundle bundle_from_MA;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +80,8 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.user_info_edit);
+        Intent intent = getIntent();
+        bundle_from_MA = intent.getExtras();
         mExtStorDir = Environment.getExternalStorageDirectory().toString();
         Toolbar toolbar = findViewById(R.id.user_info_edit_toolbar);
         edit_user_photo = findViewById(R.id.user_info_edit_photo);
@@ -110,9 +112,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        UserDao userDao = new UserDao(this);
-        Intent intent = getIntent();
-        Bundle bundle_from_MA = intent.getExtras();
         get_edit_ID = bundle_from_MA.getString("from_Login_User_id");
         get_edit_LoginName = bundle_from_MA.getString("from_Login_User_Username");
         edit_user_ID.setText(get_edit_ID);
@@ -350,8 +349,9 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 passwordDialog.show();
                 break;
             case R.id.user_info_LL_position:
-                Intent intent1 = new Intent(this, UserPosition.class);
-                startActivityForResult(intent1, USER_POSITION);
+                Intent intentPosition = new Intent(this, UserPosition.class);
+                intentPosition.putExtras(bundle_from_MA);
+                startActivity(intentPosition);
                 break;
         }
     }
@@ -419,11 +419,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                     String editIntensity = userDao.getIntensity(editCareer);
                     userDao.changeIntensity(get_edit_ID, editIntensity);
                     onResume();
-                }
-                break;
-            case USER_POSITION:
-                if (resultCode==RESULT_OK){
-
                 }
                 break;
             default:

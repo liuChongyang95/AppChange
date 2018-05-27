@@ -1,6 +1,7 @@
 package Util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +55,7 @@ public class Utility {
         if (!TextUtils.isEmpty(response)) {
             try {
                 JSONArray allCounties = new JSONArray(response);
-                for (int i = 0; i < allCounties.length(); i++) {
+                for (int i = 1; i < allCounties.length(); i++) {
                     JSONObject countyObject = allCounties.getJSONObject(i);
                     County county = new County();
                     county.setCountyName(countyObject.getString("name"));

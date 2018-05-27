@@ -59,13 +59,13 @@ public class UserDao {
     public String failedCause(String username, String password) {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
         String sql_1 = "select Username from Login where Username=?";
-        String failed_cause=null;
+        String failed_cause = null;
         Cursor cursor = UsersDb.rawQuery(sql_1, new String[]{username});
         if (cursor.moveToFirst()) {
             cursor.close();
             String sql_2 = "select password from Login where Username =?";
             Cursor cursor1 = UsersDb.rawQuery(sql_2, new String[]{username});
-            if (cursor1.moveToFirst()&&!cursor1.getString(cursor1.getColumnIndex("password")).equals(password)) {
+            if (cursor1.moveToFirst() && !cursor1.getString(cursor1.getColumnIndex("password")).equals(password)) {
                 cursor1.close();
                 failed_cause = "密码错误";
             }
@@ -254,6 +254,7 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("User_Nickname", userNickname);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
@@ -263,6 +264,7 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("User_Photo", userPhoto);
         UserDb.update("User", values, "User_id=?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
@@ -272,6 +274,7 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("User_Sex", userSex);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
@@ -281,6 +284,7 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("User_Birth", String.valueOf(userBirth));
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
@@ -290,6 +294,7 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("User_Tall", userTall);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
@@ -299,6 +304,7 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("User_Real_weight", userWeight);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
@@ -308,6 +314,7 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("User_Expect_weight", String.valueOf(userEWeight));
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
@@ -317,6 +324,7 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("User_Shape", userShape);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
@@ -326,6 +334,7 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("Career", userCareer);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
@@ -335,6 +344,7 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("User_Intensity", userIntensity);
         UserDb.update("User", values, "User_id = ?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
@@ -344,11 +354,23 @@ public class UserDao {
         ContentValues values = new ContentValues();
         values.put("password", userPassword);
         UserDb.update("Login", values, "User_id = ?", new String[]{userId});
+        values.clear();
         UserDb.close();
         UserdbHelper.close();
     }
 
-    public String getPosition(String userId){
+    public void changePosition(String userId, String userPosition) {
+        SQLiteDatabase UserDb = UserdbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("User_Position", userPosition);
+        UserDb.update("User", values, "User_id=?", new String[]{userId});
+        values.clear();
+        UserDb.close();
+        UserdbHelper.close();
+
+    }
+
+    public String getPosition(String userId) {
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();
         String sql = "select User_Position from User where User_id=?";
         Cursor cursor = UserDb.rawQuery(sql, new String[]{userId});
