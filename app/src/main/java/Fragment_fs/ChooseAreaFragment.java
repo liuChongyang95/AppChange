@@ -95,7 +95,9 @@ public class ChooseAreaFragment extends Fragment {
                     countyName = selectedCounty.getCountyName();
                     selectedPosition = new StringBuffer();
                     selectedPosition.append(provinceName).append('/').append(cityName).append('/').append(countyName);
-                    userId = getArguments().getString("from_Login_User_id");
+                    if (getArguments() != null) {
+                        userId = getArguments().getString("from_Login_User_id");
+                    }
                     userDao.changePosition(userId, String.valueOf(selectedPosition));
                     getActivity().finish();
                 }

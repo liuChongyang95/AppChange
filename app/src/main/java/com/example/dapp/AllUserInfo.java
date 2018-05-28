@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,10 +23,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +61,8 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     private TextView edit_user_weight_expect;
     private TextView edit_user_age;
     private TextView edit_user_position;
+    //    PopWindow 图库和相机
+    private PopupWindow popupWindow;
     private CircleImageView edit_user_photo;
     private Date edit_birth_str_date;
     private float edit_expect_weight;
@@ -62,10 +70,16 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     private String mExtStorDir;
     private static final int CODE_GALLERY_REQUEST = 0xa0;
     private static final int CODE_RESULT_REQUEST = 0xa2;
+    private static final int CODE_REQUEST_CAMERA = 0xa4;
     private static final int REQUEST_PERMISSION = 7;
+    private static final int REQUEST_CAMERA = 1;
     private static final String CROP_IMAGE_FILE_NAME = "cropPhoto.jpg";
+    private static final String CAPTURE_PICTURE = "capturePhoto.jpg";
     private Uri mUriPath;
     private Bundle bundle_from_MA;
+    private File tempFile;
+    private WindowManager.LayoutParams layoutParams;
+    private static final String TAG = "AllUserInfo";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +92,12 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //相机文件路径 大于7.0
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+            builder.detectFileUriExposure();
         }
         setContentView(R.layout.user_info_edit);
         Intent intent = getIntent();
@@ -98,6 +118,9 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         edit_user_weight_expect = findViewById(R.id.user_info_Expect_weight);
         edit_user_age = findViewById(R.id.user_info_age);
         edit_user_position = findViewById(R.id.user_info_edit_position);
+//        获取焦点 改变背景颜色
+        layoutParams = getWindow().getAttributes();
+//        用于将popwindow添加进去
         setSupportActionBar(toolbar);
         toolbar.getBackground().setAlpha(0);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -168,7 +191,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 break;
             //头像
             case R.id.user_info_LL_photo:
-                checkReadPermission();
+                showPopWindow();
                 break;
             //性别
             case R.id.user_info_LL_sex:
@@ -353,10 +376,57 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 intentPosition.putExtras(bundle_from_MA);
                 startActivity(intentPosition);
                 break;
+            case R.id.chooseGallery:
+                checkReadPermissionGallery();
+                layoutParams.alpha = 1f;
+                getWindow().setAttributes(layoutParams);
+                popupWindow.dismiss();
+                break;
+            case R.id.chooseCamera:
+                try {
+                    checkPermissionCamera();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+//                    恢复透明度
+                    layoutParams.alpha = 1f;
+                    getWindow().setAttributes(layoutParams);
+                    popupWindow.dismiss();
+                }
+                break;
         }
     }
 
-    private void checkReadPermission() {
+    private void showPopWindow() {
+//        popwindow
+        View contentView = LayoutInflater.from(this).inflate(R.layout.photo_popwindow, null);
+        popupWindow = new PopupWindow(contentView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setContentView(contentView);
+        TextView gallery = contentView.findViewById(R.id.chooseGallery);
+        TextView camera = contentView.findViewById(R.id.chooseCamera);
+        gallery.setOnClickListener(this);
+        camera.setOnClickListener(this);
+//        显示popupwindow
+        View rootView = LayoutInflater.from(this).inflate(R.layout.user_info_edit, null);
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+//        popupWindow.showAsDropDown(rootView);
+
+        //        弹出popwin之后的背景变暗
+        if (popupWindow != null && popupWindow.isShowing()) {
+            layoutParams.alpha = 0.7f;
+            getWindow().setAttributes(layoutParams);
+        }
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                layoutParams.alpha = 1f;
+                getWindow().setAttributes(layoutParams);
+            }
+        });
+    }
+
+    //    图库权限
+    private void checkReadPermissionGallery() {
         int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permission == PackageManager.PERMISSION_DENIED) {
             String[] permissions;
@@ -367,16 +437,35 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_PERMISSION:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    choseHeadImageFromGallery();
-                }
-                break;
+    //相机权限
+    private void checkPermissionCamera() {
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        if (permission == PackageManager.PERMISSION_DENIED) {
+            String[] permissions;
+            permissions = new String[]{Manifest.permission.CAMERA};
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA);
+        } else {
+            invokingCamera();
         }
+    }
+
+    //    相机
+    private void invokingCamera() {
+        String sdStatus = Environment.getExternalStorageState();
+//        "MediaStore.ACTION_IMAGE_CAPTURE" 动作无法接收
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//        如果装备了SD卡
+        if (Environment.MEDIA_MOUNTED.equals(sdStatus)) {
+//            popupWindow做出选项的时候，调用到startActivityforResult哪块
+            tempFile = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + CAPTURE_PICTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
+            setResult(RESULT_OK, intent);
+            Log.d(TAG, String.valueOf(Uri.fromFile(tempFile)) + '-');
+            startActivityForResult(intent, CODE_REQUEST_CAMERA);
+        } else {
+            Toast.makeText(this, "环境异常，可能未装备SD卡。", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     // 从本地相册选取图片作为头像
@@ -387,9 +476,13 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         intentFromGallery.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intentFromGallery, CODE_GALLERY_REQUEST);*/
         Intent intentFromGallery = new Intent(Intent.ACTION_PICK, null);
+        Log.d(TAG, "Gallery1");
         intentFromGallery.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        Log.d(TAG, "Gallery2");
         startActivityForResult(intentFromGallery, CODE_GALLERY_REQUEST);
+        Log.d(TAG, "Gallery3");
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -399,6 +492,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         }
         switch (requestCode) {
             case CODE_GALLERY_REQUEST:
+                Log.d(TAG, "cgr");
                 cropRawPhoto(data.getData());
                 break;
             case CODE_RESULT_REQUEST:
@@ -406,7 +500,9 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                     setImageToHeadView(intent);    //此代码在小米有异常，换以下代码
                 }*/
                 try {
+                    Log.d(TAG, "Gallery4");
                     Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mUriPath));
+                    Log.d(TAG, "Gallery5");
                     setImageToHeadView(data, bitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -419,6 +515,18 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                     String editIntensity = userDao.getIntensity(editCareer);
                     userDao.changeIntensity(get_edit_ID, editIntensity);
                     onResume();
+                }
+                break;
+            case CODE_REQUEST_CAMERA:
+                if (resultCode == RESULT_OK) {//                获取intent里面的值
+                    try {
+                        if (tempFile.exists()) {
+//                            可能需要一个版本判断
+                            cropRawPhoto(Uri.fromFile(tempFile));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             default:
@@ -567,6 +675,27 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
             }
         }
         return age;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_PERMISSION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    choseHeadImageFromGallery();
+                } else {
+                    Toast.makeText(this, "图库权限不通过", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_CAMERA:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    invokingCamera();
+                } else {
+                    Toast.makeText(this, "相机权限不通过", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
 
