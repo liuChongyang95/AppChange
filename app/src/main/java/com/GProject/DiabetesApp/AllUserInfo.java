@@ -1,6 +1,7 @@
 package com.GProject.DiabetesApp;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -42,6 +43,7 @@ import java.sql.Date;
 import java.util.Calendar;
 
 import SearchDao.UserDao;
+import Util.AnimateUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -78,8 +80,10 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     private Uri mUriPath;
     private Bundle bundle_from_MA;
     private File tempFile;
-    private WindowManager.LayoutParams layoutParams;
     private static final String TAG = "AllUserInfo";
+    //    调用背景变暗
+    private float bgAlpha = 1f;
+    private boolean bright = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,8 +122,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         edit_user_weight_expect = findViewById(R.id.user_info_Expect_weight);
         edit_user_age = findViewById(R.id.user_info_age);
         edit_user_position = findViewById(R.id.user_info_edit_position);
-//        获取焦点 改变背景颜色
-        layoutParams = getWindow().getAttributes();
 //        用于将popwindow添加进去
         setSupportActionBar(toolbar);
         toolbar.getBackground().setAlpha(0);
@@ -397,6 +399,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         View contentView = LayoutInflater.from(this).inflate(R.layout.photo_popwindow, null);
         popupWindow = new PopupWindow(contentView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setContentView(contentView);
+        popupWindow.setAnimationStyle(R.style.MyPopupWindow_anim_style);
         TextView gallery = contentView.findViewById(R.id.chooseGallery);
         TextView camera = contentView.findViewById(R.id.chooseCamera);
         gallery.setOnClickListener(this);
@@ -408,14 +411,12 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
 
         //        弹出popwin之后的背景变暗
         if (popupWindow != null && popupWindow.isShowing()) {
-            layoutParams.alpha = 0.7f;
-            getWindow().setAttributes(layoutParams);
+            toggleBright();
         }
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                layoutParams.alpha = 1f;
-                getWindow().setAttributes(layoutParams);
+            toggleBright();
             }
         });
     }
@@ -455,7 +456,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
             tempFile = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + CAPTURE_PICTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
             setResult(RESULT_OK, intent);
-            Log.d(TAG, String.valueOf(Uri.fromFile(tempFile)) + '-');
             startActivityForResult(intent, CODE_REQUEST_CAMERA);
         } else {
             Toast.makeText(this, "环境异常，可能未装备SD卡。", Toast.LENGTH_SHORT).show();
@@ -471,11 +471,8 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         intentFromGallery.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intentFromGallery, CODE_GALLERY_REQUEST);*/
         Intent intentFromGallery = new Intent(Intent.ACTION_PICK, null);
-        Log.d(TAG, "Gallery1");
         intentFromGallery.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-        Log.d(TAG, "Gallery2");
         startActivityForResult(intentFromGallery, CODE_GALLERY_REQUEST);
-        Log.d(TAG, "Gallery3");
     }
 
 
@@ -495,9 +492,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                     setImageToHeadView(intent);    //此代码在小米有异常，换以下代码
                 }*/
                 try {
-                    Log.d(TAG, "Gallery4");
                     Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mUriPath));
-                    Log.d(TAG, "Gallery5");
                     setImageToHeadView(data, bitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -582,7 +577,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
 //                uploadImg(mExtStorDir,millis+CROP_IMAGE_FILE_NAME);
                     uploadImg(mExtStorDir,millis+CROP_IMAGE_FILE_NAME);
                 }*/
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -693,5 +687,32 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-
+    //    变亮或者变暗 全局bright bgAlpha
+    private void toggleBright() {
+        //        变暗动画
+        AnimateUtil animateUtil = new AnimateUtil();
+        //三个参数分别为： 起始值 结束值 时长  那么整个动画回调过来的值就是从0.5f--1f的
+        animateUtil.setValueAnimator(0.5f, 1f, 350);
+        animateUtil.addUpdateListener(new AnimateUtil.UpdateListener() {
+            @Override
+            public void progress(float progress) {
+                //此处系统会根据上述三个值，计算每次回调的值是多少，我们根据这个值来改变透明度
+                bgAlpha = bright ? progress : (1.5f - progress);//三目运算，应该挺好懂的。
+//                背景变暗
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = bgAlpha; //0.0-1.0
+                getWindow().setAttributes(lp);
+//                注销。因为可能和自带的变暗效果冲突
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            }
+        });
+        animateUtil.addEndListner(new AnimateUtil.EndListener() {
+            @Override
+            public void endUpdate(Animator animator) {
+                //在一次动画结束的时候，翻转状态
+                bright = !bright;
+            }
+        });
+        animateUtil.startAnimator();
+    }
 }
