@@ -11,10 +11,14 @@
         android:layout_height="wrap_content"
         android:hint="分享到微信：" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="wrap_content"

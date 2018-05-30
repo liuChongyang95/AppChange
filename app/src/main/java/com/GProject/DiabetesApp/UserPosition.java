@@ -31,7 +31,6 @@ public class UserPosition extends AppCompatActivity {
         setContentView(R.layout.user_postion);
         Intent intent = getIntent();
         bundleFromAIF = intent.getExtras();
-        Log.d("UP", bundleFromAIF.getString("from_Login_User_id"));
         ChooseAreaFragment fragment = (ChooseAreaFragment) getSupportFragmentManager().findFragmentById(R.id.choose_area_fragment);
         fragment.setArguments(bundleFromAIF);
     }

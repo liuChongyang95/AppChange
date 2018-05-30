@@ -62,7 +62,6 @@ public class DietaryStatus extends AppCompatActivity {
     private WebView webView;
     private static final String APP_ID = "wxafc530d47fd59207";
     private IWXAPI iwxapi;
-    private AnimateUtil animateUtil;
     private float bgAlpha = 1f;
     private boolean bright = false;
 
@@ -81,8 +80,7 @@ public class DietaryStatus extends AppCompatActivity {
         setContentView(R.layout.dietary_doughnut);
 //        页面微信绑定
         reg2WX();
-//        变暗动画
-        animateUtil = new AnimateUtil();
+
         Toolbar toolbar = findViewById(R.id.dietaryToolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -227,7 +225,10 @@ public class DietaryStatus extends AppCompatActivity {
         });
     }
 
+    //    变亮或者变暗 全局bright bgAlpha
     private void toggleBright() {
+        //        变暗动画
+        AnimateUtil animateUtil = new AnimateUtil();
         //三个参数分别为： 起始值 结束值 时长  那么整个动画回调过来的值就是从0.5f--1f的
         animateUtil.setValueAnimator(0.5f, 1f, 350);
         animateUtil.addUpdateListener(new AnimateUtil.UpdateListener() {
@@ -239,7 +240,7 @@ public class DietaryStatus extends AppCompatActivity {
                 WindowManager.LayoutParams lp = getWindow().getAttributes();
                 lp.alpha = bgAlpha; //0.0-1.0
                 getWindow().setAttributes(lp);
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }
         });
         animateUtil.addEndListner(new AnimateUtil.EndListener() {
