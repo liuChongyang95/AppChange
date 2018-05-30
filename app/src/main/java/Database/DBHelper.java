@@ -13,7 +13,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.dapp.R;
+import com.GProject.DiabetesApp.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

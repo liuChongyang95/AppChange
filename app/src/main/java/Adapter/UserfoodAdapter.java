@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.example.dapp.R;
+import com.GProject.DiabetesApp.R;
 
 import java.util.List;
 

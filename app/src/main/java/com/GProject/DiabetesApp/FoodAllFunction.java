@@ -1,4 +1,4 @@
-package com.example.dapp;
+package com.GProject.DiabetesApp;
 /*
 bundle里面有ID和用户名
 

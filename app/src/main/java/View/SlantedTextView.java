@@ -21,7 +21,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.example.dapp.R;
+import com.GProject.DiabetesApp.R;
 
 /**
  * @author Alost

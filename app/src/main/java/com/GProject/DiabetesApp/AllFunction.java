@@ -1,4 +1,4 @@
-package com.example.dapp;
+package com.GProject.DiabetesApp;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -2,6 +2,6 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <external-path
         name="user_images"
-        path="/sdcard/Android/data/com.example.dapp/cache" />
+        path="/sdcard/Android/data/com.GProject.dapp/cache" />
 
 </paths>

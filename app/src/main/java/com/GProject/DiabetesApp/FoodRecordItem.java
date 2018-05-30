@@ -1,4 +1,4 @@
-package com.example.dapp;
+package com.GProject.DiabetesApp;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.dapp.Nutrition_all;
-import com.example.dapp.R;
+import com.GProject.DiabetesApp.Nutrition_all;
+import com.GProject.DiabetesApp.R;
 
 
 public class Fragment_FS_nutritioninfo extends Fragment {

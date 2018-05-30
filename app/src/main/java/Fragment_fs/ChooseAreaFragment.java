@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.dapp.R;
+import com.GProject.DiabetesApp.R;
 
 import org.litepal.crud.DataSupport;
 

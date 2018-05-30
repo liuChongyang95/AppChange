@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.dapp.R;
+import com.GProject.DiabetesApp.R;
 
 public class Fragment_FS_titalinfo extends Fragment {
     private View view;
