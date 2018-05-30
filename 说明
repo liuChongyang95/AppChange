@@ -6,3 +6,8 @@
   IOException、FileNotFoundExcetion 和SQLException 非运行时异常必须处理
 6.实体类必须继承datasupport类 province-city-county httpUtil && Utility
 7.guolin百度地图 权限提前获取，否则初次使用Stringbuilder为null
+8.在Google IO 相关话题的中提到了一个建议，就是依赖首先应该设置为implementation的，如果没有错，那就用implementation，如果有错，那么使用api指令。使用implementation会使编译速度有所增快。
+9.sendReq是第三方app主动发送消息给微信，发送完成之后会切回到第三方app界面。sendResp是微信向第三方app请求数据，第三方app回应数据之后会切回到微信界面。
+10.drawable 2 bitmapdrawable 2 bitmap 2 byte[] user bitmap.compress
+                                      os=ByteArrayOutputStream
+                                      bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);

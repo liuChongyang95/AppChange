@@ -378,8 +378,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.chooseGallery:
                 checkReadPermissionGallery();
-                layoutParams.alpha = 1f;
-                getWindow().setAttributes(layoutParams);
                 popupWindow.dismiss();
                 break;
             case R.id.chooseCamera:
@@ -388,9 +386,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
-//                    恢复透明度
-                    layoutParams.alpha = 1f;
-                    getWindow().setAttributes(layoutParams);
                     popupWindow.dismiss();
                 }
                 break;
