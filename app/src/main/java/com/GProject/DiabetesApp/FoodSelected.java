@@ -1,7 +1,6 @@
 package com.GProject.DiabetesApp;
 
 
-
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -160,7 +159,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         drawerLayoutFS = findViewById(R.id.food_msg_DL);
         NavigationView navFS = findViewById(R.id.navContent_FM);
         navHead = navFS.getHeaderView(0);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayoutFS,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutFS,
                 toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayoutFS.setDrawerListener(toggle);
         toggle.syncState();
@@ -170,6 +169,12 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.nav_Analysis:
+                        drawerLayoutFS.closeDrawer(GravityCompat.START);
+                        Intent intent3 = new Intent(FoodSelected.this, FoodReport.class);
+                        intent3.putExtras(bundle_for_nav);
+                        startActivity(intent3);
+                        break;
                     case R.id.nav_Record:
                         drawerLayoutFS.closeDrawer(GravityCompat.START);
                         Intent intent1 = new Intent(FoodSelected.this, FoodRecordListView.class);
@@ -660,9 +665,9 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         NutArray = new String[23];
         NutArray[0] = foodDao.find_energy(fruitName);
         NutArray[1] = foodDao.find_protein(fruitName);
+        NutArray[2] = foodDao.find_fat(fruitName);
         NutArray[3] = foodDao.find_DF(fruitName);
         NutArray[4] = foodDao.find_CH(fruitName);
-        NutArray[2] = foodDao.find_fat(fruitName);
         NutArray[5] = foodDao.find_water(fruitName);
         NutArray[6] = foodDao.find_vA(fruitName);
         NutArray[7] = foodDao.find_vB1(fruitName);

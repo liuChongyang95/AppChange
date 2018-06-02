@@ -74,10 +74,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private Context mContext;
 
     private static final String CREATE_UserIntake = "create table UserIntake(User_id char(16),UI_date date ," +
-            "UI_class char(14),UI_energy char(6),UI_protein char(6),UI_fat char(5),UI_DF char(5),UI_CH char(5),UI_water char(5)," +
-            "UI_VA char(4),UI_VB1 char(4),UI_VB2 char(4),UI_VB3 char(4),UI_VE char(4),UI_VC char(4),UI_Fe char(6),UI_Ga char(6)," +
-            "UI_Na char(6),UI_CLS char(6),UI_class1 char(6),UI_K char(6),UI_Mg char(6),UI_Zn char(6),UI_P char(6)," +
-            "UI_purine char(6),UI_class2 char(8),constraint UI_PK primary key (User_id,UI_date,UI_class)," +
+            "UI_class char(14),UI_energy float(6),UI_protein float(6),UI_fat float(5),UI_DF float(5),UI_CH float(5),UI_water float(5)," +
+            "UI_VA float(4),UI_VB1 float(4),UI_VB2 float(4),UI_VB3 float(4),UI_VE float(4),UI_VC float(4),UI_Fe float(6),UI_Ga float(6)," +
+            "UI_Na float(6),UI_CLS float(6),UI_class1 float(6),UI_K float(6),UI_Mg float(6),UI_Zn float(6),UI_P float(6)," +
+            "UI_purine float(6),UI_class2 float(8),constraint UI_PK primary key (User_id,UI_date,UI_class)," +
             "foreign key (User_id) references User(User_id) on update cascade,foreign key (UI_date) references UserFood(Food_date) on update cascade," +
             "foreign key (UI_class) references User(Food_class) on update cascade)";
 
