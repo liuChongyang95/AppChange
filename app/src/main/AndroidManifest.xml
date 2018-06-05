@@ -27,9 +27,9 @@
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <!--允许修改全局音频设置-->
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -111,9 +111,12 @@
             android:name=".DietaryStatus"
             android:label="饮食情况" />
         <activity android:name=".UserPosition" />
-        <activity android:name=".WXEntryActivity"
-            android:exported="true"
-            />
+        <activity
+            android:name=".WXEntryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".FoodReport"
+            android:label="饮食报告" />
     </application>
 
 </manifest>

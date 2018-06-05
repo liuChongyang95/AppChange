@@ -13,7 +13,7 @@ import java.io.InputStream;
 public class DBUtil {
     private static SQLiteDatabase database;
     private static final String DATABASE_FILENAME = "food.db";
-    private static final String PACKAGE_NAME = "com.example.dapp";
+    private static final String PACKAGE_NAME = "com.GProject.DiabetesApp";
     private static final String DATABASE_PATH = "/data" + Environment.getDataDirectory().getAbsolutePath() + "/" + PACKAGE_NAME;
     private Context mContext;
 
@@ -36,7 +36,6 @@ public class DBUtil {
                 while ((count = is.read(buffer)) > 0) {
                     fos.write(buffer, 0, count);
                 }
-
                 fos.close();
                 is.close();
             }

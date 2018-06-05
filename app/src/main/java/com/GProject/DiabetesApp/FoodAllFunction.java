@@ -63,14 +63,20 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 switch (position) {
                     case 0:
+//                        饮食报告
+                        Intent intent2 = new Intent(FoodAllFunction.this, FoodReport.class);
+                        intent2.putExtras(bundle_from_FMA);
+                        startActivity(intent2);
                         break;
                     case 1:
+//                        饮食列表
                         Intent intent = new Intent();
                         intent.setClass(FoodAllFunction.this, FoodRecordListView.class);
                         intent.putExtras(bundle_from_FMA);
                         startActivity(intent);
                         break;
                     case 2:
+//                        饮食情况
                         Intent intent1 = new Intent();
                         intent1.setClass(FoodAllFunction.this, DietaryStatus.class);
                         intent1.putExtras(bundle_from_FMA);
