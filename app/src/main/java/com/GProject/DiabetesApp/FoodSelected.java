@@ -74,7 +74,6 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
 
     private Bundle bundle_from_FMA;
-    private Bundle bundle_for_nav;
     private FoodDao foodDao = new FoodDao(this);
     private UserDao userDao = new UserDao(this);
 
@@ -142,10 +141,8 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.food_message);
         Intent intent = getIntent();
         bundle_from_FMA = intent.getExtras();
-        bundle_for_nav = new Bundle();
         initUserid = bundle_from_FMA.getString("from_Login_User_id");
         fruitName = bundle_from_FMA.getString("fruit_name");
-        bundle_for_nav.putString("from_Login_User_id", initUserid);
         mInflater = LayoutInflater.from(this);
 //        Toolbar和图片设置
         Toolbar toolbar = findViewById(R.id.toolBar_fS);
@@ -172,19 +169,19 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     case R.id.nav_Analysis:
                         drawerLayoutFS.closeDrawer(GravityCompat.START);
                         Intent intent3 = new Intent(FoodSelected.this, FoodReport.class);
-                        intent3.putExtras(bundle_for_nav);
+                        intent3.putExtras( bundle_from_FMA );
                         startActivity(intent3);
                         break;
                     case R.id.nav_Record:
                         drawerLayoutFS.closeDrawer(GravityCompat.START);
                         Intent intent1 = new Intent(FoodSelected.this, FoodRecordListView.class);
-                        intent1.putExtras(bundle_for_nav);
+                        intent1.putExtras( bundle_from_FMA );
                         startActivity(intent1);
                         break;
                     case R.id.nav_Dietary:
                         drawerLayoutFS.closeDrawer(GravityCompat.START);
                         Intent intent2 = new Intent(FoodSelected.this, DietaryStatus.class);
-                        intent2.putExtras(bundle_for_nav);
+                        intent2.putExtras( bundle_from_FMA );
                         startActivity(intent2);
                         break;
                 }
@@ -200,7 +197,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 Intent intent3 = new Intent(FoodSelected.this, AllUserInfo.class);
-                intent3.putExtras(bundle_for_nav);
+                intent3.putExtras( bundle_from_FMA );
                 startActivity(intent3);
             }
         });
@@ -773,7 +770,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        initUserNN = "用户昵称: " + userDao.getUserName(initUserid);
+        initUserNN = "用户昵称: " + userDao.getNickname(initUserid);
         tv_userNN.setText(initUserNN);
         userPhoto.setImageDrawable(userDao.getUser_Photo(initUserid));
         //        navHead模糊

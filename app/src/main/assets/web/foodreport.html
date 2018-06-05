@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height">
+    <title>Title</title>
+    <style>
+        html {
+            font-size: 62.5%;
+        }
+
+        #theme {
+            font-size: 1.7rem;
+            margin-top: 2rem;
+            margin-left: 1.5rem;
+        }
+
+        table {
+            margin-top: 2rem;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #D4D4D4;
+            border-collapse: collapse;
+        }
+
+        table tr, td {
+            border: 1px solid #D4D4D4;
+            margin: 1.98rem 0;
+
+        }
+
+        .tital {
+            font-size: 1.2rem;
+            width: 27%;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        td img {
+            width: 2rem;
+            height: 2rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .content {
+            border: none;
+            display: block;
+            font-size: 1.5rem;
+            width: 73%;
+            margin-top: 1rem;
+            margin-left: 0.97rem;
+        }
+
+        .content a {
+            text-decoration: none;
+            color: #000000;
+            display: block;
+            margin-bottom: 0.98rem;
+            margin-top: 0.95rem;
+        }
+
+        .content p{
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        #other {
+            font-size: 1.7rem;
+            margin-left: 1.5rem;
+            margin-right: 2.92rem;
+            margin-top: 2.08rem;
+        }
+
+        #call {
+            font-size: 1.7rem;
+            color: #fff;
+            text-align: center;
+            background-color: #474747;
+            margin-top: auto;
+            width: 34.5rem;
+            height: 5.6rem;
+            border-radius: 0.4rem;
+        }
+
+        .list-group-item {
+            position: relative;
+            display: block;
+            padding: 10px 15px;
+            margin-bottom: -1px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+    </style>
+    <script src="jquery-3.3.1.min.js">
+    </script>
+</head>
+<body>
+<div id="theme">饮食报告</div>
+<table>
+    <tr>
+        <td class="tital">
+            <img src="account-filling.png" alt="用户信息"><br> 用户信息
+        </td>
+        <td class="content"><p id="userId">用户ID：</p>
+            <p id="userNickname">用户昵称：</p></td>
+    </tr>
+    <tr>
+        <td class="tital">
+            <img src="blue.png" alt="营养情况"><br>营养情况
+        </td>
+        <td class="content">
+            <ul id="nutrition">
+
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td class="tital">
+            <img src="red.png" alt="营养异常"> <br>营养异常
+        </td>
+        <td class="content"><a href="#">点击查看最近七天营养参数</a></td>
+    </tr>
+</table>
+<div id="other">其他问题</div>
+<input type="button" value="客服电话：182****668" id="call">
+</body>
+<script>
+    function getUserInfo(jsonInfo) {
+        var val = JSON.parse(jsonInfo);
+        for (var key in val) {
+            if (key === "UserId") {
+                var userid = document.getElementById("userId");
+                userid.innerText = "用户ID：" + val[key];
+            }
+            if (key === "UserNickName") {
+                var usernickname = document.getElementById("userNickname");
+                usernickname.innerText = "用户昵称" + val[key]
+            }
+        }
+    }
+
+    function addLi(name, value) {
+        var Li = document.createElement("li");
+        if (name === "蛋白质" || name === "脂肪" || name === "膳食纤维" || name === "碳水化物" || name === "水分") {
+            Li.innerText = name + ":" + value + "克";
+        } else Li.innerText = name + ":" + value + "毫克";
+        Li.className = "list-group-item";
+        var list = document.getElementById("nutrition");
+        list.appendChild(Li);
+    }
+
+    function showNutrition(jsonNutrition) {
+        var name = [];
+        var value = [];
+        var val=JSON.parse(jsonNutrition);
+        for (var a in val) {
+            name.push(a);
+            value.push(val[a]);
+        }
+        for (var b = 0; b < name.length; b++) {
+            addLi(name[b], value[b]);
+        }
+    }
+
+    // showNutrition({
+    //     "蛋白质": 1.8000001,
+    //     "磷": 62.0,
+    //     "能量": 312.0,
+    //     "水分": 518.2,
+    //     "脂肪": 1.0,
+    //     "锌": 0.88,
+    //     "胆固醇": 0.0,
+    //     "维生素B3": 1.6000001,
+    //     "碳水化物": 77.6,
+    //     "钠": 9.0,
+    //     "维生素A": 0.0,
+    //     "嘌呤": 3.8999999,
+    //     "维生素E": 8.78,
+    //     "维生素B2": 0.16,
+    //     "钙": 46.0,
+    //     "铁": 3.0,
+    //     "镁": 32.0,
+    //     "钾": 632.0,
+    //     "维生素C": 20.0,
+    //     "维生素B1": 0.32,
+    //     "膳食纤维": 7.2
+    // });
+</script>
+</html>

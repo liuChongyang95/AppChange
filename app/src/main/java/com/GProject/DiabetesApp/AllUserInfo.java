@@ -753,8 +753,4 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         unregisterReceiver(networkStatusReceiver);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

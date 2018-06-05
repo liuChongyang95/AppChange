@@ -89,17 +89,18 @@ public class UserDao {
         return userInfo;
     }
 
-    public String getUserName(String userId) {
+//重复了
+    public String getNickname(String userId) {
         SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
-        String sql_1 = "select User_Nickname from User where User_id =?";
-        Cursor cursor = UsersDb.rawQuery(sql_1, new String[]{userId});
-        if (cursor.moveToFirst()) {
+        String sql = "select User_Nickname from User where User_id= ?";
+        Cursor cursor = UsersDb.rawQuery(sql, new String[]{userId});
+        if (cursor.moveToFirst())
             userInfo = cursor.getString(cursor.getColumnIndex("User_Nickname"));
-        }
         UserdbHelper.close();
-        UsersDb.close();
         cursor.close();
+        UsersDb.close();
         return userInfo;
+
     }
 
     public String getUserId(String username) {
@@ -151,18 +152,6 @@ public class UserDao {
         return userInfo;
     }
 
-    public String getNickname(String userId) {
-        SQLiteDatabase UsersDb = UserdbHelper.getReadableDatabase();
-        String sql = "select User_Nickname from User where User_id= ?";
-        Cursor cursor = UsersDb.rawQuery(sql, new String[]{userId});
-        if (cursor.moveToFirst())
-            userInfo = cursor.getString(cursor.getColumnIndex("User_Nickname"));
-        UserdbHelper.close();
-        cursor.close();
-        UsersDb.close();
-        return userInfo;
-
-    }
 
     public String getSex(String userId) {
         SQLiteDatabase UserDb = UserdbHelper.getReadableDatabase();

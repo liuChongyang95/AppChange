@@ -2,10 +2,15 @@ package com.GProject.DiabetesApp;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +28,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -59,6 +65,8 @@ public class DietaryStatus extends AppCompatActivity {
     private IWXAPI iwxapi;
     private float bgAlpha = 1f;
     private boolean bright = false;
+    private IntentFilter intentFilter;
+    private NetworkStatusReceiver networkStatusReceiver;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -75,7 +83,9 @@ public class DietaryStatus extends AppCompatActivity {
         setContentView(R.layout.dietary_doughnut);
 //        页面微信绑定
         reg2WX();
-
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        networkStatusReceiver = new NetworkStatusReceiver();
         Toolbar toolbar = findViewById(R.id.dietaryToolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -246,5 +256,35 @@ public class DietaryStatus extends AppCompatActivity {
             }
         });
         animateUtil.startAnimator();
+    }
+
+    class NetworkStatusReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = null;
+            if (connectivityManager != null) {
+                networkInfo = connectivityManager.getActiveNetworkInfo();
+            }
+            if (networkInfo != null && networkInfo.isAvailable()) {
+
+            } else {
+                Toast.makeText(context, "网络连接异常,可能无法使用微信分享", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(networkStatusReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(networkStatusReceiver);
     }
 }

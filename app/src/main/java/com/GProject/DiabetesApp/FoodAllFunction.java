@@ -48,6 +48,9 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
 //            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 //        }
         setContentView(R.layout.food_all_function);
+        Intent intent = getIntent();
+        bundle_from_FMA = intent.getExtras();
+
         new SlideLayout(this).bind();
         toolbar = findViewById(R.id.food_record_all_toolbar);
         gridView = findViewById(R.id.foodRecord_gridView);
@@ -85,10 +88,6 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
-
-        Intent intent = getIntent();
-        bundle_from_FMA = intent.getExtras();
-
         setSupportActionBar(toolbar);
         toolbar.getBackground().setAlpha(0);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -97,8 +96,6 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
                 FoodAllFunction.this.finish();
             }
         });
-
-
     }
 
     private List<Map<String, Object>> getData() {

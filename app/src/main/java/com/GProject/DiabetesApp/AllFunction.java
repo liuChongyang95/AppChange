@@ -151,7 +151,7 @@ public class AllFunction extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        user_name.setText(userDao.getUserName(from_login_user_id));
+        user_name.setText(userDao.getNickname(from_login_user_id));
         user_photo.setImageDrawable(userDao.getUser_Photo(from_login_user_id));
     }
 
