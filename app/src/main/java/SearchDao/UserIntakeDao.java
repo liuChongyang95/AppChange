@@ -94,7 +94,7 @@ public class UserIntakeDao {
         } else {
             //                检查值，赋值为0
             for (int i = 0; i < UIenergy.length; i++) {
-                UIenergy[i] =0f;
+                UIenergy[i] = 0f;
             }
         }
         dbHelper.close();
@@ -103,8 +103,6 @@ public class UserIntakeDao {
     }
 
     public String getTodayenergy(String userId, String UIdate) {
-        numberFormat = NumberFormat.getNumberInstance();
-        numberFormat.setMaximumFractionDigits(2);
         float energy = 0;
         SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
         String sql = "select sum(UI_energy) AS totalenergy from UserIntake where User_id=? and UI_date=?";

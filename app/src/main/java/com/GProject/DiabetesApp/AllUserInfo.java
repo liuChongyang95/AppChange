@@ -5,12 +5,17 @@ import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -85,6 +90,9 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     private float bgAlpha = 1f;
     private boolean bright = false;
 
+    private IntentFilter intentFilter;
+    private NetworkStatusReceiver networkStatusReceiver;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,12 +139,17 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
                 AllUserInfo.this.finish();
             }
         });
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        networkStatusReceiver = new NetworkStatusReceiver();
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(networkStatusReceiver, intentFilter);
         get_edit_ID = bundle_from_MA.getString("from_Login_User_id");
         get_edit_LoginName = bundle_from_MA.getString("from_Login_User_Username");
         edit_user_ID.setText(get_edit_ID);
@@ -416,7 +429,7 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-            toggleBright();
+                toggleBright();
             }
         });
     }
@@ -715,4 +728,29 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         });
         animateUtil.startAnimator();
     }
+
+    class NetworkStatusReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = null;
+            if (connectivityManager != null) {
+                networkInfo = connectivityManager.getActiveNetworkInfo();
+            }
+            if (networkInfo != null && networkInfo.isAvailable()) {
+                Toast.makeText(context, "网络连接正常", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "网络连接异常", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(networkStatusReceiver);
+    }
+
 }
