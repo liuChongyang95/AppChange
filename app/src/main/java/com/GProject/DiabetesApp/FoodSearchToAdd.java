@@ -94,10 +94,6 @@ public class FoodSearchToAdd extends AppCompatActivity implements View.OnClickLi
                         int pad = (int) motionEvent.getX();
                         if (pad > view.getWidth() - 100 && pad < view.getWidth() - 25 && !TextUtils.isEmpty(foodSearch.getText())) {
                             foodSearch.setText("");
-                            int cacheInputType = foodSearch.getInputType();
-                            foodSearch.setInputType(InputType.TYPE_NULL);
-                            foodSearch.onTouchEvent(motionEvent);
-                            foodSearch.setInputType(cacheInputType);
                             return true;
                         }
                         break;
@@ -140,11 +136,6 @@ public class FoodSearchToAdd extends AppCompatActivity implements View.OnClickLi
             public boolean onEditorAction(TextView textView, int actionId,
                                           KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    ((InputMethodManager) foodSearch.getContext().getSystemService
-                            (Context.INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(FoodSearchToAdd.this.getCurrentFocus
-                                            ().getWindowToken(),
-                                    InputMethodManager.HIDE_NOT_ALWAYS);
                     if (!foodSearch.getText().toString().equals("")) {
                         foodName = foodSearch.getText().toString().trim();
                         Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);

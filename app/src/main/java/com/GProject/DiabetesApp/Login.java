@@ -1,8 +1,10 @@
 package com.GProject.DiabetesApp;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -48,6 +50,7 @@ public class Login extends AppCompatActivity {
     private Boolean flag;
     private Button back2App;
     private Button cancelUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class Login extends AppCompatActivity {
         } else {
             getContentView();
         }
+
     }
 
     private void getLocationPermission() {
@@ -203,6 +207,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
+
     private void loginInApp() {
         Intent intent = new Intent();
         intent.setClass(Login.this, AllFunction.class);
@@ -218,6 +223,11 @@ public class Login extends AppCompatActivity {
         super.onResume();
         back2App = findViewById(R.id.backToApp);
         cancelUser = findViewById(R.id.cancelUser);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
 

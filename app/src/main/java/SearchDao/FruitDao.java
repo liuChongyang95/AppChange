@@ -40,12 +40,6 @@ public class FruitDao {
     private Staticfinal_Value sfv;
     private final static String TAG = "FruitDao";
 
-
-    public FruitDao(Context context) {
-        sfv = new Staticfinal_Value();
-        fruitDBHelper = new DBHelper(context, "DApp.db", null, sfv.staticVersion());
-    }
-
     //加载列表
     public List<Fruit> getFruitList() {
         List<Fruit> fruitList = new ArrayList<>();
@@ -58,8 +52,7 @@ public class FruitDao {
                 byte[] b = cursor.getBlob(cursor.getColumnIndexOrThrow(DBHelper.PicColumns.picture));
                 //将获取的数据转换成drawable
                 Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length, null);
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
-                Drawable drawable = bitmapDrawable;
+                Drawable drawable = new BitmapDrawable(bitmap);
                 fruitName = cursor.getString(cursor.getColumnIndex("Ri_Food_name"));
                 fruit = new Fruit(fruitName, drawable, null, null);
                 fruitList.add(fruit);

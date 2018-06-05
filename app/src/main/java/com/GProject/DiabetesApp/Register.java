@@ -82,12 +82,11 @@ public class Register extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 21) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.register_app);
 //        获取地理位置信息
@@ -352,13 +351,13 @@ public class Register extends AppCompatActivity {
         locationClient = new LocationClient(getApplicationContext());
         locationClient.registerLocationListener(myListener);
 //            实时刷新扫描时间
-            LocationClientOption option = new LocationClientOption();
-            option.setScanSpan(5000);
-            option.setIsNeedAddress(true);
+        LocationClientOption option = new LocationClientOption();
+        option.setScanSpan(5000);
+        option.setIsNeedAddress(true);
 //            强制GPS定位
-            option.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);
-            locationClient.setLocOption(option);
-            locationClient.start();
+        option.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);
+        locationClient.setLocOption(option);
+        locationClient.start();
     }
 
     public class MybdLocationListener implements BDLocationListener {
@@ -373,8 +372,13 @@ public class Register extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        locationClient.stop();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        locationClient.stop();
     }
 }
