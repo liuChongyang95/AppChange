@@ -21,6 +21,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -55,7 +57,6 @@ public class DietaryStatus extends AppCompatActivity {
     final int version = Build.VERSION.SDK_INT;
     private String userId;
     private String nowDay;
-    private FoodSelected foodSelected;
     private FoodRecordDao foodRecordDao;
     private String dataJson2JS;
     private static final String TAG = "DietaryStatus";
@@ -68,7 +69,7 @@ public class DietaryStatus extends AppCompatActivity {
     private IntentFilter intentFilter;
     private NetworkStatusReceiver networkStatusReceiver;
 
-    @SuppressLint("SetJavaScriptEnabled")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,43 +100,12 @@ public class DietaryStatus extends AppCompatActivity {
         if (bundleFromFAF != null) {
 //          用户id
             userId = bundleFromFAF.getString("from_Login_User_id");
+            nowDay =bundleFromFAF.getString("pick_Time");
         }
-//        调用存在的方法，获取当前日期。
-        foodSelected = new FoodSelected();
 //        当前日期
-        nowDay = foodSelected.initDate();
         foodRecordDao = new FoodRecordDao(DietaryStatus.this);
-        String dataJson = foodRecordDao.dayRecord(userId, nowDay);
-        Gson gson = new Gson();
-        List<Dietary> dietaryList = gson.fromJson(dataJson, new TypeToken<List<Dietary>>() {
-        }.getType());
-        FoodDao foodDao = new FoodDao(this);
-//        关于String和StringBuilder返回值的问题，会有资源开销
-        int dLength = dietaryList.size();
-        HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
-        int initItem = 1;
-        for (int a = 0; a < dLength; a++) {
-            Dietary dietaryA = dietaryList.get(a);
-            if (dietaryA.getFoodId() != null) {
-                foodName = foodDao.find_Name(dietaryA.getFoodId());
-                if (a == dLength - 1) {
-//                    foodName值被改变
-                    stringIntegerHashMap.put(foodName, initItem);
-                    initItem = 1;
-                } else {
-                    for (int b = a + 1; b < dLength; b++) {
-                        Dietary dietaryB = dietaryList.get(b);
-                        if (dietaryA.getFoodId().equals(dietaryB.getFoodId())) {
-                            initItem = initItem + 1;
-                            dietaryB.setFoodId(null);
-                        }
-                    }
-                    stringIntegerHashMap.put(foodName, initItem);
-                    initItem = 1;
-                }
-            }
-        }
-        dataJson2JS = gson.toJson(stringIntegerHashMap);
+//        查找每日记录,分类整合，并转化为JSON
+        dayRecordtrans2JSON(nowDay);
         webView = findViewById(R.id.dietrayDoughnut);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -149,6 +119,7 @@ public class DietaryStatus extends AppCompatActivity {
                 view.loadUrl("javascript: endEXE('" + dataJson2JS + "')");
             }
         });
+
     }
 
     @Override
@@ -276,6 +247,42 @@ public class DietaryStatus extends AppCompatActivity {
 
     }
 
+    //        查找每日记录,分类整合，并转化为JSON
+    private void dayRecordtrans2JSON(String date) {
+        String dataJson = foodRecordDao.dayRecord(userId, date);
+        Gson gson = new Gson();
+        List<Dietary> dietaryList = gson.fromJson(dataJson, new TypeToken<List<Dietary>>() {
+        }.getType());
+        FoodDao foodDao = new FoodDao(this);
+//        关于String和StringBuilder返回值的问题，会有资源开销
+        int dLength = dietaryList.size();
+        HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
+        int initItem = 1;
+        for (int a = 0; a < dLength; a++) {
+            Dietary dietaryA = dietaryList.get(a);
+            if (dietaryA.getFoodId() != null) {
+                foodName = foodDao.find_Name(dietaryA.getFoodId());
+                if (a == dLength - 1) {
+//                    foodName值被改变
+                    stringIntegerHashMap.put(foodName, initItem);
+                    initItem = 1;
+                } else {
+                    for (int b = a + 1; b < dLength; b++) {
+                        Dietary dietaryB = dietaryList.get(b);
+                        if (dietaryA.getFoodId().equals(dietaryB.getFoodId())) {
+                            initItem = initItem + 1;
+                            dietaryB.setFoodId(null);
+                        }
+                    }
+                    stringIntegerHashMap.put(foodName, initItem);
+                    initItem = 1;
+                }
+            }
+        }
+        dataJson2JS = gson.toJson(stringIntegerHashMap);
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -286,5 +293,7 @@ public class DietaryStatus extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(networkStatusReceiver);
+        webView.removeAllViews();
+        webView.destroy();
     }
 }

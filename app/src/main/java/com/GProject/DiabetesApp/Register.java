@@ -267,7 +267,7 @@ public class Register extends AppCompatActivity {
             case DATE_PICKER_ID:
                 // onDateSetListener为用户点击设置时执行的回调函数，数字是默认显示的日期，
                 // 注意月份设置11而实际显示12，会自动加1
-                return new DatePickerDialog(this, onDateSetListener, 2011, 11, 12);
+                return new DatePickerDialog(this, onDateSetListener, 2011, 3, 12);
         }
         return null;
     }
