@@ -39,3 +39,28 @@
     <!--// 		}-->
     <!--// 	}-->
     <!--// }-->
+    
+    12.营养和 手选日期能量和
+       private float[] getNutritions(String userId,List<String> dateList) {
+            UserIntakeDao userIntakeDao = new UserIntakeDao(this);
+            int len = 0;
+    //        加数
+            float[] nutritions;
+    //        被加数
+            float[] result = null;
+            for (int i = 0; i < dateList.size(); i++) {
+                if (i == 0) {
+    //                当天的数值
+                    result = userIntakeDao.fromUserIntake(userId, dateList.get(i));
+                    len = result.length;
+                } else {
+    //                昨天，前天数值
+                    nutritions = userIntakeDao.fromUserIntake(userId, dateList.get(i));
+                    for (int m = 0; m < len; m++) {
+                        result[m] = nutritions[m] + result[m];
+                    }
+                }
+    //            FoodReport.getNutritions()改版
+            }
+            return result;
+        }

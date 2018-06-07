@@ -44,19 +44,26 @@ import java.util.HashMap;
 import java.util.List;
 
 import JavaBean.Dietary;
+import JavaBean.PassValueUtil;
 import SearchDao.FoodDao;
 import SearchDao.FoodRecordDao;
+import SearchDao.UserIntakeDao;
 import Util.AnimateUtil;
 
 
 /*
+pick_Type 值有两种： Various Single
+
  * String StringBuilder StringBuffer用不好，需要练习*/
 
 public class DietaryStatus extends AppCompatActivity {
 
     final int version = Build.VERSION.SDK_INT;
     private String userId;
+    private String pickType;
     private String nowDay;
+    private String dateList_json=null;
+    private List<String> dateList;
     private FoodRecordDao foodRecordDao;
     private String dataJson2JS;
     private static final String TAG = "DietaryStatus";
@@ -68,6 +75,7 @@ public class DietaryStatus extends AppCompatActivity {
     private boolean bright = false;
     private IntentFilter intentFilter;
     private NetworkStatusReceiver networkStatusReceiver;
+    private Gson gson;
 
 
     @Override
@@ -95,17 +103,33 @@ public class DietaryStatus extends AppCompatActivity {
                 DietaryStatus.this.finish();
             }
         });
+        gson = new Gson();
+        //        当前日期
+        foodRecordDao = new FoodRecordDao(DietaryStatus.this);
         Intent intent = getIntent();
         Bundle bundleFromFAF = intent.getExtras();
         if (bundleFromFAF != null) {
 //          用户id
             userId = bundleFromFAF.getString("from_Login_User_id");
-            nowDay =bundleFromFAF.getString("pick_Time");
+            pickType = bundleFromFAF.getString("pick_Type");
+            if ("Single".equals(pickType)) {
+                nowDay = bundleFromFAF.getString("pick_Time");
+                //        查找每日记录,分类整合，并转化为JSON
+                dayRecordtrans2JSON(nowDay);
+            }
+            if ("Various".equals(pickType)){
+                PassValueUtil passValueUtil;
+                passValueUtil= (PassValueUtil) bundleFromFAF.getSerializable("dateList");
+                if (passValueUtil != null) {
+                    dateList=passValueUtil.getDatepickList();
+//                    日期组用于在标题显示
+                    dateList_json=gson.toJson(dateList);
+                    Log.d(TAG, dateList_json);
+                }
+                dateListRecordtrans2JSON(dateList);
+            }
         }
-//        当前日期
-        foodRecordDao = new FoodRecordDao(DietaryStatus.this);
-//        查找每日记录,分类整合，并转化为JSON
-        dayRecordtrans2JSON(nowDay);
+//        web设置
         webView = findViewById(R.id.dietrayDoughnut);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -116,10 +140,9 @@ public class DietaryStatus extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                view.loadUrl("javascript: endEXE('" + dataJson2JS + "')");
+                view.loadUrl("javascript: endEXE('" + dataJson2JS + "','"+dateList_json+"')");
             }
         });
-
     }
 
     @Override
@@ -148,12 +171,12 @@ public class DietaryStatus extends AppCompatActivity {
 //        ①包裹要发送的信息类型
         WXWebpageObject webpageObject = new WXWebpageObject();
         webpageObject.webpageUrl = "www.me11571467-1.icoc.me";
-//         包裹要发送的信息
+        //         包裹要发送的信息
         final WXMediaMessage wxMediaMessage = new WXMediaMessage();
         wxMediaMessage.mediaObject = webpageObject; //msg.mediaObject实际上是个IMediaObject对象, 比如WXTextObject对应发送的信息是文字,想要发送文字直接传入WXTextObject对象就行
         wxMediaMessage.description = "当日饮食情况(测试)";
         wxMediaMessage.title = "糖Dapp";
-//        ②创建缩略图
+        //        ②创建缩略图
         BitmapDrawable wxShare = (BitmapDrawable) getResources().getDrawable(R.drawable.wxshare);
         Bitmap wxSharebm = Bitmap.createScaledBitmap(wxShare.getBitmap(), 120, 120, true);
         wxMediaMessage.setThumbImage(wxSharebm);
@@ -250,7 +273,6 @@ public class DietaryStatus extends AppCompatActivity {
     //        查找每日记录,分类整合，并转化为JSON
     private void dayRecordtrans2JSON(String date) {
         String dataJson = foodRecordDao.dayRecord(userId, date);
-        Gson gson = new Gson();
         List<Dietary> dietaryList = gson.fromJson(dataJson, new TypeToken<List<Dietary>>() {
         }.getType());
         FoodDao foodDao = new FoodDao(this);
@@ -282,6 +304,40 @@ public class DietaryStatus extends AppCompatActivity {
         dataJson2JS = gson.toJson(stringIntegerHashMap);
     }
 
+//    整合日期组所有食物
+    private void dateListRecordtrans2JSON(List<String> dateList) {
+        String dataJson = foodRecordDao.dayListRecord(userId, dateList);
+        Gson gson = new Gson();
+        List<Dietary> dietaryList = gson.fromJson(dataJson, new TypeToken<List<Dietary>>() {
+        }.getType());
+        FoodDao foodDao = new FoodDao(this);
+//        关于String和StringBuilder返回值的问题，会有资源开销
+        int dLength = dietaryList.size();
+        HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
+        int initItem = 1;
+        for (int a = 0; a < dLength; a++) {
+            Dietary dietaryA = dietaryList.get(a);
+            if (dietaryA.getFoodId() != null) {
+                foodName = foodDao.find_Name(dietaryA.getFoodId());
+                if (a == dLength - 1) {
+//                    foodName值被改变
+                    stringIntegerHashMap.put(foodName, initItem);
+                    initItem = 1;
+                } else {
+                    for (int b = a + 1; b < dLength; b++) {
+                        Dietary dietaryB = dietaryList.get(b);
+                        if (dietaryA.getFoodId().equals(dietaryB.getFoodId())) {
+                            initItem = initItem + 1;
+                            dietaryB.setFoodId(null);
+                        }
+                    }
+                    stringIntegerHashMap.put(foodName, initItem);
+                    initItem = 1;
+                }
+            }
+        }
+        dataJson2JS = gson.toJson(stringIntegerHashMap);
+    }
 
     @Override
     protected void onResume() {

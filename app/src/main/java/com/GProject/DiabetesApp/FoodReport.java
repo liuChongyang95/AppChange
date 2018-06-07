@@ -83,7 +83,7 @@ public class FoodReport extends AppCompatActivity {
 
     }
 
-    public float[] getNutritions(int decrease) {
+    private float[] getNutritions(int decrease) {
         UserIntakeDao userIntakeDao = new UserIntakeDao(this);
         FoodSelected foodSelected = new FoodSelected();
         int len = 0;
