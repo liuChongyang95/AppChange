@@ -411,7 +411,6 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
 //        popwindow
         View contentView = LayoutInflater.from(this).inflate(R.layout.photo_popwindow, null);
         popupWindow = new PopupWindow(contentView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setContentView(contentView);
         popupWindow.setAnimationStyle(R.style.MyPopupWindow_anim_style);
         TextView gallery = contentView.findViewById(R.id.chooseGallery);
         TextView camera = contentView.findViewById(R.id.chooseCamera);

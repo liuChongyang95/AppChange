@@ -1,0 +1,66 @@
+1.数字算的不准确，更改之后数据库中，每日能量求和有误差，在0.5%左右。
+2.除了“克”的单位计算是准确的，其他个(大)等等计算都有0.5%左右的偏差，能量偏差，微量元素可能不明显，可忽略。
+3.更改图标bug，程序无法使用
+4.dimens是关于navigationView的设定
+5.运行时异常runtimeException nullPointerException 可以处理可以不处理
+  IOException、FileNotFoundExcetion 和SQLException 非运行时异常必须处理
+6.实体类必须继承datasupport类 province-city-county httpUtil && Utility
+7.guolin百度地图 权限提前获取，否则初次使用Stringbuilder为null
+8.在Google IO 相关话题的中提到了一个建议，就是依赖首先应该设置为implementation的，如果没有错，那就用implementation，如果有错，那么使用api指令。使用implementation会使编译速度有所增快。
+9.sendReq是第三方app主动发送消息给微信，发送完成之后会切回到第三方app界面。sendResp是微信向第三方app请求数据，第三方app回应数据之后会切回到微信界面。
+10.drawable 2 bitmapdrawable 2 bitmap 2 byte[] user bitmap.compress
+                                      os=ByteArrayOutputStream
+                                      bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+11.web分析
+ <!--// var j={"伏苹果":3,"苹果":1,"旱苹果":1,"国光苹果":1};-->
+    <!--// for(var key in j){-->
+    <!--// 	labelName.push(key);-->
+    <!--// 	initArr.push(j[key]);-->
+    <!--// }-->
+
+    <!--// var dataArr = [{"foodId": "10101"}, {"foodId": "10102"}, {"foodId": "10103"}, {"foodId": "10104"}, {"foodId": "10104"}];-->
+    <!--// function trans(value) {-->
+    <!--// 	var initItem = 1;-->
+    <!--// 	for (var a = 0; a < dataArr.length; a++) {-->
+    <!--// 		if (a === dataArr.length - 1&&value[a].foodId!==null) {-->
+    <!--// 			initArr.push(initItem);-->
+    <!--// 			initItem = 1;-->
+    <!--// 		} else {-->
+    <!--// 			if (value[a].foodId !== null) {-->
+    <!--// 				for (var b = a + 1; b < dataArr.length; b++) {-->
+    <!--// 					if (dataArr[a].foodId === dataArr[b].foodId) {-->
+    <!--// 						initItem = initItem + 1;-->
+    <!--// 						value[b].foodId = null;-->
+    <!--// 					}-->
+    <!--// 				}-->
+    <!--// 				initArr.push(initItem);-->
+    <!--// 				initItem = 1;-->
+    <!--// 			}-->
+    <!--// 		}-->
+    <!--// 	}-->
+    <!--// }-->
+    
+    12.营养和 手选日期能量和
+       private float[] getNutritions(String userId,List<String> dateList) {
+            UserIntakeDao userIntakeDao = new UserIntakeDao(this);
+            int len = 0;
+    //        加数
+            float[] nutritions;
+    //        被加数
+            float[] result = null;
+            for (int i = 0; i < dateList.size(); i++) {
+                if (i == 0) {
+    //                当天的数值
+                    result = userIntakeDao.fromUserIntake(userId, dateList.get(i));
+                    len = result.length;
+                } else {
+    //                昨天，前天数值
+                    nutritions = userIntakeDao.fromUserIntake(userId, dateList.get(i));
+                    for (int m = 0; m < len; m++) {
+                        result[m] = nutritions[m] + result[m];
+                    }
+                }
+    //            FoodReport.getNutritions()改版
+            }
+            return result;
+        }

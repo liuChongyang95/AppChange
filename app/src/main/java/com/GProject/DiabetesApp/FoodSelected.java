@@ -181,6 +181,8 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     case R.id.nav_Dietary:
                         drawerLayoutFS.closeDrawer(GravityCompat.START);
                         Intent intent2 = new Intent(FoodSelected.this, DietaryStatus.class);
+                        bundle_from_FMA.putString("pick_Time",initDate());
+                        bundle_from_FMA.putString("pick_Type","Single");
                         intent2.putExtras( bundle_from_FMA );
                         startActivity(intent2);
                         break;
