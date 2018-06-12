@@ -148,320 +148,6 @@ public class FoodDao {
         return info;
     }
 
-    public String find_water(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_water from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_water"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_water"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_CLS(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_CLS from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_CLS"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_CLS"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_vA(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_vA from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_vA"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_vA"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_vB1(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_vB1 from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_vB1"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_vB1"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_vB2(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_vB2 from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_vB2"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_vB2"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_vB3(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_vB3 from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_vB3"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_vB3"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_vC(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_vC from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_vC"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_vC"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_vE(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_vE from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_vE"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_vE"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_Fe(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_Fe from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_Fe"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_Fe"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_Ga(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_Ga from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_Ga"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_Ga"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_Na(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_Na from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_Na"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_Na"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_P(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_P from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_P"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_P"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_K(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_K from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_K"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_K"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_Zn(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_Zn from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_Zn"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_Zn"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
-
-    public String find_Mg(String foodName) {
-        SQLiteDatabase foodDB = dbUtil.openDatabase();
-        String sql = "select Food_dic_Mg from Food_Dic where Food_dic_name = ?";
-        try {
-            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
-            if (c != null && c.getCount() != 0) {
-                while (c.moveToNext()) {
-                    info = c.getString(c.getColumnIndex("Food_dic_Mg"));
-                    if (info != null && !info.equals("…") && !info.equals("Tr") && info.length() > 0 && !info.equals("—") && !info.equals("┄") && !info.equals("─"))
-                        info = c.getString(c.getColumnIndex("Food_dic_Mg"));
-                    else info = "—";
-                }
-                c.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        foodDB.close();
-        return info;
-    }
 
     public String find_GI(String foodName) {
         SQLiteDatabase foodDB = dbUtil.openDatabase();
@@ -578,6 +264,10 @@ public class FoodDao {
                 while (c.moveToNext()) {
                     for (int i = 0; i <= 20; i++) {
                         Nutri_info[i] = c.getString(c.getColumnIndex(nutri[i]));
+                        if (!(Nutri_info[i] != null && !Nutri_info[i].equals("…") && !Nutri_info[i].equals("Tr") && Nutri_info[i].length() > 0 &&
+                                !Nutri_info[i].equals("—") && !Nutri_info[i].equals("┄") && !Nutri_info[i].equals("─"))) {
+                            Nutri_info[i] = "—";
+                        }
                     }
                 }
                 c.close();
@@ -589,5 +279,29 @@ public class FoodDao {
         return Nutri_info;
     }
 
+    public String[] findNutritionByName(String foodName) {
+        SQLiteDatabase foodDB = dbUtil.openDatabase();
+        String[] Nutri_info = new String[21];
+        String sql = "select * from Food_Dic where Food_dic_name=?";
+        try {
+            Cursor c = foodDB.rawQuery(sql, new String[]{foodName});
+            if (c != null && c.getCount() != 0) {
+                while (c.moveToNext()) {
+                    for (int i = 0; i < 21; i++) {
+                        Nutri_info[i] = c.getString(c.getColumnIndex(nutri[i]));
+                        if (!(Nutri_info[i] != null && !Nutri_info[i].equals("…") && !Nutri_info[i].equals("Tr") && Nutri_info[i].length() > 0 &&
+                                !Nutri_info[i].equals("—") && !Nutri_info[i].equals("┄") && !Nutri_info[i].equals("─"))) {
+                            Nutri_info[i] = "—";
+                        }
+                    }
+                }
+                c.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        foodDB.close();
+        return Nutri_info;
+    }
 
 }

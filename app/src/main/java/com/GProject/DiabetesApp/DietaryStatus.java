@@ -106,6 +106,16 @@ public class DietaryStatus extends AppCompatActivity {
         gson = new Gson();
         //        当前日期
         foodRecordDao = new FoodRecordDao(DietaryStatus.this);
+
+        //        web设置
+        webView = findViewById(R.id.dietrayDoughnut);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.getBuiltInZoomControls();
+        webSettings.setDefaultTextEncodingName("UTF-8");
+        webView.loadUrl("file:///android_asset/web/Doughnut.html");
+
         Intent intent = getIntent();
         Bundle bundleFromFAF = intent.getExtras();
         if (bundleFromFAF != null) {
@@ -115,7 +125,14 @@ public class DietaryStatus extends AppCompatActivity {
             if ("Single".equals(pickType)) {
                 nowDay = bundleFromFAF.getString("pick_Time");
                 //        查找每日记录,分类整合，并转化为JSON
+                dateList_json=gson.toJson(nowDay);
                 dayRecordtrans2JSON(nowDay);
+                webView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        view.loadUrl("javascript: endEXE('" + dataJson2JS + "','"+dateList_json+"')");
+                    }
+                });
             }
             if ("Various".equals(pickType)){
                 PassValueUtil passValueUtil;
@@ -127,22 +144,14 @@ public class DietaryStatus extends AppCompatActivity {
                     Log.d(TAG, dateList_json);
                 }
                 dateListRecordtrans2JSON(dateList);
+                webView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        view.loadUrl("javascript: endEXE('" + dataJson2JS + "','"+dateList_json+"')");
+                    }
+                });
             }
         }
-//        web设置
-        webView = findViewById(R.id.dietrayDoughnut);
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setUseWideViewPort(true);
-        webSettings.getBuiltInZoomControls();
-        webSettings.setDefaultTextEncodingName("UTF-8");
-        webView.loadUrl("file:///android_asset/web/Doughnut.html");
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                view.loadUrl("javascript: endEXE('" + dataJson2JS + "','"+dateList_json+"')");
-            }
-        });
     }
 
     @Override

@@ -9,4 +9,10 @@
     <string name="delete">删除记录</string>
     <string name="navigation_drawer_open">弹出</string>
     <string name="navigation_drawer_close">关闭</string>
+    <string name="nutrition_energy">%1$s千卡</string>
+    <string name="nutrition_protein">%1$s克</string>
+    <string name="nutrition_fat">%1$s克</string>
+    <string name="nutrition_CH">%1$s克</string>
+    <string name="nutrition_DF">%1$s克</string>
+    <string name="Nutrition_all_Title">%1$s营养信息</string>
 </resources>

@@ -89,21 +89,22 @@
     function endEXE(val,title) {
     <!--标题-->
        var titleObj=JSON.parse(title);
-         if(title===null){
-            config.options.title.text="当天饮食构成";
-        }else {
+
             var dateTitle=titleObj[0];
+            if(titleObj.length===1){
+            dateTitle+="饮食结构";
+            }
             for (var i=1;i<titleObj.length;i++){
                 if (i===titleObj.length-1){
-                    dateTitle+=" 、 "+titleObj[i]+"总饮食结构"
+                    dateTitle+="  "+titleObj[i]+"总饮食结构"
                 }else if(i===10){
-                   dateTitle+=" 、 "+titleObj[i]+"\n";
+                   dateTitle+="  "+titleObj[i]+"\n";
                 }else {
-                    dateTitle+=" 、 "+titleObj[i];
+                    dateTitle+="  "+titleObj[i];
                 }
             }
             config.options.title.text=dateTitle;
-        }
+
     <!--环状图-->
       function transjson(valueJS) {
       var obj=JSON.parse(valueJS);

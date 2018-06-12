@@ -445,29 +445,8 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
     public void deleteRecord(String fruitName, String userId, String UIclass, String UIdate) {
         FoodDao foodDao = new FoodDao(this);
         ContentValues values2 = new ContentValues();
-        String[] nutArray = new String[23];
         //字典表里的营养值
-        nutArray[0] = foodDao.find_energy(fruitName);
-        nutArray[1] = foodDao.find_protein(fruitName);
-        nutArray[2] = foodDao.find_fat(fruitName);
-        nutArray[3] = foodDao.find_DF(fruitName);
-        nutArray[4] = foodDao.find_CH(fruitName);
-        nutArray[5] = foodDao.find_water(fruitName);
-        nutArray[6] = foodDao.find_vA(fruitName);
-        nutArray[7] = foodDao.find_vB1(fruitName);
-        nutArray[8] = foodDao.find_vB2(fruitName);
-        nutArray[9] = foodDao.find_vB3(fruitName);
-        nutArray[10] = foodDao.find_vE(fruitName);
-        nutArray[11] = foodDao.find_vC(fruitName);
-        nutArray[12] = foodDao.find_Fe(fruitName);
-        nutArray[13] = foodDao.find_Ga(fruitName);
-        nutArray[14] = foodDao.find_Na(fruitName);
-        nutArray[15] = foodDao.find_CLS(fruitName);
-        nutArray[16] = foodDao.find_K(fruitName);
-        nutArray[17] = foodDao.find_Mg(fruitName);
-        nutArray[18] = foodDao.find_Zn(fruitName);
-        nutArray[19] = foodDao.find_P(fruitName);
-        nutArray[20] = foodDao.find_purine(fruitName);
+        String[]  nutArray=foodDao.findNutritionByName(fruitName);
         //营养表里的营养值
         String[] intakeNutri = userIntakeDao.getFromUserIntake(userId, UIclass, UIdate);
 //        删除计算的百分比，用于与单位能量做乘法 静态
@@ -480,7 +459,7 @@ public class FoodRecordItem extends AppCompatActivity implements View.OnClickLis
                 "UI_Zn", "UI_P", "UI_purine"};
         //要减去的所有营养
         for (int i = 0; i < 21; i++) {
-            if (nutArray[i] != null && !nutArray[i].equals("…") && !nutArray[i].equals("Tr") && nutArray[i].length() > 0 && !nutArray[i].equals("—") && !nutArray[i].equals("┄") && !nutArray[i].equals("─")) {
+            if (!nutArray[i].equals("—")) {
 //                计算要每项要删除的营养信息
                 nutArray[i] = numberFormat.format(Float.valueOf(nutArray[i]) * f_percent).replace(",", "");
 //                删除结果

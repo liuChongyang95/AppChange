@@ -145,11 +145,16 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         networkStatusReceiver = new NetworkStatusReceiver();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(networkStatusReceiver, intentFilter);
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(networkStatusReceiver, intentFilter);
         get_edit_ID = bundle_from_MA.getString("from_Login_User_id");
         get_edit_LoginName = bundle_from_MA.getString("from_Login_User_Username");
         edit_user_ID.setText(get_edit_ID);
@@ -169,6 +174,8 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
         int a = getAge(edit_birth_str_date);
         edit_user_age.setText(String.valueOf(a));
     }
+
+
 
     @Override
     public void onClick(View view) {
@@ -749,7 +756,11 @@ public class AllUserInfo extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(networkStatusReceiver);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(networkStatusReceiver);
+    }
 }
