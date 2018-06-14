@@ -301,7 +301,9 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     UF.put("intake_1", rec_size);
                     UF.put("Food_unit", unitSign);
                     db.insert("UserFood", null, UF);
+
                     calculateNutri();
+
                     UF.clear();
                     db.close();
 //                    单位全局清零

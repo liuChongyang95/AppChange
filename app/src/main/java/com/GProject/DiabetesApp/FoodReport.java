@@ -2,6 +2,7 @@ package com.GProject.DiabetesApp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,11 +18,13 @@ import android.webkit.WebViewClient;
 
 import com.google.gson.Gson;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import SearchDao.CareerDao;
 import SearchDao.UserDao;
 import SearchDao.UserIntakeDao;
 
@@ -33,7 +36,13 @@ public class FoodReport extends AppCompatActivity {
     private String today;
     private SimpleDateFormat simpleDateFormat;
     private WebView webView;
+    private CareerDao careerDao;
+    private UserIntakeDao userIntakeDao;
+    private FoodSelected foodSelected;
     private final static String TAG = "FoodReport";
+    private String[] nutritionName = {"能量", "蛋白质", "脂肪", "膳食纤维", "碳水化物", "水分", "维生素A",
+            "维生素B1", "维生素B2", "维生素B3", "维生素E", "维生素C", "铁", "钙", "钠", "胆固醇", "钾",
+            "镁", "锌", "磷", "嘌呤"};
 
     @SuppressLint({"SimpleDateFormat", "SetJavaScriptEnabled"})
     @JavascriptInterface
@@ -49,6 +58,9 @@ public class FoodReport extends AppCompatActivity {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.food_report);
+        userIntakeDao = new UserIntakeDao(this);
+        foodSelected = new FoodSelected();
+        careerDao = new CareerDao(this);
         userDao = new UserDao(this);
         Toolbar toolbar = findViewById(R.id.reportToolbar);
         setSupportActionBar(toolbar);
@@ -77,9 +89,10 @@ public class FoodReport extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 webView.loadUrl("javascript:getUserInfo('" + transUserInfo() + "')");
                 webView.loadUrl("javascript:showNutrition('" + transNutritionReport() + "')");
+                webView.loadUrl("javascript:showAdvice('" + tempJudge(getNutritions(7)) + "')");
             }
         });
-        Log.d(TAG, transNutritionReport());
+//        Log.d(TAG, transNutritionReport());
 
     }
 
@@ -103,6 +116,9 @@ public class FoodReport extends AppCompatActivity {
                 for (int m = 0; m < len; m++) {
                     result[m] = nutritions[m] + result[m];
 //                    Log.d("result", String.valueOf(result[m]));
+                    BigDecimal bigDecimal = new BigDecimal(result[m]);
+                    float halfUpvalue = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+                    result[m] = halfUpvalue;
                 }
             }
 //            Log.d("date", today);
@@ -110,6 +126,51 @@ public class FoodReport extends AppCompatActivity {
             today = decreaseTime(today);
         }
         return result;
+    }
+
+    //    临时判断
+    private String tempJudge(float[] nutritions) {
+        String advices[] = new String[2];
+        float userWeight = Float.parseFloat(userDao.getWeight(userId));
+        String career = userDao.getCareer(userId);
+        String intensity = userDao.getIntensity(career);
+        String shape = userDao.getShape(userId);
+        int min_energy = careerDao.getMin_energy(shape, intensity, career);
+        int max_energy = careerDao.getMax_energy(shape, intensity, career);
+        float VS_min_energy = min_energy * (int) userWeight;
+        float VS_max_energy = max_energy * (int) userWeight;
+        String cumEnergy = userIntakeDao.getTodayenergy(userId, foodSelected.initDate()).replace(",", "");
+        VS_min_energy = VS_min_energy - Float.valueOf(cumEnergy);
+        VS_max_energy = VS_max_energy - Float.valueOf(cumEnergy);
+        if (nutritions[0] <= VS_max_energy && nutritions[0] >= VS_min_energy) {
+            advices[0] = "饮食能量摄入状态正常,正常值为 " + VS_min_energy + "千卡 —— " + VS_max_energy + "千卡 之间";
+        } else if (nutritions[0] < VS_min_energy) {
+            advices[0] = "饮食能量摄入量低于正常值,最低值应为" + VS_min_energy + " 千卡";
+        } else if (nutritions[0] > VS_max_energy) {
+            advices[0] = "饮食能量摄入量高于正常值，最高值应为" + VS_max_energy + " 千卡";
+        }
+
+        float VS_max_protein = VS_max_energy * 0.1f;
+        float VS_min_protein = VS_min_energy * 0.1f;
+        if (VS_max_protein > 65) {
+            VS_max_protein = 65;
+        }
+        if (VS_min_protein < 55) {
+            VS_min_protein = 55;
+        }
+        if (nutritions[1] <= VS_max_protein && nutritions[1] >= VS_min_protein) {
+            advices[1] = "蛋白质摄入量正常，正常值为 " + VS_min_protein + "克 —— " + VS_max_protein + "克 之间";
+        } else if (nutritions[1] < VS_min_protein) {
+            advices[1] = "蛋白质摄入量低于正常值，最低值应为" + VS_min_protein + " 克";
+        } else if (nutritions[1] > VS_max_protein) {
+            advices[1] = "蛋白质摄入量高于正常值，最高值应为" + VS_max_protein + "克";
+        }
+        Gson gson = new Gson();
+        HashMap<String, String> adviceMap = new HashMap<>();
+        for (int a = 0; a < advices.length; a++) {
+            adviceMap.put(nutritionName[a], advices[a]);
+        }
+        return gson.toJson(adviceMap);
     }
 
     //    日期减天数
@@ -143,9 +204,6 @@ public class FoodReport extends AppCompatActivity {
     private String transNutritionReport() {
         Gson gson = new Gson();
         HashMap<String, Float> nutritionMap = new HashMap<>();
-        String[] nutritionName = {"能量", "蛋白质", "脂肪", "膳食纤维", "碳水化物", "水分", "维生素A",
-                "维生素B1", "维生素B2", "维生素B3", "维生素E", "维生素C", "铁", "钙", "钠", "胆固醇", "钾",
-                "镁", "锌", "磷", "嘌呤"};
         for (int i = 0; i < nutritionName.length; i++) {
             nutritionMap.put(nutritionName[i], getNutritions(7)[i]);
         }

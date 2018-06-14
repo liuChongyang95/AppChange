@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 
 import Database.DBHelper;
@@ -60,6 +61,7 @@ public class UserIntakeDao {
     //    用于饮食报告
     public float[] fromUserIntake(String userId, String UIdate) {
         float[] UIenergy = new float[21];
+        BigDecimal bigDecimal;
         SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
         String sql = "select UI_date as date ,SUM(UI_energy) as energy,SUM(UI_protein) as protein ,SUM(UI_fat) as fat,SUM(UI_DF) as DF,SUM(UI_CH) as CH ," +
                 "SUM(UI_water) as water,SUM(UI_VA) as VA,SUM(UI_VB1) as VB1,SUM(UI_VB2) as VB2,SUM(UI_VB3) as VB3,SUM(UI_VE) as VE,SUM(UI_VC) as VC," +
@@ -91,6 +93,13 @@ public class UserIntakeDao {
                 UIenergy[20] = cursor.getFloat(cursor.getColumnIndex("purine"));//嘌呤
             }
             cursor.close();
+//            四舍五入
+//            for (int i=0;i<UIenergy.length;i++){
+//                bigDecimal=new BigDecimal(UIenergy[i]);
+//                float halfUp=bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
+//                UIenergy[i]=halfUp;
+//                Log.d("half", String.valueOf(UIenergy[i]));
+//            }
         } else {
             //                检查值，赋值为0
             for (int i = 0; i < UIenergy.length; i++) {
