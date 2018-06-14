@@ -100,11 +100,9 @@
             border: 1px solid #ddd;
         }
     </style>
-    <script src="jquery-3.3.1.min.js">
-    </script>
 </head>
 <body>
-<div id="theme">近七天饮食报告</div>
+<div id="theme">今天饮食报告</div>
 <table>
     <tr>
         <td class="tital">
@@ -147,7 +145,7 @@
             }
             if (key === "UserNickName") {
                 var usernickname = document.getElementById("userNickname");
-                usernickname.innerText = "用户昵称" + val[key]
+                usernickname.innerText = "用户昵称： " + val[key]
             }
         }
     }

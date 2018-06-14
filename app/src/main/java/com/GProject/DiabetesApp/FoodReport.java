@@ -89,7 +89,7 @@ public class FoodReport extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 webView.loadUrl("javascript:getUserInfo('" + transUserInfo() + "')");
                 webView.loadUrl("javascript:showNutrition('" + transNutritionReport() + "')");
-                webView.loadUrl("javascript:showAdvice('" + tempJudge(getNutritions(7)) + "')");
+                webView.loadUrl("javascript:showAdvice('" + tempJudge(getNutritions(1)) + "')");
             }
         });
 //        Log.d(TAG, transNutritionReport());
@@ -143,27 +143,39 @@ public class FoodReport extends AppCompatActivity {
         VS_min_energy = VS_min_energy - Float.valueOf(cumEnergy);
         VS_max_energy = VS_max_energy - Float.valueOf(cumEnergy);
         if (nutritions[0] <= VS_max_energy && nutritions[0] >= VS_min_energy) {
-            advices[0] = "饮食能量摄入状态正常,正常值为 " + VS_min_energy + "千卡 —— " + VS_max_energy + "千卡 之间";
+            advices[0] = "饮食能量为"+nutritions[0]+"千卡，状态正常。" +
+                    "正常值为 " + VS_min_energy + "千卡 —— " + VS_max_energy + "千卡 之间";
         } else if (nutritions[0] < VS_min_energy) {
-            advices[0] = "饮食能量摄入量低于正常值,最低值应为" + VS_min_energy + " 千卡";
+            advices[0] = "饮食能量为"+nutritions[0]+"千卡，摄入量低于正常值。" +
+                    "最低值应为" + VS_min_energy + " 千卡";
         } else if (nutritions[0] > VS_max_energy) {
-            advices[0] = "饮食能量摄入量高于正常值，最高值应为" + VS_max_energy + " 千卡";
+            advices[0] = "饮食能量为"+nutritions[0]+"千卡，摄入量高于正常值。" +
+                    "最高值应为" + VS_max_energy + " 千卡";
         }
 
         float VS_max_protein = VS_max_energy * 0.1f;
         float VS_min_protein = VS_min_energy * 0.1f;
-        if (VS_max_protein > 65) {
-            VS_max_protein = 65;
-        }
-        if (VS_min_protein < 55) {
+        if (VS_max_protein > 65 || VS_min_protein > 65) {
+            VS_min_protein = 65;
+            VS_max_protein = VS_min_protein;
+        } else if (VS_min_protein < 55 || VS_max_protein < 55) {
             VS_min_protein = 55;
+            VS_max_protein = VS_min_protein;
         }
         if (nutritions[1] <= VS_max_protein && nutritions[1] >= VS_min_protein) {
-            advices[1] = "蛋白质摄入量正常，正常值为 " + VS_min_protein + "克 —— " + VS_max_protein + "克 之间";
+            advices[1] = "蛋白质" +
+                    "摄入量为"+nutritions[1]+"克，状态正常。" +
+                    "正常值为 " + VS_min_protein + "克 —— " + VS_max_protein + "克 之间";
         } else if (nutritions[1] < VS_min_protein) {
-            advices[1] = "蛋白质摄入量低于正常值，最低值应为" + VS_min_protein + " 克";
+            advices[1] = "蛋白质" +
+                    "摄入量为"+nutritions[1]+"克,低于正常值。" +
+                    "最低值应为" + VS_min_protein + " 克," +
+                    "肉类、鱼类和豆类可以有效补充蛋白质，建议食用以补充蛋白。长期缺乏蛋白质有可能导致消化不良，易腹泻，水肿，贫血等多种状态发生。";
         } else if (nutritions[1] > VS_max_protein) {
-            advices[1] = "蛋白质摄入量高于正常值，最高值应为" + VS_max_protein + "克";
+            advices[1] = "蛋白质" +
+                    "摄入量位"+nutritions[1]+"克，高于正常值。" +
+                    "最高值应为" + VS_max_protein + "克，" +
+                    "蛋白质摄入过量，且运动量不足有可能会长胖，还会增加身体器官如肾脏的负担和患心血管疾病的风险，促进钙流失而造成骨质疏松。";
         }
         Gson gson = new Gson();
         HashMap<String, String> adviceMap = new HashMap<>();
@@ -205,7 +217,7 @@ public class FoodReport extends AppCompatActivity {
         Gson gson = new Gson();
         HashMap<String, Float> nutritionMap = new HashMap<>();
         for (int i = 0; i < nutritionName.length; i++) {
-            nutritionMap.put(nutritionName[i], getNutritions(7)[i]);
+            nutritionMap.put(nutritionName[i], getNutritions(1)[i]);
         }
         return gson.toJson(nutritionMap);
     }
