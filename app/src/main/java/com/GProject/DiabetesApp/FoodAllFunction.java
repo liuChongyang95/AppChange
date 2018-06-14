@@ -191,10 +191,9 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onDateSelected(List<String> date) {
                         result = new ArrayList<>();
-                        Iterator iterator = date.iterator();
-                        while (iterator.hasNext()) {
+                        for (Object aDate : date) {
                             try {
-                                result.add(simpleDateFormat.format(simpleDateFormat.parse(iterator.next().toString())));
+                                result.add(simpleDateFormat.format(simpleDateFormat.parse(aDate.toString())));
 //                              Bundle不能携带大量数据，考虑可能替换不用bundle携带日期数据
                             } catch (ParseException e) {
                                 Log.i("FAF.class", "选择日期模块，功能出现问题");

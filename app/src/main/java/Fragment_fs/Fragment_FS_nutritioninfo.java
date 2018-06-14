@@ -44,12 +44,45 @@ public class Fragment_FS_nutritioninfo extends Fragment {
         TextView fat_ps = view.findViewById(R.id.food_dic_fat_ps);
         LinearLayout more_info_ll = view.findViewById(R.id.more_nutrition);
 
-        energy_index.setText(energy);
-        protein_index.setText(protein);
-        CH_index.setText(CH);
-        DF_index.setText(DF);
-        fat_index.setText(fat);
 
+        energy_index.setText(String.format(getResources().getString(R.string.nutrition_energy), energy));
+        protein_index.setText(String.format(getResources().getString(R.string.nutrition_protein), protein));
+        CH_index.setText(String.format(getResources().getString(R.string.nutrition_CH), CH));
+        DF_index.setText(String.format(getResources().getString(R.string.nutrition_DF), DF));
+        fat_index.setText(String.format(getResources().getString(R.string.nutrition_fat), fat));
+
+        if (!energy.equals("—")) {
+            if (Float.valueOf(energy) <= 500) {
+                energy_ps.setText("低热量");
+            }
+            if (Float.valueOf(energy) >= 2000) {
+                energy_ps.setText("高热量");
+            }
+        }
+
+        if (!protein.equals("—")) {
+            if (Float.valueOf(protein) >= 10) {
+                protein_ps.setText("高蛋白");
+            }
+            if (Float.valueOf(protein) <= 1) {
+                protein_ps.setText("低蛋白");
+            }
+        }
+
+        if (!fat.equals("—")) {
+            if (Float.valueOf(fat) <= 3) {
+                fat_ps.setText("低脂肪");
+            }
+            if (Float.valueOf(fat) >= 20) {
+                fat_ps.setText("高脂肪");
+            }
+        }
+
+        if (!DF.equals("—")) {
+            if (Float.valueOf(DF) >= 6) {
+                DF_ps.setText("高纤维");
+            }
+        }
         more_info_ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

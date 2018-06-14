@@ -14,6 +14,7 @@ import SearchDao.FoodDao;
 
 public class Nutrition_all extends AppCompatActivity {
 
+    private String foodId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,81 +40,70 @@ public class Nutrition_all extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         String foodName = bundle.getString("all_nutrition_name");
         FoodDao foodDao = new FoodDao(this);
-
+//        多用循环,省事
+        TextView[] textViews = new TextView[21];
         TextView scrollViewEnergy = findViewById(R.id.scrollView_energy);
-        TextView scrollViewCH = findViewById(R.id.scrollView_CH);
-        TextView scrollViewDF = findViewById(R.id.scrollView_DF);
-        TextView scrollViewFat = findViewById(R.id.scrollView_fat);
+        textViews[0] = scrollViewEnergy;
         TextView scrollViewProtein = findViewById(R.id.scrollView_protein);
+        textViews[1] = scrollViewProtein;
+        TextView scrollViewFat = findViewById(R.id.scrollView_fat);
+        textViews[2] = scrollViewFat;
+        TextView scrollViewDF = findViewById(R.id.scrollView_DF);
+        textViews[3] = scrollViewDF;
+        TextView scrollViewCH = findViewById(R.id.scrollView_CH);
+        textViews[4] = scrollViewCH;
         TextView scrollViewWater = findViewById(R.id.scrollView_water);
-        TextView scrollViewCLS = findViewById(R.id.scrollView_CLS);
+        textViews[5] = scrollViewWater;
         TextView scrollViewVA = findViewById(R.id.scrollView_vA);
+        textViews[6] = scrollViewVA;
         TextView scrollViewVB1 = findViewById(R.id.scrollView_vB1);
+        textViews[7] = scrollViewVB1;
         TextView scrollViewVB2 = findViewById(R.id.scrollView_vB2);
+        textViews[8] = scrollViewVB2;
         TextView scrollViewVB3 = findViewById(R.id.scrollView_vB3);
-        TextView scrollViewVC = findViewById(R.id.scrollView_vC);
+        textViews[9] = scrollViewVB3;
         TextView scrollViewVE = findViewById(R.id.scrollView_vE);
+        textViews[10] = scrollViewVE;
+        TextView scrollViewVC = findViewById(R.id.scrollView_vC);
+        textViews[11] = scrollViewVC;
         TextView scrollViewFe = findViewById(R.id.scrollView_Fe);
+        textViews[12] = scrollViewFe;
         TextView scrollViewGa = findViewById(R.id.scrollView_Ga);
-        TextView scrollViewMg = findViewById(R.id.scrollView_Mg);
-        TextView scrollViewK = findViewById(R.id.scrollView_K);
-        TextView scrollViewP = findViewById(R.id.scrollView_P);
-        TextView scrollViewZn = findViewById(R.id.scrollView_Zn);
+        textViews[13] = scrollViewGa;
         TextView scrollViewNa = findViewById(R.id.scrollView_Na);
-        TextView toolbarText = findViewById(R.id.search_text_FAN);
+        textViews[14] = scrollViewNa;
+        TextView scrollViewCLS = findViewById(R.id.scrollView_CLS);
+        textViews[15] = scrollViewCLS;
+        TextView scrollViewK = findViewById(R.id.scrollView_K);
+        textViews[16] = scrollViewK;
+        TextView scrollViewMg = findViewById(R.id.scrollView_Mg);
+        textViews[17] = scrollViewMg;
+        TextView scrollViewZn = findViewById(R.id.scrollView_Zn);
+        textViews[18] = scrollViewZn;
+        TextView scrollViewP = findViewById(R.id.scrollView_P);
+        textViews[19] = scrollViewP;
         TextView scrollViewpurine = findViewById(R.id.scrollView_purine);
+        textViews[20] = scrollViewpurine;
+
+        String[] nutritions = foodDao.findNutritionByName(foodName);
+        String[] units={"千卡","克","克","克","克","克","μgRE","毫克","毫克","毫克","毫克","毫克","毫克","毫克","毫克","毫克","毫克","毫克","毫克","毫克","毫克"};
+
+        TextView toolbarText = findViewById(R.id.search_text_FAN);
+        toolbarText.setText(getResources().getString(R.string.Nutrition_all_Title, foodName));
+
         TextView scrollViewpur_ps = findViewById(R.id.scrollView_purine_ps);
 
-        toolbarText.setText(foodName + "营养信息");
+        for (int i=0;i<units.length;i++){
+            textViews[i].setText(nutritions[i]+units[i]);
+        }
 
-        String energy = foodDao.find_energy(foodName) + "千卡";
-        scrollViewEnergy.setText(energy);
-        String CH = foodDao.find_CH(foodName) + "克";
-        scrollViewCH.setText(CH);
-        String DF = foodDao.find_DF(foodName) + "克";
-        scrollViewDF.setText(DF);
-        String fat = foodDao.find_fat(foodName) + "克";
-        scrollViewFat.setText(fat);
-        String protein = foodDao.find_protein(foodName) + "克";
-        scrollViewProtein.setText(protein);
-        String water = foodDao.find_water(foodName) + "克";
-        scrollViewWater.setText(water);
-        String CLS = foodDao.find_CLS(foodName) + "毫克";
-        scrollViewCLS.setText(CLS);
-        String vA = foodDao.find_vA(foodName) + "μgRE";
-        scrollViewVA.setText(vA);
-        String vB1 = foodDao.find_vB1(foodName) + "毫克";
-        scrollViewVB1.setText(vB1);
-        String vB2 = foodDao.find_vB2(foodName) + "毫克";
-        scrollViewVB2.setText(vB2);
-        String vB3 = foodDao.find_vB3(foodName) + "毫克";
-        scrollViewVB3.setText(vB3);
-        String vC = foodDao.find_vC(foodName) + "毫克";
-        scrollViewVC.setText(vC);
-        String vE = foodDao.find_vE(foodName) + "毫克";
-        scrollViewVE.setText(vE);
-        String Fe = foodDao.find_Fe(foodName) + "毫克";
-        scrollViewFe.setText(Fe);
-        String Ga = foodDao.find_Ga(foodName) + "毫克";
-        scrollViewGa.setText(Ga);
-        String Mg = foodDao.find_Mg(foodName) + "毫克";
-        scrollViewMg.setText(Mg);
-        String K = foodDao.find_K(foodName) + "毫克";
-        scrollViewK.setText(K);
-        String P = foodDao.find_P(foodName) + "毫克";
-        scrollViewP.setText(P);
-        String Zn = foodDao.find_Zn(foodName) + "毫克";
-        scrollViewZn.setText(Zn);
-        String Na = foodDao.find_Na(foodName) + "毫克";
-        scrollViewNa.setText(Na);
-        String pur = foodDao.find_purine(foodName) + "毫克";
         String purine_ps;
-        scrollViewpurine.setText(pur);
         if (!foodDao.find_purine(foodName).equals("—")) {
             if (Float.valueOf(foodDao.find_purine(foodName)) >= 100) {
                 purine_ps = "高嘌呤食物";
             } else purine_ps = "正常";
             scrollViewpur_ps.setText(purine_ps);
         } else scrollViewpur_ps.setText("—");
+
     }
 }

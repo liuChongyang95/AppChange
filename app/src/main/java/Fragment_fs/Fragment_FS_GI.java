@@ -32,7 +32,5 @@ public class Fragment_FS_GI extends Fragment {
         if (GI_per == null || GI_per.length() <= 0) {
             gi_per_index.setText("——");
         } else gi_per_index.setText(GI_per);
-
-
     }
 }

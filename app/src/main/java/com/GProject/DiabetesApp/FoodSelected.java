@@ -169,21 +169,21 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     case R.id.nav_Analysis:
                         drawerLayoutFS.closeDrawer(GravityCompat.START);
                         Intent intent3 = new Intent(FoodSelected.this, FoodReport.class);
-                        intent3.putExtras( bundle_from_FMA );
+                        intent3.putExtras(bundle_from_FMA);
                         startActivity(intent3);
                         break;
                     case R.id.nav_Record:
                         drawerLayoutFS.closeDrawer(GravityCompat.START);
                         Intent intent1 = new Intent(FoodSelected.this, FoodRecordListView.class);
-                        intent1.putExtras( bundle_from_FMA );
+                        intent1.putExtras(bundle_from_FMA);
                         startActivity(intent1);
                         break;
                     case R.id.nav_Dietary:
                         drawerLayoutFS.closeDrawer(GravityCompat.START);
                         Intent intent2 = new Intent(FoodSelected.this, DietaryStatus.class);
-                        bundle_from_FMA.putString("pick_Time",initDate());
-                        bundle_from_FMA.putString("pick_Type","Single");
-                        intent2.putExtras( bundle_from_FMA );
+                        bundle_from_FMA.putString("pick_Time", initDate());
+                        bundle_from_FMA.putString("pick_Type", "Single");
+                        intent2.putExtras(bundle_from_FMA);
                         startActivity(intent2);
                         break;
                 }
@@ -199,7 +199,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 Intent intent3 = new Intent(FoodSelected.this, AllUserInfo.class);
-                intent3.putExtras( bundle_from_FMA );
+                intent3.putExtras(bundle_from_FMA);
                 startActivity(intent3);
             }
         });
@@ -227,29 +227,25 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
 
     private void food_nutrition() {
         Energy = foodDao.find_energy(fruitName);
-        if (Energy != null && !Energy.equals("…") && !Energy.equals("Tr") && Energy.length() > 0 && !Energy.equals("─") && !Energy.equals("┄"))
-            Energy = foodDao.find_energy(fruitName) + "千卡";
-        else Energy = "—千卡";
+        if (!(Energy != null && !Energy.equals("…") && !Energy.equals("Tr") && Energy.length() > 0 && !Energy.equals("─") && !Energy.equals("┄")))
+            Energy = "—";
 
         Protein = foodDao.find_protein(fruitName);
-        if (Protein != null && !Protein.equals("…") && !Protein.equals("Tr") && Protein.length() > 0 && !Protein.equals("─") && !Protein.equals("┄"))
-            Protein = foodDao.find_protein(fruitName) + "克";
-        else Protein = "—克";
+        if (!(Protein != null && !Protein.equals("…") && !Protein.equals("Tr") && Protein.length() > 0 && !Protein.equals("─") && !Protein.equals("┄")))
+            Protein = "—";
 
         Fat = foodDao.find_fat(fruitName);
-        if (Fat != null && !Fat.equals("…") && !Fat.equals("Tr") && Fat.length() > 0 && !Fat.equals("─") && !Fat.equals("┄"))
-            Fat = foodDao.find_fat(fruitName) + "克";
-        else Fat = "—克";
+        if (!(Fat != null && !Fat.equals("…") && !Fat.equals("Tr") && Fat.length() > 0 && !Fat.equals("─") && !Fat.equals("┄")))
+            Fat = "—";
 
         DF = foodDao.find_DF(fruitName);
-        if (DF != null && !DF.equals("…") && !DF.equals("Tr") && DF.length() > 0 && !DF.equals("─") && !DF.equals("┄"))
-            DF = foodDao.find_DF(fruitName) + "克";
-        else DF = "—克";
+        if (!(DF != null && !DF.equals("…") && !DF.equals("Tr") && DF.length() > 0 && !DF.equals("─") && !DF.equals("┄")))
+            DF = "—";
 
         CH = foodDao.find_CH(fruitName);
-        if (CH != null && !CH.equals("…") && !CH.equals("Tr") && CH.length() > 0 && !CH.equals("─") && !CH.equals("┄"))
-            CH = foodDao.find_CH(fruitName) + "克";
-        else CH = "—克";
+        if (!(CH != null && !CH.equals("…") && !CH.equals("Tr") && CH.length() > 0 && !CH.equals("─") && !CH.equals("┄")))
+            CH = "—";
+
         Fragment_FS_nutritioninfo fsNutritioninfo = (Fragment_FS_nutritioninfo) getSupportFragmentManager().findFragmentById(R.id.nutrition_fragment);
         fsNutritioninfo.loading_nutrition(Energy, Protein, CH, DF, Fat);
         fsNutritioninfo.setArguments(bundle_from_FMA);
@@ -305,7 +301,9 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
                     UF.put("intake_1", rec_size);
                     UF.put("Food_unit", unitSign);
                     db.insert("UserFood", null, UF);
+
                     calculateNutri();
+
                     UF.clear();
                     db.close();
 //                    单位全局清零
@@ -644,12 +642,12 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < 21; i++) {
             if (nutrition[i] != null) {
                 float result_a = Float.valueOf(nutrition[i]);
-                if (f_nutrition[i] != null && !f_nutrition[i].equals("…") && !f_nutrition[i].equals("Tr") && f_nutrition[i].length() > 0 && !f_nutrition[i].equals("—") && !f_nutrition[i].equals("┄") && !f_nutrition[i].equals("─")) {
+                if (!f_nutrition[i].equals("—")) {
                     float result_b = Float.valueOf(
                             nf.format(Float.valueOf(nf_per) * Float.valueOf(f_nutrition[i])).replace(",", ""));
                     result_str[i] = nf.format(result_a + result_b).replace(",", "");
                 }
-            } else if (f_nutrition[i] != null && !f_nutrition[i].equals("…") && !f_nutrition[i].equals("Tr") && f_nutrition[i].length() > 0 && !f_nutrition[i].equals("—") && !f_nutrition[i].equals("┄") && !f_nutrition[i].equals("─")) {
+            } else if (!f_nutrition[i].equals("—")) {
                 result_str[i] = nf.format(Float.valueOf(nf_per) * Float.valueOf(f_nutrition[i])).replace(",", "");
             } else {
                 result_str[i] = null;
@@ -662,27 +660,7 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
     private void calculateNutri() {
         //数据库的23-2个营养元素值
         NutArray = new String[23];
-        NutArray[0] = foodDao.find_energy(fruitName);
-        NutArray[1] = foodDao.find_protein(fruitName);
-        NutArray[2] = foodDao.find_fat(fruitName);
-        NutArray[3] = foodDao.find_DF(fruitName);
-        NutArray[4] = foodDao.find_CH(fruitName);
-        NutArray[5] = foodDao.find_water(fruitName);
-        NutArray[6] = foodDao.find_vA(fruitName);
-        NutArray[7] = foodDao.find_vB1(fruitName);
-        NutArray[8] = foodDao.find_vB2(fruitName);
-        NutArray[9] = foodDao.find_vB3(fruitName);
-        NutArray[10] = foodDao.find_vE(fruitName);
-        NutArray[11] = foodDao.find_vC(fruitName);
-        NutArray[12] = foodDao.find_Fe(fruitName);
-        NutArray[13] = foodDao.find_Ga(fruitName);
-        NutArray[14] = foodDao.find_Na(fruitName);
-        NutArray[15] = foodDao.find_CLS(fruitName);
-        NutArray[16] = foodDao.find_K(fruitName);
-        NutArray[17] = foodDao.find_Mg(fruitName);
-        NutArray[18] = foodDao.find_Zn(fruitName);
-        NutArray[19] = foodDao.find_P(fruitName);
-        NutArray[20] = foodDao.find_purine(fruitName);
+        NutArray = foodDao.findNutritionByName(fruitName);
         //23-2个列名
         String[] NutName = {"UI_energy", "UI_protein", "UI_fat", "UI_DF", "UI_CH", "UI_water", "UI_VA", "UI_VB1",
                 "UI_VB2", "UI_VB3", "UI_VE", "UI_VC", "UI_Fe", "UI_Ga", "UI_Na", "UI_CLS", "UI_K", "UI_Mg",
