@@ -35,6 +35,7 @@ public class FoodDao {
                 food.setEnergy(c.getString(c.getColumnIndex("Food_dic_energy")));
                 food.setName(c.getString(c.getColumnIndex("Food_dic_name")));
                 food.setId(c.getString(c.getColumnIndex("Food_dic_id")));
+                food.setClassic(c.getString(c.getColumnIndex("Food_dic_classic")));
                 foods.add(food);
             }
             c.close();

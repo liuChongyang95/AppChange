@@ -205,7 +205,7 @@ public class SelfMainFood extends AppCompatActivity implements View.OnClickListe
                     ContentValues values = new ContentValues();
                     for (int p = 0; p < nutri.length; p++) {
                         BigDecimal bigDecimal = new BigDecimal(eachNutrition[p]);
-                        bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        eachNutrition[p] = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
                         values.put(nutri[p], eachNutrition[p]);
                     }
                     values.put("Food_dic_classic", "(自)");
