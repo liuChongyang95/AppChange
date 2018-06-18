@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="饮食管理">
         <menu>
@@ -27,62 +26,4 @@
             </group>
         </menu>
     </item>
-
-    <group
-        android:id="@+id/cantUse"
-        android:checkableBehavior="single">
-        <item
-            android:checkable="false"
-            android:checked="false"
-            android:icon="@drawable/analysis64"
-            android:title="空位" />
-        <item
-            android:checkable="false"
-            android:checked="false"
-            android:icon="@drawable/list64"
-            android:title="空位" />
-        <item
-            android:checkable="false"
-            android:checked="false"
-            android:icon="@drawable/data64"
-            android:title="空位" />
-    </group>
-    <group
-        android:id="@+id/cantUse1"
-        android:checkableBehavior="single">
-        <item
-            android:checkable="false"
-            android:checked="false"
-            android:icon="@drawable/analysis64"
-            android:title="空位" />
-        <item
-            android:checkable="false"
-            android:checked="false"
-            android:icon="@drawable/list64"
-            android:title="空位" />
-        <item
-            android:checkable="false"
-            android:checked="false"
-            android:icon="@drawable/data64"
-            android:title="空位" />
-    </group>
-    <group
-        android:id="@+id/cantUse2"
-        android:checkableBehavior="single">
-        <item
-            android:checkable="false"
-            android:checked="false"
-            android:icon="@drawable/analysis64"
-            android:title="空位" />
-        <item
-            android:checkable="false"
-            android:checked="false"
-            android:icon="@drawable/list64"
-            android:title="空位" />
-        <item
-            android:checkable="false"
-            android:checked="false"
-            android:icon="@drawable/data64"
-            android:title="空位" />
-    </group>
 </menu>

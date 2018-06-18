@@ -37,16 +37,17 @@ public class FoodAdapter extends ArrayAdapter<Food> implements Filterable {
             viewHolder = new ViewHolder();
             viewHolder.food_dic_energy = view.findViewById(R.id.search_fruit_nutrition);
             viewHolder.food_dic_name = view.findViewById(R.id.search_fruit_name);
+            viewHolder.food_dic_classic = view.findViewById(R.id.search_fruit_classic);
             view.setTag(viewHolder);
-
         } else {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
 
         }
         if (food != null) {
-            viewHolder.food_dic_energy.setText(food.getEnergy()+"千卡/100克");
+            viewHolder.food_dic_energy.setText(food.getEnergy() + "千卡/100克");
             viewHolder.food_dic_name.setText(food.getName());
+            viewHolder.food_dic_classic.setText(food.getClassic());
         }
         return view;
     }
@@ -54,5 +55,6 @@ public class FoodAdapter extends ArrayAdapter<Food> implements Filterable {
     class ViewHolder {
         TextView food_dic_name;
         TextView food_dic_energy;
+        TextView food_dic_classic;
     }
 }

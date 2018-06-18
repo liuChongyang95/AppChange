@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar_fS_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FAF0E6"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <LinearLayout
+            android:id="@+id/search_bar_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/searchResult_title_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="标题"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottomRG_view"
+            android:background="#FDF5E6">
+
+            <LinearLayout
+                android:id="@+id/fm_ll_1_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FFC1C1" />
+
+                <fragment
+                    android:id="@+id/title_fragment_2"
+                    android:name="Fragment_fs.Fragment_FS_titalinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <fragment
+                    android:id="@+id/nutrition_fragment_2"
+                    android:name="Fragment_fs.Fragment_FS_nutritioninfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="#FFC1C1" />
+
+                <fragment
+                    android:id="@+id/gi_fragment_2"
+                    android:name="Fragment_fs.Fragment_FS_GI"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <View
+            android:id="@+id/bottomRG_view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/fs_bottomMenu"
+            android:background="#FFC1C1" />
+
+        <LinearLayout
+            android:id="@+id/fs_bottomMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#FAF0E6"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/VS_LL_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_horizontal"
+                android:onClick="onClick"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/compare" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="试算"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Add_LL_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_horizontal"
+                android:onClick="onClick"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/add_rec" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="添加"
+                    android:textSize="17sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

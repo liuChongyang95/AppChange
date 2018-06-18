@@ -137,12 +137,21 @@ public class FoodSearchToAdd extends AppCompatActivity implements View.OnClickLi
                                           KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (!foodSearch.getText().toString().equals("")) {
-                        foodName = foodSearch.getText().toString().trim();
-                        Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
-                        bundle_from_FAF.putString("searchFood_name", foodName);
-                        intent.putExtras(bundle_from_FAF);
-                        transData();
-                        startActivity(intent);
+                        if (bundle_from_FAF.getString("activity") != null && bundle_from_FAF.getString("activity").length() > 0) {
+                            foodName = foodSearch.getText().toString().trim();
+                            Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
+                            bundle_from_FAF.putString("searchFood_name", foodName);
+                            intent.putExtras(bundle_from_FAF);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            foodName = foodSearch.getText().toString().trim();
+                            Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
+                            bundle_from_FAF.putString("searchFood_name", foodName);
+                            intent.putExtras(bundle_from_FAF);
+                            transData();
+                            startActivity(intent);
+                        }
                     }
                     return true;
                 }
@@ -158,12 +167,21 @@ public class FoodSearchToAdd extends AppCompatActivity implements View.OnClickLi
         listHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                History history = histories.get(position);
-                bundle_from_FAF.putString("searchFood_name", history.getFoodname());
-                Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
-                intent.putExtras(bundle_from_FAF);
-                transData_ls(history.getFoodname());
-                startActivity(intent);
+                if (bundle_from_FAF.getString("activity") != null && bundle_from_FAF.getString("activity").length() > 0) {
+                    History history = histories.get(position);
+                    Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
+                    bundle_from_FAF.putString("searchFood_name",history.getFoodname());
+                    intent.putExtras(bundle_from_FAF);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    History history = histories.get(position);
+                    bundle_from_FAF.putString("searchFood_name", history.getFoodname());
+                    Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
+                    intent.putExtras(bundle_from_FAF);
+                    transData_ls(history.getFoodname());
+                    startActivity(intent);
+                }
             }
         });
 
@@ -177,17 +195,35 @@ public class FoodSearchToAdd extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.search_to_add:
                 foodName = foodSearch.getText().toString().trim();
-                bundle_from_FAF.putString("searchFood_name", foodName);
-                Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
-                intent.putExtras(bundle_from_FAF);
-                transData();
-                startActivity(intent);
+                if (bundle_from_FAF.getString("activity") != null && bundle_from_FAF.getString("activity").length() > 0) {
+                    foodName = foodSearch.getText().toString().trim();
+                    Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
+                    bundle_from_FAF.putString("searchFood_name", foodName);
+                    intent.putExtras(bundle_from_FAF);
+                    finish();
+                    startActivity(intent);
+                } else {
+                    bundle_from_FAF.putString("searchFood_name", foodName);
+                    Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
+                    intent.putExtras(bundle_from_FAF);
+                    transData();
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.clear_history:
-                Message message = new Message();
-                message.what = 0;
-                handler.sendMessage(message);
+                if (bundle_from_FAF.getString("activity") != null && 0 < bundle_from_FAF.getString("activity").length()) {
+                    foodName = foodSearch.getText().toString().trim();
+                    Intent intent = new Intent(FoodSearchToAdd.this, FoodMainActivity.class);
+                    bundle_from_FAF.putString("searchFood_name", foodName);
+                    intent.putExtras(bundle_from_FAF);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Message message = new Message();
+                    message.what = 0;
+                    handler.sendMessage(message);
+                }
                 break;
         }
     }

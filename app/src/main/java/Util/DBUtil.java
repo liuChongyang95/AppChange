@@ -14,7 +14,7 @@ public class DBUtil {
     private static SQLiteDatabase database;
     private static final String DATABASE_FILENAME = "food.db";
     private static final String PACKAGE_NAME = "com.GProject.DiabetesApp";
-    private static final String DATABASE_PATH = "/data" + Environment.getDataDirectory().getAbsolutePath() + "/" + PACKAGE_NAME;
+    private static final String DATABASE_PATH = "/data" + Environment.getDataDirectory().getAbsolutePath() + "/" + PACKAGE_NAME+"/"+"databases";
     private Context mContext;
 
     public DBUtil(Context context) {

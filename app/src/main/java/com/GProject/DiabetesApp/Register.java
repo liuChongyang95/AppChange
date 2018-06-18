@@ -32,6 +32,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Random;
 
 import Database.DBHelper;
@@ -166,7 +167,8 @@ public class Register extends AppCompatActivity {
 //                5出生日期
                 register_birth_str = register_birth_tv.getText().toString().trim();
 //                6体重
-                double register_weight_str = mWeight;
+                BigDecimal bigDecimal=new BigDecimal(mWeight);
+                double register_weight_str = bigDecimal.setScale(1,BigDecimal.ROUND_HALF_UP).doubleValue();
 //                7身高
                 float register_tall_str = mHeight;
 //                理想体重

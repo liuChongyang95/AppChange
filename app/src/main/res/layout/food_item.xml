@@ -31,5 +31,12 @@
             android:layout_gravity="center_vertical"
             android:textSize="17sp" />
 
+        <TextView
+            android:id="@+id/search_fruit_classic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="15sp" />
+
     </LinearLayout>
 </LinearLayout>

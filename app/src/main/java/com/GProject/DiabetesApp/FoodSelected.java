@@ -146,8 +146,8 @@ public class FoodSelected extends AppCompatActivity implements View.OnClickListe
         mInflater = LayoutInflater.from(this);
 //        Toolbar和图片设置
         Toolbar toolbar = findViewById(R.id.toolBar_fS);
-        toolbar.getBackground().setAlpha(0);
         setSupportActionBar(toolbar);
+        toolbar.getBackground().setAlpha(0);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

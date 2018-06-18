@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/selfMainToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Theme.AppCompat.Light"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:popupTheme="@style/Theme.AppCompat.Light"
+        app:titleTextColor="#000" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="食物名称:"
+            android:textSize="23sp" />
+
+        <EditText
+            android:id="@+id/foodName"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ff0000"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/gray"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:stretchColumns="1,3">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="成分1:"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/component1_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="含量(g):"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/component1_num"
+                android:hint="自动生成"
+                android:enabled="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="成分2:"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/component2_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="含量(g):"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/component2_num"
+                android:enabled="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="成分3:"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/component3_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="含量(g):"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/component3_num"
+                android:enabled="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="成分4:"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/component4_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="含量(g):"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/component4_num"
+                android:enabled="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="成分5:"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/component5_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="含量(g):"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/component5_num"
+                android:layout_width="wrap_content"
+                android:enabled="false"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+
+    </TableLayout>
+
+</LinearLayout>

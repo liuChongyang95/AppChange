@@ -74,13 +74,22 @@ public class FoodMainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Food food = foodSearchList.get(i);
                 if (listView.getCount() > 0) {
-                    Food food = foodSearchList.get(i);
-                    Intent intent = new Intent(FoodMainActivity.this, FoodSelected.class);
-                    bundle_from_FsTA.putString("fruit_name", food.getName());
-                    bundle_from_FsTA.putString("fruit_id", food.getId());
-                    intent.putExtras(bundle_from_FsTA);
-                    startActivity(intent);
+                    if (bundle_from_FsTA.getString("activity") != null && bundle_from_FsTA.getString("activity").length() > 0) {
+                        Intent intent=new Intent(FoodMainActivity.this,FoodSelected2.class);
+                        bundle_from_FsTA.putString("fruit_name", food.getName());
+                        bundle_from_FsTA.putString("fruit_id", food.getId());
+                        intent.putExtras(bundle_from_FsTA);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(FoodMainActivity.this, FoodSelected.class);
+                        bundle_from_FsTA.putString("fruit_name", food.getName());
+                        bundle_from_FsTA.putString("fruit_id", food.getId());
+                        intent.putExtras(bundle_from_FsTA);
+                        startActivity(intent);
+                    }
                 }
             }
         });

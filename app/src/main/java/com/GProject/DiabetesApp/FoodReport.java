@@ -139,9 +139,6 @@ public class FoodReport extends AppCompatActivity {
         int max_energy = careerDao.getMax_energy(shape, intensity, career);
         float VS_min_energy = min_energy * (int) userWeight;
         float VS_max_energy = max_energy * (int) userWeight;
-        String cumEnergy = userIntakeDao.getTodayenergy(userId, foodSelected.initDate()).replace(",", "");
-        VS_min_energy = VS_min_energy - Float.valueOf(cumEnergy);
-        VS_max_energy = VS_max_energy - Float.valueOf(cumEnergy);
         if (nutritions[0] <= VS_max_energy && nutritions[0] >= VS_min_energy) {
             advices[0] = "饮食能量为"+nutritions[0]+"千卡，状态正常。" +
                     "正常值为 " + VS_min_energy + "千卡 —— " + VS_max_energy + "千卡 之间";

@@ -41,8 +41,8 @@ import cn.aigestudio.datepicker.cons.DPMode;
 import cn.aigestudio.datepicker.views.DatePicker;
 
 public class FoodAllFunction extends AppCompatActivity implements View.OnClickListener {
-    private String[] record_item = {"分析报告", "记录修改", "饮食情况"};
-    private int[] record_pic = {R.drawable.analysis, R.drawable.list, R.drawable.data_usage};
+    private String[] record_item = {"分析报告", "记录修改", "饮食情况", "自维护"};
+    private int[] record_pic = {R.drawable.analysis, R.drawable.list, R.drawable.data_usage, R.drawable.selfadd};
     private List<Map<String, Object>> record_list;
     private Toolbar toolbar;
     private GridView gridView;
@@ -106,6 +106,11 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
                         showPopupWindow();
 //                        饮食情况
                         break;
+                    case 3:
+//                        自维护
+                        Intent intent1 = new Intent(FoodAllFunction.this, SelfMainFood.class);
+                        intent1.putExtras(bundle_from_FMA);
+                        startActivity(intent1);
                 }
             }
         });
@@ -166,7 +171,7 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
                         intent1.setClass(FoodAllFunction.this, DietaryStatus.class);
 //                                日期格式转换
                         try {
-                            bundle_from_FMA.putString("pick_Type","Single");
+                            bundle_from_FMA.putString("pick_Type", "Single");
                             bundle_from_FMA.putString("pick_Time", simpleDateFormat.format(simpleDateFormat.parse(date)));
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -200,11 +205,11 @@ public class FoodAllFunction extends AppCompatActivity implements View.OnClickLi
                                 e.printStackTrace();
                             }
                         }
-                        PassValueUtil passValueUtil=new PassValueUtil();
+                        PassValueUtil passValueUtil = new PassValueUtil();
                         passValueUtil.setDatepickList(result);
-                        Intent intent=new Intent(FoodAllFunction.this,DietaryStatus.class);
-                        bundle_from_FMA.putString("pick_Type","Various");
-                        bundle_from_FMA.putSerializable("dateList",passValueUtil);
+                        Intent intent = new Intent(FoodAllFunction.this, DietaryStatus.class);
+                        bundle_from_FMA.putString("pick_Type", "Various");
+                        bundle_from_FMA.putSerializable("dateList", passValueUtil);
                         intent.putExtras(bundle_from_FMA);
                         startActivity(intent);
                     }
