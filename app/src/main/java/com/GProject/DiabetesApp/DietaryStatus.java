@@ -62,7 +62,7 @@ public class DietaryStatus extends AppCompatActivity {
     private String userId;
     private String pickType;
     private String nowDay;
-    private String dateList_json=null;
+    private String dateList_json = null;
     private List<String> dateList;
     private FoodRecordDao foodRecordDao;
     private String dataJson2JS;
@@ -125,29 +125,29 @@ public class DietaryStatus extends AppCompatActivity {
             if ("Single".equals(pickType)) {
                 nowDay = bundleFromFAF.getString("pick_Time");
                 //        查找每日记录,分类整合，并转化为JSON
-                dateList_json=gson.toJson(nowDay);
+                dateList_json = gson.toJson(nowDay);
                 dayRecordtrans2JSON(nowDay);
                 webView.setWebViewClient(new WebViewClient() {
                     @Override
                     public void onPageFinished(WebView view, String url) {
-                        view.loadUrl("javascript: endEXE('" + dataJson2JS + "','"+dateList_json+"')");
+                        view.loadUrl("javascript: endEXE('" + dataJson2JS + "','" + dateList_json + "')");
                     }
                 });
             }
-            if ("Various".equals(pickType)){
+            if ("Various".equals(pickType)) {
                 PassValueUtil passValueUtil;
-                passValueUtil= (PassValueUtil) bundleFromFAF.getSerializable("dateList");
+                passValueUtil = (PassValueUtil) bundleFromFAF.getSerializable("dateList");
                 if (passValueUtil != null) {
-                    dateList=passValueUtil.getDatepickList();
+                    dateList = passValueUtil.getDatepickList();
 //                    日期组用于在标题显示
-                    dateList_json=gson.toJson(dateList);
+                    dateList_json = gson.toJson(dateList);
                     Log.d(TAG, dateList_json);
                 }
                 dateListRecordtrans2JSON(dateList);
                 webView.setWebViewClient(new WebViewClient() {
                     @Override
                     public void onPageFinished(WebView view, String url) {
-                        view.loadUrl("javascript: endEXE('" + dataJson2JS + "','"+dateList_json+"')");
+                        view.loadUrl("javascript: endEXE('" + dataJson2JS + "','" + dateList_json + "')");
                     }
                 });
             }
@@ -313,7 +313,7 @@ public class DietaryStatus extends AppCompatActivity {
         dataJson2JS = gson.toJson(stringIntegerHashMap);
     }
 
-//    整合日期组所有食物
+    //    整合日期组所有食物
     private void dateListRecordtrans2JSON(List<String> dateList) {
         String dataJson = foodRecordDao.dayListRecord(userId, dateList);
         Gson gson = new Gson();

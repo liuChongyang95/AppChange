@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Random;
 
 import SearchDao.FoodDao;
@@ -40,6 +41,7 @@ public class SelfMainFood extends AppCompatActivity implements View.OnClickListe
     private EditText name5;
     private EditText num5;
     private EditText nameAll;
+    private NumberFormat numberFormat;
     private FoodDao foodDao;
     private static final String TAG = "SelfMainFood";
     private String[] nutri = {"Food_dic_energy", "Food_dic_protein", "Food_dic_fat", "Food_dic_DF", "Food_dic_CH",
@@ -69,6 +71,8 @@ public class SelfMainFood extends AppCompatActivity implements View.OnClickListe
                 SelfMainFood.this.finish();
             }
         });
+        numberFormat=NumberFormat.getNumberInstance();
+        numberFormat.setMaximumFractionDigits(2);
         foodDao = new FoodDao(this);
         Intent intent = getIntent();
         bundle = intent.getExtras();
@@ -204,9 +208,7 @@ public class SelfMainFood extends AppCompatActivity implements View.OnClickListe
                     SQLiteDatabase foodDB = SQLiteDatabase.openOrCreateDatabase(DATABASE_PATH + "/" + DATABASE_FILENAME, null);
                     ContentValues values = new ContentValues();
                     for (int p = 0; p < nutri.length; p++) {
-                        BigDecimal bigDecimal = new BigDecimal(eachNutrition[p]);
-                        eachNutrition[p] = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-                        values.put(nutri[p], eachNutrition[p]);
+                        values.put(nutri[p],numberFormat.format(eachNutrition[p]).replace(",",""));
                     }
                     values.put("Food_dic_classic", "(自)");
                     values.put("Food_dic_id", String.valueOf(foodId));

@@ -143,6 +143,7 @@ public class ChooseAreaFragment extends Fragment {
             for (City city : cityList) {
                 dataList.add(city.getCityName());
             }
+//            强制更新
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
             currentLevel = LEVEL_CITY;
