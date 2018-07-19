@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import Database.DBHelper;
 import Util.Staticfinal_Value;
 
+/*
+* 全是数据库的访问方法，很简单，不要忘记close，防止低级明显的内存泄漏。
+* */
+
 public class CareerDao {
     private DBHelper careerDBhelper;
     private Staticfinal_Value sfv;

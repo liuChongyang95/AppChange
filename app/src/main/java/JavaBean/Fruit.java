@@ -1,10 +1,10 @@
 package JavaBean;
 
-
 import android.graphics.drawable.Drawable;
 
 /**
  * Created by Administrator on 2017/12/27.
+ * 这个是给老师看的模型时候用的javabean 已经被抛弃。其他javabean有用。
  */
 
 public class Fruit {

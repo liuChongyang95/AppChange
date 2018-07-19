@@ -2,6 +2,9 @@ package Database;
 
 import org.litepal.crud.DataSupport;
 
+/*
+* 省选项
+* */
 
 public class Province extends DataSupport {
 //    entity id

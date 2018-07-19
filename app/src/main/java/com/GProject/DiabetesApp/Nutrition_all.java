@@ -1,5 +1,9 @@
 package com.GProject.DiabetesApp;
 
+/*
+* 饮食记录界面，更多饮食信息按钮的跳转界面
+* */
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;

@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 用户个人信息界面
+* */
 import android.Manifest;
 import android.animation.Animator;
 import android.annotation.SuppressLint;

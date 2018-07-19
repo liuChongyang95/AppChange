@@ -1,5 +1,9 @@
 package com.GProject.DiabetesApp;
 
+/*
+* 登录界面
+* */
+
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;

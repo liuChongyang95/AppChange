@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 饮食搜索界面
+* */
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;

@@ -1,5 +1,9 @@
 package com.GProject.DiabetesApp;
 
+/*
+* 注册界面
+* */
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;

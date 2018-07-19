@@ -10,7 +10,9 @@ import org.json.JSONObject;
 import Database.City;
 import Database.County;
 import Database.Province;
-
+/*
+* litepal，接口返回数据分析 省市镇。
+* */
 public class Utility {
     public static boolean handleProvinceResponse(String response) {
         if (!TextUtils.isEmpty(response)) {

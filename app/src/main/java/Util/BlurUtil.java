@@ -10,7 +10,9 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 
 import static android.support.constraint.Constraints.TAG;
-
+/*
+* 主要用于模糊处理，navigationView 食物信息界面
+* */
 public class BlurUtil {
 
     public static Bitmap rsBlur(Context context, Bitmap source, int radius) {

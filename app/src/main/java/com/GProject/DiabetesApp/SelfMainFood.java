@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 自维护一级界面
+* */
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;

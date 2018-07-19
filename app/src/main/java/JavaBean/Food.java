@@ -32,38 +32,6 @@ public class Food {
     private String class_1;
     private String classic;
 
-    public Food(String id, String name, String nickname, int ep, String water, String energy, String protein, String fat, String CH, String DF, String CLS, String vA, String vB1, String vB2, String vB3, String vC, String vE, String ga, String na, String fe, String _p, String k, String mg, String zn, String GI, String GI_per, String purine, String region, String class_1, String classic) {
-        this.id = id;
-        this.name = name;
-        this.nickname = nickname;
-        this.ep = ep;
-        this.water = water;
-        this.energy = energy;
-        this.protein = protein;
-        this.fat = fat;
-        this.CH = CH;
-        this.DF = DF;
-        this.CLS = CLS;
-        this.vA = vA;
-        this.vB1 = vB1;
-        this.vB2 = vB2;
-        this.vB3 = vB3;
-        this.vC = vC;
-        this.vE = vE;
-        Ga = ga;
-        Na = na;
-        Fe = fe;
-        _P = _p;
-        K = k;
-        Mg = mg;
-        Zn = zn;
-        this.GI = GI;
-        this.GI_per = GI_per;
-        this.purine = purine;
-        this.region = region;
-        this.class_1 = class_1;
-        this.classic = classic;
-    }
 
     public Food() {
 

@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 试算界面
+* */
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;

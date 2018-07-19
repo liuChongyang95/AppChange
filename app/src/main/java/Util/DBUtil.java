@@ -9,7 +9,9 @@ import com.GProject.DiabetesApp.R;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-
+/*
+* 用于读取res-raw文件夹中的食物字典表。存储到手机内存database中。大概是这样。。懒得回忆了。
+* */
 public class DBUtil {
     private static SQLiteDatabase database;
     private static final String DATABASE_FILENAME = "food.db";

@@ -1,5 +1,8 @@
 package com.GProject.DiabetesApp;
 
+/*
+* 用户信息界面，调用碎片显示结果
+* */
 
 import android.content.Intent;
 import android.graphics.Color;

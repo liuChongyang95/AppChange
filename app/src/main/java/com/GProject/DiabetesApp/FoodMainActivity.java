@@ -1,5 +1,5 @@
 package com.GProject.DiabetesApp;
-
+/*食物搜索结果界面*/
 
 import android.content.Intent;
 import android.graphics.Color;

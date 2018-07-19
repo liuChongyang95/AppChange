@@ -1,5 +1,9 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 分析报告
+*
+* 输出的饮食建议考虑从表中对应输出。该程序写死。
+* */
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentFilter;

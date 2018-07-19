@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 记录修改中的单条记录，点击之后的界面。
+* */
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;

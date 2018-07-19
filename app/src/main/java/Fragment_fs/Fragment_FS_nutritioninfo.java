@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.GProject.DiabetesApp.Nutrition_all;
 import com.GProject.DiabetesApp.R;
-
+/*
+* 饮食信息中的主要营养元素碎片，水分，蛋白质等等。
+* */
 
 public class Fragment_FS_nutritioninfo extends Fragment {
     private View view;

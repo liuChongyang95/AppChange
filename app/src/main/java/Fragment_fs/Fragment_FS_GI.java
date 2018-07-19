@@ -10,6 +10,11 @@ import android.widget.TextView;
 
 import com.GProject.DiabetesApp.R;
 
+/*
+*
+* 饮食信息中的血糖指数碎片
+* */
+
 public class Fragment_FS_GI extends Fragment {
     private View view;
 

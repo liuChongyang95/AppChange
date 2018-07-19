@@ -1,5 +1,7 @@
 package Adapter;
-
+/*
+* 用户饮食记录界面适配器
+*/
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;

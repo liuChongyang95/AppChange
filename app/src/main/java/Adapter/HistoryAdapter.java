@@ -1,5 +1,7 @@
 package Adapter;
-
+/*
+* 搜索历史列表适配器
+* */
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

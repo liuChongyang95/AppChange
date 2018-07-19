@@ -1,5 +1,9 @@
 package BackService;
 
+/*
+* 后台用户录入饮食的题型 内容为空
+* */
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;

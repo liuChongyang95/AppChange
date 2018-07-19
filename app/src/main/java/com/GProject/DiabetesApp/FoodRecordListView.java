@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 录入饮食的历史列表
+* */
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;

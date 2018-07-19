@@ -2,6 +2,10 @@ package Database;
 
 import org.litepal.crud.DataSupport;
 
+/*
+* litepal中通过javabean创建数据库映射 用于用户地理信息更改中的县选项。应该是，记不清了。
+* */
+
 
 public class City extends DataSupport {
     private int id;

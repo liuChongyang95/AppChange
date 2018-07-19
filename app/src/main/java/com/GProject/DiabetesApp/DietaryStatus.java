@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 用户饮食情况环状图
+* */
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;

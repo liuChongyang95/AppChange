@@ -4,6 +4,8 @@ import org.litepal.crud.DataSupport;
 
 /*
 * EntityClass
+*
+* 区选项
 * */
 public class County extends DataSupport {
     private int id;

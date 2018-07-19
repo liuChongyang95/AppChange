@@ -10,7 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.GProject.DiabetesApp.R;
-
+/*
+* 饮食信息标题碎片，苹果，XX能量/百克。toolbar取代。
+*
+*
+* */
 public class Fragment_FS_titalinfo extends Fragment {
     private View view;
 

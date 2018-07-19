@@ -32,6 +32,8 @@ import static android.content.ContentValues.TAG;
 /**
  * Created by Administrator on 2017/12/29.
  * login username登录名 不是ID
+ *
+ * DBhelper 调用sqlite数据库建表
  */
 
 public class DBHelper extends SQLiteOpenHelper {

@@ -1,5 +1,8 @@
 package Fragment_fs;
 
+/*
+* 加载接口回调后，分析的信息到碎片中。用户地理位置信息更改。
+* */
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -88,7 +91,6 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
                     cityName = selectedCity.getCityName();
-                    Log.d(CAF, String.valueOf(selectedCity));
                     queryCounties();
                 } else if (currentLevel == LEVEL_COUNTY) {
                     selectedCounty = countyList.get(position);

@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
 /*
+饮食管理界面
+
 bundle里面有ID和用户名
 
 */
@@ -41,7 +43,7 @@ import cn.aigestudio.datepicker.cons.DPMode;
 import cn.aigestudio.datepicker.views.DatePicker;
 
 public class FoodAllFunction extends AppCompatActivity implements View.OnClickListener {
-    private String[] record_item = {"分析报告", "记录修改", "饮食情况", "自维护"};
+    private String[] record_item = {"分析报告", "记录修改", "饮食情况", "饮食习惯\n定制"};
     private int[] record_pic = {R.drawable.analysis, R.drawable.list, R.drawable.data_usage, R.drawable.selfadd};
     private List<Map<String, Object>> record_list;
     private Toolbar toolbar;

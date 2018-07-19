@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 自维护，饮食录入界面
+* */
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;

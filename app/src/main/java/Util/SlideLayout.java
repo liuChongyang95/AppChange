@@ -1,5 +1,9 @@
 package Util;
 
+/*
+* 饮食管理界面，从左向右的拖拽工具类。
+* */
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;

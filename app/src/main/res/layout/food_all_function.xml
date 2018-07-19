@@ -62,7 +62,8 @@
     <GridView
         android:id="@+id/foodRecord_gridView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_margin="10dp"
         android:gravity="center"
         android:horizontalSpacing="0dp"

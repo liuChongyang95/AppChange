@@ -2,6 +2,7 @@ package Util;
 
 /**
  * Created by Administrator on 2018/1/8.
+ * 这个是注册页面的游标尺，git上找的，不是很懂原理。
  */
 
 import android.content.Context;

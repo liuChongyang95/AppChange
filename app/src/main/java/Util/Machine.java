@@ -2,6 +2,7 @@ package Util;
 
 /**
  * Created by Administrator on 2018/1/8.
+ * 这个应该也是游标尺中的组件
  */
 import android.content.Context;
 import android.os.Build;

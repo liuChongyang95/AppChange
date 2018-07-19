@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 登录一级界面 所有功能
+* */
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;

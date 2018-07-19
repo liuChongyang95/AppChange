@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 搜索无结果界面
+* */
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;

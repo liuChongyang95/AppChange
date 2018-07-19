@@ -1,5 +1,7 @@
 package com.GProject.DiabetesApp;
-
+/*
+* 写死的用户职业选择，应该改善
+* */
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;

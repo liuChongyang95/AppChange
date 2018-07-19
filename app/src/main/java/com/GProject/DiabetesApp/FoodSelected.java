@@ -59,6 +59,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
+ * 饮食录入界面，包括输入录入信息的alertdialog
+ *
  * Created by Administrator on 2017/12/28.
  * 所有查询都是通过FoodID
  * 个 小中大 106.4 159.6 288.8
